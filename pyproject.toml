@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentic-payments-env"
+version = "0.1.0"
+description = "Deterministic research environment for agentic payment workflows."
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.7,<3"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5", "mypy>=1.10"]
+
+[project.scripts]
+apenv = "agentic_payments_env.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentic_payments_env"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# Spec markdown contains # NORMATIVE snippets that must stay verbatim (docs/00-index.md).
+extend-exclude = ["docs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+strict = true
+python_version = "3.11"
+plugins = ["pydantic.mypy"]
+files = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
