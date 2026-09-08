@@ -87,3 +87,11 @@ to a file under `reports/`.
   `_fixture_entry_count` (PrivateAttr on the runtime WorldState subclass,
   excluded from canonical JSON). COMPLETED/REVERSED entry-sum-to-zero uses
   the full ledger. — T0.05
+- Q-03 — T0.08 dispatch must route to authorize/transfer/misc, but those
+  modules are created in T0.09/T0.10 and those tickets cannot edit
+  dispatch.py. Interim: dispatch loads handler maps via importlib and
+  skips missing modules; T0.09/T0.10 only add HANDLERS in their files.
+  — T0.08
+- Q-04 — Dispatch must return EPISODE_FINISHED but ToolContext as specified
+  has no done flag. Interim: add `done: bool = False` on ToolContext.
+  — T0.08
