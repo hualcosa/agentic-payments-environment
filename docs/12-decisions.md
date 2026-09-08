@@ -80,3 +80,10 @@ to a file under `reports/`.
 - Q-01 — Should `list_transfers` include `PENDING` transfers from the
   current step under `TIMEOUT_AFTER_EXECUTE`? — Yes: the transfer is
   COMPLETED before the timeout is returned, so it is listed. — T0.10
+- Q-02 — INV-02 vs fixture ledger entries: balances already include
+  fixture transfers, so summing all ledger deltas would double-count.
+  Interim: capture `initial_balances` after inserting fixture ledger
+  rows; INV-02 account check sums only entries after
+  `_fixture_entry_count` (PrivateAttr on the runtime WorldState subclass,
+  excluded from canonical JSON). COMPLETED/REVERSED entry-sum-to-zero uses
+  the full ledger. — T0.05
