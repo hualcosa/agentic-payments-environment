@@ -33,6 +33,8 @@ from agentic_payments_env.export_sft import export_sft, export_sft_benchmark
 from agentic_payments_env.graders import grade_episode
 from agentic_payments_env.prompts import load_prompt
 from agentic_payments_env.replay import replay
+from agentic_payments_env.reproduce import check as reproduce_check
+from agentic_payments_env.reproduce import rebuild as reproduce_rebuild
 from agentic_payments_env.rewards.pairs import export_preferences
 
 _LLM_PROVIDERS = ("openai", "anthropic", "fake")
@@ -264,6 +266,15 @@ def _cmd_export_preferences(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_reproduce(args: argparse.Namespace) -> int:
+    out = Path(args.out)
+    if args.check:
+        reproduce_check(out)
+    else:
+        reproduce_rebuild(out)
+    return 0
+
+
 def _add_llm_flags(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--model", default=None, help="required when --agent llm")
     parser.add_argument("--prompt", default="v1")
@@ -329,6 +340,15 @@ def build_parser() -> argparse.ArgumentParser:
     pref = sub.add_parser("export-preferences")
     pref.add_argument("--out", required=True)
     pref.set_defaults(func=_cmd_export_preferences)
+
+    repro = sub.add_parser("reproduce")
+    repro.add_argument("--out", required=True, help="empty or nonexistent output directory")
+    repro.add_argument(
+        "--check",
+        action="store_true",
+        help="rebuild into --out and compare to committed artifacts",
+    )
+    repro.set_defaults(func=_cmd_reproduce)
     return parser
 
 

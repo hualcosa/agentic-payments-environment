@@ -19,7 +19,6 @@ code outside the M0 09 table.
 | AUD-03 | 31 |
 | FIN-06 | 29 |
 | SAF-06 | 23 |
-| AUTH-07 | 16 |
 | FIN-05 | 10 |
 | SAF-05 | 10 |
 | POL-05 | 8 |
@@ -34,7 +33,6 @@ code outside the M0 09 table.
 | FIN-03 | 2 |
 | TASK-02 | 2 |
 | REC-02 | 1 |
-| REC-04 | 1 |
 
 Codes with ≥ 3 occurrences are already in 09. Codes below the threshold are
 also already in 09. No candidate for a new code.
