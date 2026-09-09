@@ -29,10 +29,11 @@ from agentic_payments_env.benchmark.runner import (
 from agentic_payments_env.contracts.grading import EpisodeResult
 from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.contracts.trace import EpisodeTrace
-from agentic_payments_env.export_sft import export_sft
+from agentic_payments_env.export_sft import export_sft, export_sft_benchmark
 from agentic_payments_env.graders import grade_episode
 from agentic_payments_env.prompts import load_prompt
 from agentic_payments_env.replay import replay
+from agentic_payments_env.rewards.pairs import export_preferences
 
 _LLM_PROVIDERS = ("openai", "anthropic", "fake")
 
@@ -248,7 +249,18 @@ def _cmd_annotate_trace(args: argparse.Namespace) -> int:
 
 
 def _cmd_export_sft(args: argparse.Namespace) -> int:
-    export_sft([str(args.task)], Path(args.out))
+    out = Path(args.out)
+    if args.benchmark:
+        export_sft_benchmark(out, agents=tuple(args.agents.split(",")), seed=args.seed)
+    elif args.task:
+        export_sft([str(args.task)], out, seed=args.seed)
+    else:
+        raise SystemExit("export-sft requires --task or --benchmark")
+    return 0
+
+
+def _cmd_export_preferences(args: argparse.Namespace) -> int:
+    export_preferences(Path(args.out))
     return 0
 
 
@@ -307,9 +319,16 @@ def build_parser() -> argparse.ArgumentParser:
     ann.set_defaults(func=_cmd_annotate_trace)
 
     sft = sub.add_parser("export-sft")
-    sft.add_argument("--task", required=True)
+    sft.add_argument("--task", default=None)
+    sft.add_argument("--benchmark", default=None, choices=["training"])
+    sft.add_argument("--agents", default="oracle,quitter")
+    sft.add_argument("--seed", type=int, default=0)
     sft.add_argument("--out", required=True)
     sft.set_defaults(func=_cmd_export_sft)
+
+    pref = sub.add_parser("export-preferences")
+    pref.add_argument("--out", required=True)
+    pref.set_defaults(func=_cmd_export_preferences)
     return parser
 
 

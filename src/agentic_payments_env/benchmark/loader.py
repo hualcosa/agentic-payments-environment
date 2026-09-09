@@ -36,9 +36,16 @@ def load_task(task_id: str) -> TaskSpec:
 
         return load_v1(task_id)
     if task_id.startswith("v1.1/"):
-        from agentic_payments_env.benchmark.v1_1 import load_task as load_v11
+        from agentic_payments_env.benchmark.v1_1 import _frozen_dir
 
-        return load_v11(task_id)
+        suffix = task_id.split("/", 1)[1]
+        held = _frozen_dir() / f"{suffix}.json"
+        if held.is_file():
+            return load_task_file(held)
+        train = _frozen_dir().parent / "v1.1-train" / f"{suffix}.json"
+        if train.is_file():
+            return load_task_file(train)
+        raise KeyError(f"unknown task_id {task_id!r}")
     raise KeyError(f"unknown task_id {task_id!r}")
 
 
