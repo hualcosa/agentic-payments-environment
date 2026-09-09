@@ -3,9 +3,8 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: M3 complete.** M0–M2 plus parametric generators, validity filter,
-> curriculum ordering, and frozen v1 benchmark (200 held-out tasks) are
-> implemented. Live model numbers remain **not yet measured** (see reports).
+> **Status: M4 complete.** Episode and step rewards, preference pairs, and
+> reward spec are implemented. Live model numbers remain **not yet measured**.
 > Spec documents under `docs/` remain normative.
 
 ## What this is
