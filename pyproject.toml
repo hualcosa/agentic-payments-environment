@@ -11,6 +11,8 @@ dependencies = ["pydantic>=2.7,<3"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.5", "mypy>=1.10"]
+openai = ["openai>=1.40"]
+anthropic = ["anthropic>=0.34"]
 
 [project.scripts]
 apenv = "agentic_payments_env.cli:main"
@@ -32,6 +34,10 @@ strict = true
 python_version = "3.11"
 plugins = ["pydantic.mypy"]
 files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["openai", "openai.*", "anthropic", "anthropic.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
