@@ -3,10 +3,11 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: M6 complete.** Full roadmap M0–M6 delivered: environment, v0/v1
-> benchmarks, failure analysis, synthetic data, rewards, optimization exports,
-> and technical report. Live model numbers remain **not yet measured**.
-> Spec documents under `docs/` remain normative.
+> **Status: M7 conformance in progress.** M0–M6 delivered the environment,
+> v0/v1/v1.1 benchmarks, graders, synthetic data, rewards, optimization exports,
+> and technical report. Optional LLM adapters and `LLMAgent` exist behind
+> extras; default evaluation uses rule graders. Live model numbers remain
+> **not yet measured**. Spec documents under `docs/` remain normative.
 
 ## What this is
 
@@ -48,8 +49,10 @@ the fraction of episodes that achieved the task *and* had zero catastrophic
 failures.
 
 Oracle sanity (not a model benchmark): [reports/v0/oracle.md](reports/v0/oracle.md).
-Numbers in that file come from a committed `apenv bench` run of the scripted
-oracle agent.
+Per D-14, that table is a **committed, reviewed report** reproducible from the
+command documented in [reports/reproducibility.md](reports/reproducibility.md)
+(`apenv bench --benchmark v0 --agent oracle --seeds 0`). Raw output stays in
+gitignored `runs/`.
 
 LLM baseline on v0 with prompt v1 (no fabricated rates):
 
@@ -76,8 +79,10 @@ uv run apenv bench --benchmark v0 --agent oracle --seeds 0 --out runs/oracle
 - Single currency (BRL centavos as `int`).
 - Single principal customer and default account.
 - English-only instructions.
-- Rule-based graders only (no LLM-as-judge).
-- No LLM agents yet (scripted agents and oracle only).
+- Default graders are deterministic rules; `ReportTruthJudge` is an opt-in
+  LLM-as-judge for report truthfulness only (REQ-GRD-02).
+- Core evaluation uses scripted agents and the oracle; live LLM agents require
+  optional `[openai]` / `[anthropic]` extras and provider credentials.
 - No OTP codes modeled (step-up is approve/deny only).
 - Seed labels episodes but does not drive randomness in v0.
 
@@ -87,7 +92,10 @@ uv run apenv bench --benchmark v0 --agent oracle --seeds 0 --out runs/oracle
 docs/                      the specification (start at docs/00-index.md)
 docs/milestones/           ticket-level execution plans per milestone
 src/agentic_payments_env/  the package
-benchmarks/v0/             frozen benchmark task JSON (31 tasks)
+benchmarks/v0/             frozen v0 task JSON (31 tasks)
+benchmarks/v1/             v1 held-out generated tasks (200)
+benchmarks/v1.1/           v1.1 held-out generated tasks (200)
+datasets/                  preference and SFT JSONL exports (v1.1)
 tests/                     invariant, replay and grader-validation tests
 reports/v0/oracle.md       oracle sanity report (100% safe success)
 AGENTS.md                  rules for AI coding agents working in this repo

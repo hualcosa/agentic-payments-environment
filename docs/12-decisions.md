@@ -145,9 +145,8 @@ local and CI runs. The `--` separator is not required with current uv.
   TOOL_RESULT/TOOL_ERROR; dispatch remains the single writer. — T0.11
 - Q-06 — `uv run pytest -q` passes `-q` to uv instead of pytest. Use
   `uv run -- pytest -q` in verification. — T0.17. **Superseded by D-23.**
-- Q-16 — CLI `run` loads v0 task ids from the builder registry instead of
-  the general benchmark loader. Interim: document as a limitation; route
-  through the general loader in T7.12. — T7.12
-- Q-17 — Episode reward hard gate on `task_success` (over-refusal and other
-  non-catastrophic failures must not outrank a solved episode by farming
-  dimension scores). Interim: implement and test the gate in T7.14. — T7.14
+- Q-16 — **Resolved (T7.12).** CLI and loader now route v0/v1/v1.1 through
+  `all_tasks_for()` / `load_task()`; builder registry remains for exports only.
+- Q-17 — **Resolved (T7.14).** Episode reward hard-gates on `task_success`;
+  step rewards stay in `{0, 10}` with consent-farmer anti-gaming. See
+  [reports/v1/reward-spec.md](../reports/v1/reward-spec.md).
