@@ -80,3 +80,23 @@ to a file under `reports/`.
 - Q-01 — Should `list_transfers` include `PENDING` transfers from the
   current step under `TIMEOUT_AFTER_EXECUTE`? — Yes: the transfer is
   COMPLETED before the timeout is returned, so it is listed. — T0.10
+- Q-02 — INV-02 vs fixture ledger entries: balances already include
+  fixture transfers, so summing all ledger deltas would double-count.
+  Interim: capture `initial_balances` after inserting fixture ledger
+  rows; INV-02 account check sums only entries after
+  `_fixture_entry_count` (PrivateAttr on the runtime WorldState subclass,
+  excluded from canonical JSON). COMPLETED/REVERSED entry-sum-to-zero uses
+  the full ledger. — T0.05
+- Q-03 — T0.08 dispatch must route to authorize/transfer/misc, but those
+  modules are created in T0.09/T0.10 and those tickets cannot edit
+  dispatch.py. Interim: dispatch loads handler maps via importlib and
+  skips missing modules; T0.09/T0.10 only add HANDLERS in their files.
+  — T0.08
+- Q-04 — Dispatch must return EPISODE_FINISHED but ToolContext as specified
+  has no done flag. Interim: add `done: bool = False` on ToolContext.
+  — T0.08
+- Q-05 — 06 §4 step 8 audits TOOL_RESULT/TOOL_ERROR but T0.08 `ok`/`err`
+  already emit those. Interim: the environment does not emit a second
+  TOOL_RESULT/TOOL_ERROR; dispatch remains the single writer. — T0.11
+- Q-06 — `uv run pytest -q` passes `-q` to uv instead of pytest. Use
+  `uv run -- pytest -q` in verification. — T0.17

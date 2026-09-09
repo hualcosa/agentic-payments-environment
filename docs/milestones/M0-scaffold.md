@@ -410,14 +410,14 @@ randomness in v0.
 
 ## M0 exit checklist
 
-- [ ] All four verification commands pass locally and in CI on 3.11 and 3.12.
-- [ ] `tests/test_grader_matrix.py` passes every row of 10 §5.
-- [ ] `test_oracle_passes_every_task`: 31/31 with exact `oracle_steps`.
-- [ ] Determinism, replay, fuzz-invariant and hidden-leak tests pass.
-- [ ] `benchmarks/v0/*.json` frozen; freeze test passes.
-- [ ] `reports/v0/oracle.md` committed and linked from README.
-- [ ] README distinguishes the project from an applied demo and lists
+- [x] All four verification commands pass locally and in CI on 3.11 and 3.12.
+- [x] `tests/test_grader_matrix.py` passes every row of 10 §5.
+- [x] `test_oracle_passes_every_task`: 31/31 with exact `oracle_steps`.
+- [x] Determinism, replay, fuzz-invariant and hidden-leak tests pass.
+- [x] `benchmarks/v0/*.json` frozen; freeze test passes.
+- [x] `reports/v0/oracle.md` committed and linked from README.
+- [x] README distinguishes the project from an applied demo and lists
       limitations; no unmeasured numbers anywhere.
-- [ ] `docs/12-decisions.md` has no unresolved open question that blocks M1.
-- [ ] Every `REQ-` id in docs 02–10 is referenced from at least one
+- [x] `docs/12-decisions.md` has no unresolved open question that blocks M1.
+- [x] Every `REQ-` id in docs 02–10 is referenced from at least one
       docstring, comment or test name (`grep -r "REQ-" src tests`).
