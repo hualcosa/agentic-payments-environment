@@ -22,7 +22,7 @@ _STATUS_TOOLS = {"get_transfer_by_idempotency_key", "list_transfers", "get_trans
 
 
 class RecoveryGrader:
-    """REC-01..06. 08 §3.6."""
+    """REC-01..06 recovery grader. REQ-GRD-01."""
 
     dimension = Dimension.RECOVERY
 

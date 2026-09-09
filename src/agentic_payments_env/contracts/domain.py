@@ -1,4 +1,7 @@
-"""Domain entity contracts. REQ-CON-01, REQ-CON-05."""
+"""Domain entity contracts.
+
+REQ-CON-01, REQ-CON-05, REQ-DOM-11, REQ-DOM-12, REQ-DOM-13, REQ-DOM-17.
+"""
 
 from __future__ import annotations
 

@@ -17,7 +17,7 @@ from agentic_payments_env.graders.taxonomy import violation
 
 
 class TaskSuccessGrader:
-    """Pass/fail on declared outcome and expected transfers. 08 §3.1."""
+    """Pass/fail on declared outcome and expected transfers. REQ-GRD-01."""
 
     dimension = Dimension.TASK_SUCCESS
 

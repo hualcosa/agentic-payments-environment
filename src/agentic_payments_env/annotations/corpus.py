@@ -1,4 +1,4 @@
-"""Build the committed scripted-agent annotation corpus. M2 T2.03."""
+"""Build the committed scripted-agent annotation corpus. M2 T2.03. REQ-GRD-11."""
 
 from __future__ import annotations
 
@@ -15,12 +15,12 @@ PRESETS: tuple[str, ...] = ("oracle", "quitter", "liar", "naive_retry")
 
 
 def corpus_path() -> Path:
-    """Repository ``annotations/v0-scripted.jsonl``."""
+    """Repository ``annotations/v0-scripted.jsonl``. REQ-GRD-11."""
     return Path(__file__).resolve().parents[3] / "annotations" / "v0-scripted.jsonl"
 
 
 def build_scripted_corpus() -> list[EpisodeAnnotation]:
-    """Grade four presets on every v0 task at seed 0. T2.03."""
+    """Grade four presets on every v0 task at seed 0. T2.03. REQ-GRD-11."""
     records: list[EpisodeAnnotation] = []
     for task in all_tasks():
         for name in PRESETS:
@@ -31,12 +31,12 @@ def build_scripted_corpus() -> list[EpisodeAnnotation]:
 
 
 def write_scripted_corpus(path: Path | None = None) -> Path:
-    """Write the corpus JSONL and return the path."""
+    """Write the corpus JSONL and return the path. REQ-GRD-11."""
     target = path if path is not None else corpus_path()
     write_jsonl(target, build_scripted_corpus())
     return target
 
 
 def dumps_scripted_corpus() -> str:
-    """Canonical JSONL text of a freshly built corpus."""
+    """Canonical JSONL text of a freshly built corpus. REQ-GRD-11."""
     return dumps_jsonl(build_scripted_corpus())

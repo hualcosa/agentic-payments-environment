@@ -12,7 +12,7 @@ from agentic_payments_env.contracts.common import FrozenModel
 
 
 class ChatMessage(FrozenModel):
-    """One chat message in a provider-agnostic transcript."""
+    """One chat message in a provider-agnostic transcript. REQ-CON-10."""
 
     role: str
     content: str | None = None
@@ -22,7 +22,7 @@ class ChatMessage(FrozenModel):
 
 
 class ToolSpec(FrozenModel):
-    """JSON-Schema tool definition passed to a chat model."""
+    """JSON-Schema tool definition passed to a chat model. REQ-CON-10."""
 
     name: str
     description: str
@@ -30,14 +30,14 @@ class ToolSpec(FrozenModel):
 
 
 class Usage(FrozenModel):
-    """Token usage for one model turn. Defaults to zeros when unknown."""
+    """Token usage for one model turn. Defaults to zeros when unknown. REQ-CON-10."""
 
     input_tokens: int = 0
     output_tokens: int = 0
 
 
 class ModelTurn(FrozenModel):
-    """One model response: tool calls and/or text, plus usage.
+    """One model response: tool calls and/or text, plus usage. REQ-CON-10.
 
     Each item in ``tool_calls`` is a dict with keys ``id``, ``name``, and
     ``arguments`` (a JSON object, not a string).
@@ -69,7 +69,7 @@ class ModelTurnLog(FrozenModel):
 
 
 class ChatModel(Protocol):
-    """Minimal chat-completions surface used by LLMAgent. T1.01."""
+    """Minimal chat-completions surface used by LLMAgent. REQ-ENV-16."""
 
     model_id: str
 
@@ -81,7 +81,7 @@ class ChatModel(Protocol):
 
 
 class FakeChatModel:
-    """Scripted ChatModel: returns queued turns, no network. T1.01."""
+    """Scripted ChatModel: returns queued turns, no network. REQ-ENV-16."""
 
     def __init__(
         self,
@@ -97,6 +97,7 @@ class FakeChatModel:
         messages: Sequence[ChatMessage],
         tools: Sequence[ToolSpec],
     ) -> ModelTurn:
+        """Return the next scripted turn. REQ-ENV-16."""
         del messages, tools
         if self._index >= len(self._turns):
             raise IndexError("FakeChatModel has no remaining scripted turns")

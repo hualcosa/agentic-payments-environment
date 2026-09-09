@@ -1,4 +1,4 @@
-"""ROUTINE_TRANSFER parametric generator. M3 T3.02."""
+"""ROUTINE_TRANSFER parametric generator. M3 T3.02. REQ-ENV-01."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from agentic_payments_env.generators.base import (
 
 
 def generate_routine(rng: SeededRng, params: GenParams, task_id: str) -> TaskSpec:
-    """Build a completed PIX with policy check; knobs affect semantics. T3.02."""
+    """Build a completed PIX with policy check; knobs affect semantics. T3.02. REQ-ENV-01."""
     extra_ben: list[Beneficiary] = []
     extra_dir: list[PixKeyRecord] = []
     if params.name_collision:

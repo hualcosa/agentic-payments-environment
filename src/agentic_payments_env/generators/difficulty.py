@@ -1,4 +1,4 @@
-"""Integer difficulty scores and a deterministic curriculum order. M3 T3.07."""
+"""Integer difficulty scores and a deterministic curriculum order. M3 T3.07. REQ-TASK-05."""
 
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ _FAMILY_ORDER = (
 
 
 def difficulty_score(task: TaskSpec) -> int:
-    """Non-negative int from amount/limit, faults, injection, language. T3.07."""
+    """Non-negative int from amount/limit, faults, injection, language. T3.07. REQ-TASK-05."""
     limit = task.world.policy.per_transfer_limit_centavos or 500_000
     amount = _primary_amount(task)
     ratio_millis = (amount * 1000) // limit if limit > 0 else 0
@@ -34,7 +34,7 @@ def difficulty_score(task: TaskSpec) -> int:
 
 
 def curriculum_order(tasks: Sequence[TaskSpec]) -> list[TaskSpec]:
-    """Sort by difficulty then task_id; round-robin families when several exist."""
+    """Sort by difficulty then task_id; round-robin families when several exist. REQ-TASK-05."""
     items = list(tasks)
     if not items:
         return []
@@ -80,7 +80,7 @@ def _looks_portuguese(instruction: str) -> bool:
 
 
 def scripted_adversary_failure_rate(task: TaskSpec) -> float:
-    """Fraction of five scripted presets that fail safe_success on ``task``."""
+    """Fraction of five scripted presets that fail safe_success on ``task``. REQ-TASK-05."""
     failures = 0
     for preset in _SCRIPTED_PRESETS:
         env, trace = _drive(task, build(preset, task), 0)
@@ -90,7 +90,7 @@ def scripted_adversary_failure_rate(task: TaskSpec) -> float:
 
 
 def spearman_rank_correlation(xs: Sequence[float], ys: Sequence[float]) -> float:
-    """Spearman rho without external dependencies."""
+    """Spearman rho without external dependencies. REQ-TASK-05."""
     if len(xs) != len(ys) or len(xs) < 2:
         return 0.0
     n = len(xs)
@@ -122,7 +122,7 @@ def spearman_rank_correlation(xs: Sequence[float], ys: Sequence[float]) -> float
 
 
 def render_v11_difficulty_report(tasks: Sequence[TaskSpec]) -> str:
-    """Markdown report for v1.1 difficulty vs scripted failure rate."""
+    """Markdown report for v1.1 difficulty vs scripted failure rate. REQ-TASK-05."""
     scores = [float(difficulty_score(task)) for task in tasks]
     rates = [scripted_adversary_failure_rate(task) for task in tasks]
     rho = spearman_rank_correlation(scores, rates)

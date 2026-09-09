@@ -29,7 +29,7 @@ from agentic_payments_env.world import WorldState
 
 @dataclass
 class ToolContext:
-    """Per-call context passed to every tool handler."""
+    """Per-call context passed to every tool handler. REQ-TOOL-02."""
 
     state: WorldState
     sim_user: SimulatedUser

@@ -1,4 +1,4 @@
-"""Per-tool fault injection scheduler."""
+"""Per-tool fault injection scheduler. REQ-ENV-05."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from agentic_payments_env.errors import TaskValidationError
 
 
 class FaultScheduler:
-    """Fires each configured fault once on the matching tool call ordinal."""
+    """Fires each configured fault once on the matching tool call ordinal. REQ-ENV-05."""
 
     def __init__(self, faults: Sequence[FaultInjection]) -> None:
         seen: set[tuple[str, int]] = set()
@@ -24,7 +24,7 @@ class FaultScheduler:
         self._consumed: set[int] = set()
 
     def check(self, tool_name: str) -> FaultInjection | None:
-        """Increment the per-tool call counter and return a matching unfired fault."""
+        """Increment per-tool call counter; return matching unfired fault. REQ-ENV-05."""
         count = self._call_counts.get(tool_name, 0) + 1
         self._call_counts[tool_name] = count
         for index, fault in enumerate(self._faults):
@@ -38,4 +38,5 @@ class FaultScheduler:
 
     @property
     def fired(self) -> list[FaultInjection]:
+        """Faults that have fired this episode. REQ-ENV-05."""
         return list(self._fired)

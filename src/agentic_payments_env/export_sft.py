@@ -1,4 +1,4 @@
-"""Export action traces for external SFT. M5 T5.02."""
+"""Export action traces for external SFT. M5 T5.02. REQ-GRD-12."""
 
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def build_sft_records(
     seed: int = 0,
     include_non_oracle_only_when_safe: bool = True,
 ) -> list[SFTRecord]:
-    """Collect SFT rows; non-oracle agents require ``safe_success``. T5.02."""
+    """Collect SFT rows; non-oracle agents require ``safe_success``. T5.02. REQ-GRD-12."""
     tasks = list(training_task_ids() if task_ids is None else task_ids)
     for task_id in tasks:
         assert_training_task_id(task_id)
@@ -59,7 +59,7 @@ def build_sft_records(
 
 
 def dumps_sft(records: list[SFTRecord]) -> str:
-    """Canonical JSONL text for SFT records."""
+    """Canonical JSONL text for SFT records. REQ-GRD-12."""
     lines = [
         json.dumps(record.model_dump(mode="json"), sort_keys=True, ensure_ascii=False)
         for record in records
@@ -68,7 +68,7 @@ def dumps_sft(records: list[SFTRecord]) -> str:
 
 
 def export_sft(task_ids: Sequence[str], out_path: Path, *, seed: int = 0) -> None:
-    """Write oracle-only JSONL for the given training task ids. T5.02."""
+    """Write oracle-only JSONL for the given training task ids. T5.02. REQ-GRD-12."""
     out_path.parent.mkdir(parents=True, exist_ok=True)
     records = build_sft_records(task_ids, agents=("oracle",), seed=seed)
     out_path.write_text(dumps_sft(records), encoding="utf-8")
@@ -80,7 +80,7 @@ def export_sft_benchmark(
     agents: Sequence[str] = ("oracle", "quitter"),
     seed: int = 0,
 ) -> None:
-    """Write SFT JSONL for all training tasks and selected agents. T5.02."""
+    """Write SFT JSONL for all training tasks and selected agents. T5.02. REQ-GRD-12."""
     out_path.parent.mkdir(parents=True, exist_ok=True)
     records = build_sft_records(None, agents=agents, seed=seed)
     out_path.write_text(dumps_sft(records), encoding="utf-8")

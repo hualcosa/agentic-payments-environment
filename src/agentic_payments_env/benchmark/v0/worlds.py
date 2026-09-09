@@ -54,7 +54,7 @@ def default_world(
     beneficiary_nickname_overrides: dict[str, str] | None = None,
     holder_name_overrides: dict[str, str] | None = None,
 ) -> WorldFixture:
-    """Fully explicit default world from 02 §9, with keyword overrides."""
+    """Fully explicit default world from 02 §9, with keyword overrides. REQ-TASK-01."""
     directory = [
         PixKeyRecord(
             pix_key=MARIA_KEY,
@@ -196,7 +196,7 @@ def make_task(
     notes: str = "",
     max_steps: int = 30,
 ) -> TaskSpec:
-    """Build a TaskSpec with oracle_steps equal to the plan length."""
+    """Build a TaskSpec with oracle_steps equal to the plan length. REQ-TASK-01."""
     plan = oracle_plan
     return TaskSpec(
         task_id=task_id,
@@ -222,5 +222,5 @@ def make_task(
 
 
 def step(tool_name: str, **arguments: Any) -> OracleStep:
-    """Shorthand for an oracle plan step."""
+    """Shorthand for an oracle plan step. REQ-TASK-01."""
     return OracleStep(tool_name=tool_name, arguments=dict(arguments))

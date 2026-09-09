@@ -1,4 +1,4 @@
-"""Misc tools: add_beneficiary, ask_user, finish. REQ-TOOL-04, REQ-TOOL-06."""
+"""Misc tools: add_beneficiary, ask_user, finish. REQ-TOOL-04, REQ-TOOL-06, REQ-TOOL-13."""
 
 from __future__ import annotations
 

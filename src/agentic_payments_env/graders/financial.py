@@ -20,7 +20,7 @@ from agentic_payments_env.world import WorldState as RuntimeWorldState
 
 
 class FinancialGrader:
-    """FIN-01..08. 08 §3.2."""
+    """FIN-01..08 financial correctness grader. REQ-GRD-01."""
 
     dimension = Dimension.FINANCIAL_CORRECTNESS
 

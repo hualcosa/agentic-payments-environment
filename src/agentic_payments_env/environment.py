@@ -1,4 +1,5 @@
-"""Episode environment: reset, step, trace. REQ-ENV-01-11, REQ-TOOL-16, REQ-TOOL-18."""
+"""Episode environment: reset, step, trace. REQ-ENV-01, REQ-ENV-04, REQ-ENV-06,
+REQ-ENV-11, REQ-TOOL-16, REQ-TOOL-18."""
 
 from __future__ import annotations
 

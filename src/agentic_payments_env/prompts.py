@@ -14,7 +14,7 @@ _PROMPT_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]*$")
 
 
 def load_prompt(prompt_id: str) -> tuple[str, str]:
-    """Return ``(prompt_text, sha256_hex)`` for ``prompts/<id>.md``."""
+    """Return ``(prompt_text, sha256_hex)`` for ``prompts/<id>.md``. REQ-ENV-01."""
 
     if not _PROMPT_ID.fullmatch(prompt_id):
         raise ValueError(f"invalid prompt_id: {prompt_id!r}")

@@ -17,7 +17,7 @@ PREFIX_DIMENSION: dict[str, Dimension] = {
 
 
 class TaxonomyEntry:
-    """One taxonomy row: code, severity, dimension, and display name."""
+    """One taxonomy row: code, severity, dimension, and display name. REQ-TAX-01."""
 
     def __init__(self, code: str, severity: Severity, dimension: Dimension, name: str) -> None:
         self.code = code

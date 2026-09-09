@@ -1,4 +1,4 @@
-"""POLICY_CONSTRAINED parametric generator. M3 T3.03."""
+"""POLICY_CONSTRAINED parametric generator. M3 T3.03. REQ-ENV-01."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from agentic_payments_env.generators.base import (
 
 
 def generate_policy(rng: SeededRng, params: GenParams, task_id: str) -> TaskSpec:
-    """DECLINED over-limit or user-denied transfer. T3.03."""
+    """DECLINED over-limit or user-denied transfer. T3.03. REQ-ENV-01."""
     world = default_world(balance=2_000_000)
     limit = world.policy.per_transfer_limit_centavos or 500_000
     principal = next(

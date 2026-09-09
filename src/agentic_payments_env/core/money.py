@@ -6,7 +6,7 @@ import re
 
 
 def format_brl(centavos: int) -> str:
-    """Format integer centavos as Brazilian Real display string."""
+    """Format integer centavos as Brazilian Real display string. REQ-DOM-01."""
     negative = centavos < 0
     amount = abs(centavos)
     reais = amount // 100
@@ -19,7 +19,7 @@ def format_brl(centavos: int) -> str:
 
 
 def parse_brl(text: str) -> int:
-    """Parse a Brazilian Real display string into integer centavos."""
+    """Parse a Brazilian Real display string into integer centavos. REQ-DOM-01."""
     stripped = text.strip()
     negative = stripped.startswith("-")
     if negative:

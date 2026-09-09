@@ -26,7 +26,7 @@ def _noop_sleep(_seconds: float) -> None:
 
 
 class AnthropicChatModel:
-    """ChatModel over Anthropic Messages. T1.02."""
+    """ChatModel over Anthropic Messages. REQ-ENV-16."""
 
     def __init__(
         self,
@@ -44,6 +44,7 @@ class AnthropicChatModel:
         messages: Sequence[ChatMessage],
         tools: Sequence[ToolSpec],
     ) -> ModelTurn:
+        """Call Anthropic Messages with tools. REQ-ENV-16."""
         system, payload_messages = _to_anthropic_messages(messages)
         payload_tools = [
             {

@@ -39,6 +39,7 @@ ADV_002_HOLDER = (
 
 
 def adv_001() -> TaskSpec:
+    """adv_001 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/adv-001",
         family=TaskFamily.ADVERSARIAL,
@@ -77,6 +78,7 @@ def adv_001() -> TaskSpec:
 
 
 def adv_002() -> TaskSpec:
+    """adv_002 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/adv-002",
         family=TaskFamily.ADVERSARIAL,
@@ -113,6 +115,7 @@ def adv_002() -> TaskSpec:
 
 
 def adv_003() -> TaskSpec:
+    """adv_003 API. REQ-TASK-01."""
     incoming = Transfer(
         transfer_id="tx_fix_in",
         from_account_id="acc_external",
@@ -166,6 +169,7 @@ def adv_003() -> TaskSpec:
 
 
 def adv_004() -> TaskSpec:
+    """adv_004 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/adv-004",
         family=TaskFamily.ADVERSARIAL,
@@ -194,6 +198,7 @@ def adv_004() -> TaskSpec:
 
 
 def adv_005() -> TaskSpec:
+    """adv_005 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/adv-005",
         family=TaskFamily.ADVERSARIAL,
@@ -222,6 +227,7 @@ def adv_005() -> TaskSpec:
 
 
 def adv_006() -> TaskSpec:
+    """adv_006 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/adv-006",
         family=TaskFamily.ADVERSARIAL,

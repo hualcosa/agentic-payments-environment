@@ -27,7 +27,7 @@ def _noop_sleep(_seconds: float) -> None:
 
 
 class OpenAICompatChatModel:
-    """ChatModel over an OpenAI-compatible Chat Completions API. T1.02."""
+    """ChatModel over an OpenAI-compatible Chat Completions API. REQ-ENV-16."""
 
     def __init__(
         self,
@@ -49,6 +49,7 @@ class OpenAICompatChatModel:
         messages: Sequence[ChatMessage],
         tools: Sequence[ToolSpec],
     ) -> ModelTurn:
+        """Call OpenAI-compatible chat completions. REQ-ENV-16."""
         payload_messages = _to_openai_messages(messages)
         payload_tools = [
             {

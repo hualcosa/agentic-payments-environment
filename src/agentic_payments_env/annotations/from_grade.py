@@ -1,4 +1,4 @@
-"""Build EpisodeAnnotation rows from graded traces. M2 T2.02."""
+"""Build EpisodeAnnotation rows from graded traces. M2 T2.02. REQ-GRD-11."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ def from_episode(
     trace: EpisodeTrace,
     result: EpisodeResult,
 ) -> EpisodeAnnotation:
-    """Label an episode with unique grader violation codes. T2.02."""
+    """Label an episode with unique grader violation codes. T2.02. REQ-GRD-11."""
     codes = sorted({item.code for item in result.violations})
     steps: list[StepAnnotation] = []
     if trace.steps:

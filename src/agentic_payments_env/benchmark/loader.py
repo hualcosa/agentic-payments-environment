@@ -1,4 +1,4 @@
-"""Load and freeze benchmark task JSON. REQ-TASK-02."""
+"""Load and freeze benchmark task JSON. REQ-TASK-02, REQ-TASK-04."""
 
 from __future__ import annotations
 

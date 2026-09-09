@@ -1,4 +1,5 @@
-"""create_transfer and reverse_transfer. REQ-POL-10, REQ-TOOL-11-13, REQ-DOM-18, REQ-GRD-07."""
+"""create_transfer and reverse_transfer. REQ-POL-10, REQ-TOOL-11, REQ-TOOL-12,
+REQ-DOM-18, REQ-GRD-07."""
 
 from __future__ import annotations
 
@@ -50,7 +51,7 @@ def _idempotency_tuple(args: CreateTransferArgs) -> tuple[str, str, int, str]:
 def handle_create_transfer(
     ctx: ToolContext, args: CreateTransferArgs, fault: FaultInjection | None
 ) -> Observation:
-    """Normative create_transfer order from 05 §5."""
+    """Normative create_transfer order from 05 §5. REQ-TOOL-11."""
     after = fault is not None and fault.kind.value == "TIMEOUT_AFTER_EXECUTE"
     observation = _create_transfer_body(ctx, args, record_success=not after)
     if after and observation.kind == "tool_result":
