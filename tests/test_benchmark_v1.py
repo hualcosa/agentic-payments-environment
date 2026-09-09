@@ -2,10 +2,15 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
-from agentic_payments_env.benchmark.loader import export_tasks, load_task
+import pytest
+
+from agentic_payments_env.benchmark.loader import export_tasks, load_task, task_to_json
 from agentic_payments_env.benchmark.v1 import all_tasks
+from agentic_payments_env.contracts.tasks import TaskSpec
+from agentic_payments_env.environment import PaymentsEnvironment
 from agentic_payments_env.generators.validate import is_valid
 
 REPO = Path(__file__).resolve().parents[1]
@@ -51,3 +56,17 @@ def test_difficulty_report_exists() -> None:
 def test_training_pool_nonempty() -> None:
     assert TRAIN.is_dir()
     assert list(TRAIN.glob("*.json"))
+
+
+def _frozen_v1_json_paths() -> list[Path]:
+    return sorted(list(HELD.glob("*.json")) + list(TRAIN.glob("*.json")))
+
+
+@pytest.mark.parametrize("path", _frozen_v1_json_paths(), ids=lambda p: p.name)
+def test_frozen_v1_json_validates_resets_and_exports(path: Path) -> None:
+    raw = path.read_bytes()
+    payload = json.loads(raw.decode("utf-8"))
+    task = TaskSpec.model_validate(payload)
+    env = PaymentsEnvironment(task)
+    env.reset()
+    assert task_to_json(task).encode("utf-8") == raw

@@ -64,7 +64,7 @@ class PixKeyRecord(FrozenModel):
 class Beneficiary(FrozenModel):
     beneficiary_id: str
     customer_id: str
-    nickname: UntrustedStr = Field(max_length=200)
+    nickname: UntrustedStr = Field(max_length=200)  # D-17: fixtures up to 200; tools cap 80
     pix_key: str
     created_at: datetime
     trusted: bool = True

@@ -127,12 +127,20 @@ def default_world(
     if extra_beneficiaries:
         beneficiaries.extend(extra_beneficiaries)
     if beneficiary_nickname_overrides:
-        beneficiaries = [
-            ben.model_copy(update={"nickname": beneficiary_nickname_overrides[ben.beneficiary_id]})
-            if ben.beneficiary_id in beneficiary_nickname_overrides
-            else ben
-            for ben in beneficiaries
-        ]
+        validated: list[Beneficiary] = []
+        for ben in beneficiaries:
+            nickname = beneficiary_nickname_overrides.get(ben.beneficiary_id, ben.nickname)
+            validated.append(
+                Beneficiary(
+                    beneficiary_id=ben.beneficiary_id,
+                    customer_id=ben.customer_id,
+                    nickname=nickname,
+                    pix_key=ben.pix_key,
+                    created_at=ben.created_at,
+                    trusted=ben.trusted,
+                )
+            )
+        beneficiaries = validated
     cfg = policy if policy is not None else PolicyConfig(blocked_pix_keys=[BLOCKED_KEY])
     return WorldFixture(
         start_time=start_time,

@@ -2,15 +2,21 @@
 
 from __future__ import annotations
 
+import json
 from collections import Counter
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
 from agentic_payments_env.benchmark.loader import export_tasks, load_task_file, task_to_json
 from agentic_payments_env.benchmark.v0 import TASKS, all_tasks, load_task
 from agentic_payments_env.contracts.common import EpisodeOutcome, TaskFamily
+from agentic_payments_env.contracts.domain import Beneficiary
+from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.environment import PaymentsEnvironment
+from agentic_payments_env.tools.schemas import AddBeneficiaryArgs
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FROZEN_DIR = REPO_ROOT / "benchmarks" / "v0"
@@ -84,3 +90,37 @@ def test_load_task_file_roundtrip() -> None:
     task = load_task("v0/rt-001")
     loaded = load_task_file(FROZEN_DIR / "rt-001.json")
     assert task_to_json(loaded) == task_to_json(task)
+
+
+@pytest.mark.parametrize("path", sorted(FROZEN_DIR.glob("*.json")), ids=lambda p: p.name)
+def test_frozen_v0_json_validates_resets_and_exports(path: Path) -> None:
+    raw = path.read_bytes()
+    payload = json.loads(raw.decode("utf-8"))
+    task = TaskSpec.model_validate(payload)
+    env = PaymentsEnvironment(task)
+    env.reset()
+    assert task_to_json(task).encode("utf-8") == raw
+
+
+def test_adv_001_long_fixture_nickname_loads() -> None:
+    task = load_task_file(FROZEN_DIR / "adv-001.json")
+    maria = next(b for b in task.world.beneficiaries if b.beneficiary_id == "ben_maria")
+    assert len(maria.nickname) > 80
+    env = PaymentsEnvironment(task)
+    env.reset()
+
+
+def test_fixture_nickname_over_200_rejected() -> None:
+    with pytest.raises(ValidationError):
+        Beneficiary(
+            beneficiary_id="ben_x",
+            customer_id="cus_ana",
+            nickname="x" * 201,
+            pix_key="a@b.com",
+            created_at=datetime(2026, 3, 10, 14, 0, tzinfo=UTC),
+        )
+
+
+def test_add_beneficiary_rejects_nickname_over_80() -> None:
+    with pytest.raises(ValidationError):
+        AddBeneficiaryArgs(pix_key="a@b.com", nickname="n" * 81)
