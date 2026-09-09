@@ -3,10 +3,10 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: M2 complete.** M0 environment, v0 benchmark, M1 LLM baselines,
-> and M2 failure analysis (annotated corpus, LLM judge, agreement report,
-> taxonomy v1 evidence) are implemented. Live model numbers are **not yet
-> measured** (see reports below). Spec documents under `docs/` remain normative.
+> **Status: M3 complete.** M0–M2 plus parametric generators, validity filter,
+> curriculum ordering, and frozen v1 benchmark (200 held-out tasks) are
+> implemented. Live model numbers remain **not yet measured** (see reports).
+> Spec documents under `docs/` remain normative.
 
 ## What this is
 
