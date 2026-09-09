@@ -40,5 +40,5 @@ Tests: file exists; each section heading appears.
 
 ## M6 exit checklist
 
-- [ ] Report committed.
-- [ ] Reproducibility command documented.
+- [x] Report committed.
+- [x] Reproducibility command documented.

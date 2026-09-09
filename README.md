@@ -3,10 +3,11 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: M1 in progress.** The package, 31-task v0 benchmark, eight graders,
-> scripted agents, CLI, ChatModel adapters, and LLM agent loop are implemented.
-> Measured LLM numbers are **not yet measured** (see reports below). Spec
-> documents under `docs/` remain normative.
+> **Status: M6 report committed.** The loop from environment through v1
+> freeze, rewards, and intervention *exports* is implemented. Live LLM
+> numbers remain **not yet measured**. Spec documents under `docs/` remain
+> normative. Start at [reports/technical-report.md](reports/technical-report.md)
+> and [reports/reproducibility.md](reports/reproducibility.md).
 
 ## What this is
 
