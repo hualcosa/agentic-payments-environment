@@ -11,16 +11,29 @@ uv sync --all-extras
 `uv.lock` is the pin. Runtime extras `[openai]` and `[anthropic]` are
 optional and must not be imported by `import agentic_payments_env`.
 
-## One command: oracle headline table (v0)
+## One command: all headline artifacts
+
+Rebuild every committed table/report/dataset cited by the technical report
+into a caller-provided directory and compare bytes to the repository:
 
 ```bash
-uv sync --all-extras && uv run apenv bench --benchmark v0 --agent oracle --seeds 0 --out runs/oracle
+uv sync --all-extras
+uv run apenv reproduce --out /tmp/apenv-repro --check
 ```
 
-Compare `runs/oracle/report.md` headline rates to the committed
-[reports/v0/oracle.md](v0/oracle.md). Those rates (safe success 1.000 on
-seed 0) came from that style of run. `runs/` is gitignored; the reviewed
-copy lives under `reports/`.
+On success this regenerates oracle, annotation, taxonomy/agreement summaries,
+v1.1 split + difficulty, preference JSONL, and SFT JSONL under `/tmp/apenv-repro`
+and verifies they match committed files. The directory must be empty or
+nonexistent; nothing outside `--out` is modified.
+
+Oracle-only sanity (manual):
+
+```bash
+uv run apenv bench --benchmark v0 --agent oracle --seeds 0 --out runs/oracle
+```
+
+Compare `runs/oracle/report.md` to [reports/v0/oracle.md](v0/oracle.md).
+`runs/` is gitignored; the reviewed copy lives under `reports/` (D-14).
 
 ## Other committed artifacts
 
