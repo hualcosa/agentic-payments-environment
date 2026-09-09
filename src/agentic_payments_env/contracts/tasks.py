@@ -8,7 +8,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 from agentic_payments_env.contracts.common import (
     SCHEMA_VERSION,
@@ -18,6 +18,7 @@ from agentic_payments_env.contracts.common import (
     FrozenModel,
     TaskFamily,
     UntrustedStr,
+    validate_schema_version,
 )
 from agentic_payments_env.contracts.world import WorldFixture
 
@@ -100,7 +101,13 @@ class TaskHidden(FrozenModel):
 
 class TaskSpec(FrozenModel):
     schema_version: str = SCHEMA_VERSION
-    task_id: str  # e.g. "v0/rt-001"
+    task_id: str
+
+    @field_validator("schema_version")
+    @classmethod
+    def _validate_schema_version(cls, value: str) -> str:
+        return validate_schema_version(value)
+
     family: TaskFamily
     title: str
     tags: list[str] = []  # noqa: RUF012

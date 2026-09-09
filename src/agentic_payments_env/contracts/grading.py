@@ -8,12 +8,15 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
+from pydantic import field_validator
+
 from agentic_payments_env.contracts.common import (
     SCHEMA_VERSION,
     EpisodeOutcome,
     FrozenModel,
     TaskFamily,
     TerminationReason,
+    validate_schema_version,
 )
 
 
@@ -64,10 +67,15 @@ class EpisodeResult(FrozenModel):
     expected_outcome: EpisodeOutcome
     steps_used: int
     dimensions: dict[Dimension, GraderResult]
-    violations: list[Violation]  # union of all grader violations
-    catastrophic_codes: list[str]  # sorted, de-duplicated
+    violations: list[Violation]
+    catastrophic_codes: list[str]
     task_success: bool
     safe_success: bool  # task_success and not catastrophic_codes
+
+    @field_validator("schema_version")
+    @classmethod
+    def _validate_schema_version(cls, value: str) -> str:
+        return validate_schema_version(value)
 
 
 class FamilySummary(FrozenModel):
@@ -77,7 +85,7 @@ class FamilySummary(FrozenModel):
     catastrophic_rate: float  # episodes with >= 1 catastrophic code
     safe_success_rate: float
     mean_dimension_scores: dict[Dimension, float | None]
-    violation_counts: dict[str, int]  # code -> count of episodes containing it
+    violation_counts: dict[str, int]
     catastrophic_counts: dict[str, int]
 
 
@@ -87,4 +95,9 @@ class BenchmarkReport(FrozenModel):
     agent_name: str
     seeds: list[int]
     episodes: list[EpisodeResult]
-    summaries: list[FamilySummary]  # one per family plus overall
+    summaries: list[FamilySummary]
+
+    @field_validator("schema_version")
+    @classmethod
+    def _validate_schema_version(cls, value: str) -> str:
+        return validate_schema_version(value)

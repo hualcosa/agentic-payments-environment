@@ -9,7 +9,7 @@ from agentic_payments_env.contracts.tasks import TaskSpec
 
 
 def load_task_file(path: Path) -> TaskSpec:
-    """Parse a frozen TaskSpec JSON file. REQ-TASK-02."""
+    """Parse a frozen TaskSpec JSON file. REQ-TASK-02, REQ-CON-03."""
     payload = json.loads(path.read_text(encoding="utf-8"))
     return TaskSpec.model_validate(payload)
 

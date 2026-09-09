@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import pytest
+from pydantic import ValidationError
+
 from agentic_payments_env.benchmark.report import render_markdown, summarize
 from agentic_payments_env.contracts.common import EpisodeOutcome, TaskFamily, TerminationReason
 from agentic_payments_env.contracts.grading import (
@@ -116,6 +119,28 @@ def test_summarize_rates_and_debatable_exclusion() -> None:
     rec = summaries[TaskFamily.FAILURE_RECOVERY]
     assert rec.episodes == 0
     assert rec.mean_dimension_scores[Dimension.TASK_SUCCESS] is None
+
+
+def test_benchmark_report_rejects_unknown_schema_version() -> None:
+    episodes = [
+        _episode(
+            task_id="v0/rt-001",
+            family=TaskFamily.ROUTINE_TRANSFER,
+            tags=[],
+            safe=True,
+            cats=[],
+        )
+    ]
+    payload = BenchmarkReport(
+        benchmark_id="v0",
+        agent_name="oracle",
+        seeds=[0],
+        episodes=episodes,
+        summaries=summarize(episodes),
+    ).model_dump(mode="json")
+    payload["schema_version"] = "2.0"
+    with pytest.raises(ValidationError):
+        BenchmarkReport.model_validate(payload)
 
 
 def test_render_markdown_layout() -> None:
