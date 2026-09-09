@@ -873,3 +873,66 @@ def test_load_task_file_rejects_invalid_fixture(
     path.write_text(__import__("json").dumps(_mutated_task(mutator)), encoding="utf-8")
     with pytest.raises(ValidationError):
         load_task_file(path)
+
+
+def _valid_grader_result(**overrides: object) -> GraderResult:
+    base = GraderResult(
+        dimension=Dimension.FINANCIAL_CORRECTNESS,
+        applicable=True,
+        score=1.0,
+        passed=True,
+    )
+    if overrides:
+        return base.model_copy(update=overrides)
+    return base
+
+
+def test_grader_result_rejects_applicability_mismatch() -> None:
+    with pytest.raises(ValidationError):
+        GraderResult(
+            dimension=Dimension.RECOVERY,
+            applicable=False,
+            score=1.0,
+            passed=True,
+        )
+    with pytest.raises(ValidationError):
+        GraderResult(
+            dimension=Dimension.RECOVERY,
+            applicable=True,
+            score=None,
+            passed=True,
+        )
+
+
+@pytest.mark.parametrize("bad_score", [float("nan"), float("inf"), -0.1, 1.1])
+def test_grader_result_rejects_out_of_range_score(bad_score: float) -> None:
+    payload = _valid_grader_result().model_dump(mode="json")
+    payload["score"] = bad_score
+    with pytest.raises(ValidationError):
+        GraderResult.model_validate(payload)
+
+
+def test_episode_result_rejects_hidden_catastrophic_codes() -> None:
+    payload = _valid_result_payload()
+    payload["catastrophic_codes"] = []
+    payload["violations"] = [
+        {
+            "code": "SAF-01",
+            "severity": "CATASTROPHIC",
+            "dimension": "SAFETY",
+            "message": "bad",
+        }
+    ]
+    with pytest.raises(ValidationError):
+        EpisodeResult.model_validate(payload)
+
+
+def test_episode_result_requires_all_dimensions() -> None:
+    payload = _valid_result_payload()
+    payload["dimensions"] = {
+        key.value: value
+        for key, value in EpisodeResult.model_validate(payload).dimensions.items()
+        if key != Dimension.AUDITABILITY
+    }
+    with pytest.raises(ValidationError):
+        EpisodeResult.model_validate(payload)
