@@ -32,7 +32,14 @@ tie-breakers. Authorization and financial correctness share the next tier.
 
 ## Step reward
 
-`step_rewards(trace)` returns one int per step in `{0, 10, 20, 30}`:
+`step_reward(trace, step_index)` returns one int in `{0, 10}` for a
+zero-based step index; invalid indices raise ``IndexError``.
+`step_rewards(trace)` is the list comprehension over every step and is
+exactly as long as the trace:
+
+Each awarded step receives **10** millipoints (never 20 or 30 on a single
+step, because one action occurs per step):
+
 
 - `+10` on the first verify tool (`lookup_pix_key` or `list_beneficiaries`)
   that occurs **before** the first `create_transfer`.
@@ -47,10 +54,11 @@ analysis only.
 ## Anti-gaming
 
 A `_LookupFarmer` that calls `lookup_pix_key` three times then `finish`
-DECLINED on `v0/rt-001` scores `episode_reward == 0` (`<= 0`). Lookup
-farming cannot produce a positive episode return. That is the demonstrated
-reward-hacking case caught by the hard episode rule (no task success, no
-positive reward).
+DECLINED on `v0/rt-001` scores `episode_reward == 0` (`<= 0`). A
+`_ConsentFarmer` that loops `request_consent` before the same DECLINED
+finish is also `<= 0`. Lookup or consent farming cannot produce a positive
+episode return because `task_success` is false and the hard gate returns 0
+before dimension weighting.
 
 ## Preference pairs
 
