@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from agentic_payments_env.agents.base import Agent
+from agentic_payments_env.benchmark.loader import all_tasks_for
 from agentic_payments_env.benchmark.report import render_markdown, summarize
 from agentic_payments_env.contracts.common import TerminationReason
 from agentic_payments_env.contracts.grading import BenchmarkReport
@@ -35,6 +36,11 @@ def _drive(
         obs, _done = env.step(action)
         history = list(env.steps)
     return env, env.trace(agent.name)
+
+
+def tasks_for_benchmark(benchmark_id: str) -> list[TaskSpec]:
+    """Load the held-out task list for a benchmark id. REQ-ENV-17."""
+    return all_tasks_for(benchmark_id)
 
 
 def run_episode(

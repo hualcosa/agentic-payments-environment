@@ -7,7 +7,13 @@ from pathlib import Path
 
 import pytest
 
-from agentic_payments_env.benchmark.loader import export_tasks, load_task, task_to_json
+from agentic_payments_env.benchmark.loader import (
+    all_tasks_for,
+    export_tasks,
+    load_task,
+    task_to_json,
+)
+from agentic_payments_env.benchmark.runner import tasks_for_benchmark
 from agentic_payments_env.benchmark.v1 import all_tasks
 from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.environment import PaymentsEnvironment
@@ -29,6 +35,12 @@ def test_v1_has_two_hundred_held_out() -> None:
 def test_load_task_v1() -> None:
     task = load_task(all_tasks()[0].task_id)
     assert task.task_id.startswith("v1/")
+
+
+def test_v1_loader_and_runner_registry() -> None:
+    loaded = all_tasks_for("v1")
+    assert len(loaded) == 200
+    assert tasks_for_benchmark("v1")[0].task_id == loaded[0].task_id
 
 
 def test_v1_freeze_matches_export(tmp_path: Path) -> None:

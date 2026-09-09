@@ -14,9 +14,13 @@ from agentic_payments_env.agents.llm import LLMAgent
 from agentic_payments_env.agents.presets import NAMES, build
 from agentic_payments_env.annotations.from_grade import from_episode
 from agentic_payments_env.annotations.schema import dumps_jsonl
-from agentic_payments_env.benchmark.loader import export_tasks
+from agentic_payments_env.benchmark.loader import (
+    BENCHMARK_IDS,
+    all_tasks_for,
+    export_tasks,
+    load_task,
+)
 from agentic_payments_env.benchmark.runner import _drive, _usage_steps, run_benchmark
-from agentic_payments_env.benchmark.v0 import all_tasks, load_task
 from agentic_payments_env.contracts.grading import EpisodeResult
 from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.contracts.trace import EpisodeTrace
@@ -29,9 +33,9 @@ _LLM_PROVIDERS = ("openai", "anthropic", "fake")
 
 
 def _tasks_for(benchmark: str) -> list[TaskSpec]:
-    if benchmark != "v0":
+    if benchmark not in BENCHMARK_IDS:
         raise SystemExit(f"unknown benchmark {benchmark!r}")
-    return all_tasks()
+    return all_tasks_for(benchmark)
 
 
 def _cmd_list_tasks(args: argparse.Namespace) -> int:
@@ -254,7 +258,7 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     list_p = sub.add_parser("list-tasks")
-    list_p.add_argument("--benchmark", default="v0")
+    list_p.add_argument("--benchmark", default="v0", choices=list(BENCHMARK_IDS))
     list_p.set_defaults(func=_cmd_list_tasks)
 
     show = sub.add_parser("show-task")
@@ -271,7 +275,7 @@ def build_parser() -> argparse.ArgumentParser:
     run.set_defaults(func=_cmd_run)
 
     bench = sub.add_parser("bench")
-    bench.add_argument("--benchmark", default="v0")
+    bench.add_argument("--benchmark", default="v0", choices=list(BENCHMARK_IDS))
     bench.add_argument("--agent", required=True)
     bench.add_argument("--seeds", default="0")
     bench.add_argument("--out", required=True)
@@ -284,7 +288,7 @@ def build_parser() -> argparse.ArgumentParser:
     rep.set_defaults(func=_cmd_replay)
 
     exp = sub.add_parser("export-tasks")
-    exp.add_argument("--benchmark", default="v0")
+    exp.add_argument("--benchmark", default="v0", choices=list(BENCHMARK_IDS))
     exp.add_argument("--out", required=True)
     exp.set_defaults(func=_cmd_export)
 
