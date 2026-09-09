@@ -1,4 +1,4 @@
-"""FAILURE_RECOVERY parametric generator. M3 T3.04."""
+"""FAILURE_RECOVERY parametric generator. M3 T3.04. REQ-ENV-01."""
 
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ def _supported_fault_kind(params: GenParams) -> FaultKind:
 
 
 def generate_recovery(rng: SeededRng, params: GenParams, task_id: str) -> TaskSpec:
-    """Complete a PIX after a configured fault on create_transfer. T3.04."""
+    """Complete a PIX after a configured fault on create_transfer. T3.04. REQ-ENV-01."""
     world = default_world()
     limit = world.policy.per_transfer_limit_centavos or 500_000
     principal = next(

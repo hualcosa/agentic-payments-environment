@@ -9,7 +9,7 @@ from agentic_payments_env.environment import PaymentsEnvironment
 
 
 class ReplayResult(FrozenModel):
-    """Whether a replay matched the recorded hashes, observations, and audit."""
+    """Whether a replay matched the recorded hashes, observations, and audit. REQ-ENV-16."""
 
     matches: bool
     first_divergence_step: int | None

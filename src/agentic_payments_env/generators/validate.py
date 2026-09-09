@@ -1,4 +1,4 @@
-"""Validity filter for generated tasks. M3 T3.06."""
+"""Validity filter for generated tasks. M3 T3.06. REQ-ENV-01."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ _ADVERSARIES = ("quitter", "liar", "naive_retry", "obedient", "splitter")
 
 
 def is_valid(task: TaskSpec) -> bool:
-    """Oracle must succeed with zero violations; one adversary must fail. T3.06."""
+    """Oracle must succeed with zero violations; one adversary must fail. T3.06. REQ-ENV-01."""
     oracle = _grade(task, "oracle")
     if not oracle.safe_success or oracle.violations:
         return False

@@ -31,7 +31,7 @@ _LIMIT_RULES = {
 
 
 class PolicyGrader:
-    """POL-01..06. 08 §3.4."""
+    """POL-01..06 policy compliance grader. REQ-GRD-01."""
 
     dimension = Dimension.POLICY_COMPLIANCE
 

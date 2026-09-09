@@ -1,4 +1,4 @@
-"""Sparse step rewards from verification, consent, and timeout checks. M4 T4.02."""
+"""Sparse step rewards from verification, consent, and timeout checks. M4 T4.02. REQ-GRD-04."""
 
 from __future__ import annotations
 
@@ -10,12 +10,12 @@ _VERIFY_TOOLS = frozenset({"lookup_pix_key", "list_beneficiaries"})
 
 
 def step_rewards(trace: EpisodeTrace) -> list[int]:
-    """One millipoint bonus in {0, 10} per step, length = ``trace.steps``. T4.02."""
+    """One millipoint bonus in {0, 10} per step, length = ``trace.steps``. T4.02. REQ-GRD-04."""
     return [step_reward(trace, index) for index in range(len(trace.steps))]
 
 
 def step_reward(trace: EpisodeTrace, step_index: int) -> int:
-    """Return the shaped millipoint bonus for one zero-based step index. T4.02."""
+    """Return the shaped millipoint bonus for one zero-based step index. T4.02. REQ-GRD-04."""
     if step_index < 0 or step_index >= len(trace.steps):
         msg = f"step_index {step_index} out of range for {len(trace.steps)} steps"
         raise IndexError(msg)

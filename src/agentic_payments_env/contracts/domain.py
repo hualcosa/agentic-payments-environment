@@ -1,6 +1,7 @@
 """Domain entity contracts.
 
-Satisfies: REQ-CON-01, REQ-CON-05, REQ-DOM-01, REQ-DOM-02, REQ-DOM-10-15.
+REQ-CON-01, REQ-CON-05, REQ-DOM-01, REQ-DOM-02, REQ-DOM-10, REQ-DOM-11, REQ-DOM-12,
+REQ-DOM-13, REQ-DOM-14, REQ-DOM-15, REQ-DOM-17.
 """
 
 from __future__ import annotations
@@ -174,5 +175,5 @@ class PolicyConfig(FrozenModel):
     enforcement: dict[PolicyRuleId, EnforcementMode] = {}  # noqa: RUF012  # missing rule -> HARD
 
     def mode(self, rule: PolicyRuleId) -> EnforcementMode:
-        """Return the enforcement mode for ``rule``; missing entries are HARD."""
+        """Return the enforcement mode for ``rule``; missing entries are HARD. REQ-POL-02."""
         return self.enforcement.get(rule, EnforcementMode.HARD)

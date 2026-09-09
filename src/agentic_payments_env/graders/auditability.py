@@ -14,7 +14,7 @@ from agentic_payments_env.world import WorldState as RuntimeWorldState
 
 
 class AuditabilityGrader:
-    """AUD-01..04. 08 §3.8."""
+    """AUD-01..04 auditability grader. REQ-GRD-01."""
 
     dimension = Dimension.AUDITABILITY
 

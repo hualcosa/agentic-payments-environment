@@ -1,6 +1,6 @@
 """Scripted simulated user for consent, step-up, and clarification.
 
-Satisfies: REQ-ENV-13, REQ-ENV-14.
+Satisfies: REQ-ENV-12, REQ-ENV-13, REQ-ENV-14.
 """
 
 from __future__ import annotations
@@ -16,7 +16,7 @@ from agentic_payments_env.contracts.tasks import (
 
 
 class SimulatedUser:
-    """Consumes a UserScript; last entry repeats when a list is exhausted. REQ-ENV-13."""
+    """Consumes a UserScript; sole holder of ``task.hidden``. REQ-ENV-12, REQ-ENV-13."""
 
     def __init__(self, script: UserScript, hidden: TaskHidden) -> None:
         self._script = script

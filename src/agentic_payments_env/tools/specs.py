@@ -1,4 +1,4 @@
-"""JSON-schema tool specs for adapters. REQ-TOOL-08."""
+"""JSON-schema tool specs for adapters. REQ-TOOL-01, REQ-TOOL-08, REQ-TOOL-15."""
 
 from __future__ import annotations
 

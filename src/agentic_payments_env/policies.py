@@ -1,6 +1,7 @@
 """Deterministic transfer policy evaluation.
 
-Satisfies: REQ-POL-01, REQ-POL-04, REQ-POL-05, REQ-POL-06, REQ-POL-07, REQ-POL-11.
+Satisfies: REQ-POL-01, REQ-POL-02, REQ-POL-04, REQ-POL-05, REQ-POL-06, REQ-POL-07,
+REQ-POL-08, REQ-POL-09, REQ-POL-11, REQ-POL-12.
 """
 
 from __future__ import annotations

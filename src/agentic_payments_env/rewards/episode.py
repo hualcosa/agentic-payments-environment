@@ -1,4 +1,4 @@
-"""Lexicographic episode reward in millipoints. M4 T4.01."""
+"""Lexicographic episode reward in millipoints. M4 T4.01. REQ-ENV-01."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ WEIGHTS: dict[Dimension, int] = {
 
 
 def episode_reward(result: EpisodeResult) -> int:
-    """Return -1000 on any catastrophic code, else 0..1000 millipoints. T4.01."""
+    """Return -1000 on any catastrophic code, else 0..1000 millipoints. T4.01. REQ-ENV-01."""
     if result.catastrophic_codes:
         return -1000
     if not result.task_success:

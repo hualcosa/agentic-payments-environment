@@ -1,4 +1,4 @@
-"""Build and split generated benchmark pools. M3 T3.08."""
+"""Build and split generated benchmark pools. REQ-TASK-05."""
 
 from __future__ import annotations
 
@@ -31,6 +31,7 @@ V11_SEED_MAX = 254
 
 
 def repo_root() -> Path:
+    """Repository root path for benchmark writes. REQ-TASK-05."""
     return Path(__file__).resolve().parents[3]
 
 
@@ -80,7 +81,7 @@ def _generate_family_task(
 
 
 def candidate_tasks(*, benchmark_prefix: str = "v1", seed_max: int = SEED_MAX) -> list[TaskSpec]:
-    """Four families per seed with deterministic ids."""
+    """Four families per seed with deterministic ids. REQ-TASK-05."""
     families = (
         (TaskFamily.ROUTINE_TRANSFER, "rt"),
         (TaskFamily.POLICY_CONSTRAINED, "pc"),
@@ -110,7 +111,7 @@ def candidate_tasks(*, benchmark_prefix: str = "v1", seed_max: int = SEED_MAX) -
 
 
 def valid_pool(*, benchmark_prefix: str = "v1", seed_max: int = SEED_MAX) -> list[TaskSpec]:
-    """Drop tasks that fail the T3.06 filter; do not mutate them."""
+    """Drop tasks that fail validation; do not mutate them. REQ-TASK-05."""
     return [
         task
         for task in candidate_tasks(benchmark_prefix=benchmark_prefix, seed_max=seed_max)
@@ -121,17 +122,18 @@ def valid_pool(*, benchmark_prefix: str = "v1", seed_max: int = SEED_MAX) -> lis
 def split_held_out(
     tasks: list[TaskSpec], n_held: int = HELD_OUT
 ) -> tuple[list[TaskSpec], list[TaskSpec]]:
+    """Deterministic held-out split by task id hash. REQ-TASK-05."""
     ranked = sorted(tasks, key=lambda task: (sha256_hex(task.task_id), task.task_id))
     return ranked[:n_held], ranked[n_held:]
 
 
 def content_hash(task: TaskSpec) -> str:
-    """Stable hash of frozen JSON bytes for disjointness checks."""
+    """Stable hash of frozen JSON bytes for disjointness checks. REQ-TASK-05."""
     return sha256_hex(task_to_json(task))
 
 
 def write_v1_freeze() -> tuple[int, int]:
-    """Write held-out JSON under benchmarks/v1 and the rest under v1-train."""
+    """Write held-out JSON under benchmarks/v1 and the rest under v1-train. REQ-TASK-05."""
     valid = valid_pool(benchmark_prefix="v1", seed_max=SEED_MAX)
     held, train = split_held_out(valid, HELD_OUT)
     held_dir = repo_root() / "benchmarks" / "v1"
@@ -140,7 +142,7 @@ def write_v1_freeze() -> tuple[int, int]:
 
 
 def write_v1_1_freeze() -> tuple[int, int]:
-    """Write v1.1 held-out (200) and training pools from validated candidates."""
+    """Write v1.1 held-out and training pools from validated candidates. REQ-TASK-05."""
     valid = valid_pool(benchmark_prefix="v1.1", seed_max=V11_SEED_MAX)
     if len(valid) < V11_MIN_VALID:
         msg = f"v1.1 valid pool {len(valid)} < {V11_MIN_VALID}"
@@ -174,11 +176,12 @@ def _write_split(
 
 
 def v11_difficulty_correlation(tasks: list[TaskSpec]) -> tuple[float, int]:
-    """Spearman rho between difficulty_score and scripted failure rate."""
+    """Spearman rho between difficulty_score and scripted failure rate. REQ-TASK-05."""
     scores = [float(difficulty_score(task)) for task in tasks]
     rates = [scripted_adversary_failure_rate(task) for task in tasks]
     return spearman_rank_correlation(scores, rates), len(tasks)
 
 
 def v11_family_distribution(tasks: list[TaskSpec]) -> Counter[str]:
+    """Count tasks by family for v1.1 reports. REQ-TASK-05."""
     return Counter(task.family.value for task in tasks)

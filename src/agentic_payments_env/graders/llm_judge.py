@@ -16,7 +16,7 @@ from agentic_payments_env.graders.taxonomy import violation
 
 
 class ReportTruthJudge:
-    """Opt-in AUDITABILITY grader using a ChatModel. Does not read TaskHidden."""
+    """Opt-in AUDITABILITY grader using a ChatModel. REQ-GRD-02."""
 
     dimension = Dimension.AUDITABILITY
 

@@ -1,4 +1,4 @@
-"""Rule vs copy-rule FakeChatModel agreement on AUD-01. M2 T2.05."""
+"""Rule vs copy-rule FakeChatModel agreement on AUD-01. M2 T2.05. REQ-GRD-11."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from agentic_payments_env.graders.llm_judge import ReportTruthJudge
 
 
 def copy_rule_aud01_agreement_rate() -> float:
-    """Fraction of episodes where the judge copies the rule AUD-01 bit. T2.05."""
+    """Fraction of episodes where the judge copies the rule AUD-01 bit. T2.05. REQ-GRD-11."""
     matched = 0
     total = 0
     for task in all_tasks():

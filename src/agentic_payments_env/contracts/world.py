@@ -34,7 +34,7 @@ from agentic_payments_env.contracts.domain import (
 
 
 class WorldFixture(FrozenModel):
-    """Initial state description. Fully explicit; no inheritance between fixtures."""
+    """Initial state description. Fully explicit; no inheritance between fixtures. REQ-DOM-10."""
 
     start_time: datetime
     tick_seconds: int = Field(default=5, ge=1)
@@ -157,7 +157,7 @@ class WorldFixture(FrozenModel):
 
 
 class WorldState(MutableModel):
-    """The full hidden state. Mutated only by environment/tools code."""
+    """The full hidden state. Mutated only by environment/tools code. REQ-DOM-10."""
 
     now: datetime
     tick_seconds: int

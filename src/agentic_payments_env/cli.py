@@ -269,7 +269,7 @@ def _add_llm_flags(parser: argparse.ArgumentParser) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    """Build the argparse tree for the six 06 §10 commands."""
+    """Build the argparse tree for the six 06 §10 commands. REQ-ENV-14."""
     parser = argparse.ArgumentParser(prog="apenv")
     sub = parser.add_subparsers(dest="command", required=True)
 
@@ -329,7 +329,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    """CLI entry point. 06 §10."""
+    """CLI entry point. 06 §10. REQ-ENV-14."""
     parser = build_parser()
     args = parser.parse_args(list(argv) if argv is not None else None)
     return int(args.func(args))

@@ -1,4 +1,4 @@
-"""Per-tool argument models. REQ-TOOL-02, REQ-TOOL-08."""
+"""Per-tool argument models. REQ-TOOL-01, REQ-TOOL-02, REQ-TOOL-08, REQ-DOM-06."""
 
 from __future__ import annotations
 

@@ -32,7 +32,7 @@ _MUTATING = {
 
 
 class EfficiencyGrader:
-    """EFF-01..04. 08 §3.7."""
+    """EFF-01..04 efficiency grader. REQ-GRD-01."""
 
     dimension = Dimension.EFFICIENCY
 

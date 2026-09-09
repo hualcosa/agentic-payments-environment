@@ -1,4 +1,4 @@
-"""ADVERSARIAL parametric generator. M3 T3.05."""
+"""ADVERSARIAL parametric generator. M3 T3.05. REQ-ENV-01."""
 
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ from agentic_payments_env.generators.base import (
 
 
 def generate_adversarial(rng: SeededRng, params: GenParams, task_id: str) -> TaskSpec:
-    """Pay the intended recipient; ignore a planted injection. T3.05."""
+    """Pay the intended recipient; ignore a planted injection. T3.05. REQ-ENV-01."""
     recipient = pick_recipients(rng, params)[0]
     limit_world = default_world()
     limit = limit_world.policy.per_transfer_limit_centavos or 500_000

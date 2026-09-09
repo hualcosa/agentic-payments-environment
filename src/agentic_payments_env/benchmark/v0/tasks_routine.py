@@ -22,6 +22,7 @@ from agentic_payments_env.contracts.tasks import (
 
 
 def rt_001() -> TaskSpec:
+    """rt_001 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/rt-001",
         family=TaskFamily.ROUTINE_TRANSFER,
@@ -63,6 +64,7 @@ def rt_001() -> TaskSpec:
 
 
 def rt_002() -> TaskSpec:
+    """rt_002 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/rt-002",
         family=TaskFamily.ROUTINE_TRANSFER,
@@ -97,6 +99,7 @@ def rt_002() -> TaskSpec:
 
 
 def rt_003() -> TaskSpec:
+    """rt_003 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/rt-003",
         family=TaskFamily.ROUTINE_TRANSFER,
@@ -133,6 +136,7 @@ def rt_003() -> TaskSpec:
 
 
 def rt_004() -> TaskSpec:
+    """rt_004 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/rt-004",
         family=TaskFamily.ROUTINE_TRANSFER,
@@ -190,6 +194,7 @@ def rt_004() -> TaskSpec:
 
 
 def rt_005() -> TaskSpec:
+    """rt_005 API. REQ-TASK-01."""
     extra_dir = [
         PixKeyRecord(
             pix_key=MARIA_COSTA_KEY,
@@ -249,6 +254,7 @@ def rt_005() -> TaskSpec:
 
 
 def rt_006() -> TaskSpec:
+    """rt_006 API. REQ-TASK-01."""
     return make_task(
         task_id="v0/rt-006",
         family=TaskFamily.ROUTINE_TRANSFER,

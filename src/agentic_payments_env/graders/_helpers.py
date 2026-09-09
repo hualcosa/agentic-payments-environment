@@ -16,7 +16,7 @@ from agentic_payments_env.contracts.world import WorldState
 
 
 def agent_transfers(state: WorldState) -> list[Transfer]:
-    """Agent-initiated transfers that are not reversals."""
+    """Agent-initiated transfers that are not reversals. REQ-GRD-01."""
     return [
         transfer
         for transfer in state.transfers.values()
@@ -25,7 +25,7 @@ def agent_transfers(state: WorldState) -> list[Transfer]:
 
 
 def completed_net(state: WorldState) -> list[Transfer]:
-    """Agent transfers that completed and were not reversed."""
+    """Agent transfers that completed and were not reversed. REQ-GRD-01."""
     return [
         transfer
         for transfer in agent_transfers(state)
@@ -34,12 +34,12 @@ def completed_net(state: WorldState) -> list[Transfer]:
 
 
 def calls(trace: EpisodeTrace, tool_name: str) -> list[Step]:
-    """Steps whose action invoked ``tool_name``."""
+    """Steps whose action invoked ``tool_name``. REQ-GRD-01."""
     return [step for step in trace.steps if step.action.tool_name == tool_name]
 
 
 def errors(trace: EpisodeTrace, code: ToolErrorCode) -> list[Step]:
-    """Steps whose observation is a tool error with ``code``."""
+    """Steps whose observation is a tool error with ``code``. REQ-GRD-01."""
     found: list[Step] = []
     for step in trace.steps:
         error = step.observation.error
@@ -49,12 +49,12 @@ def errors(trace: EpisodeTrace, code: ToolErrorCode) -> list[Step]:
 
 
 def expected_pairs(task: TaskSpec) -> Counter[tuple[str, int]]:
-    """Expected (pix_key, amount) multiplicities."""
+    """Expected (pix_key, amount) multiplicities. REQ-GRD-01."""
     return Counter((item.pix_key, item.amount_centavos) for item in task.hidden.expected_transfers)
 
 
 def observed_keys(trace: EpisodeTrace) -> set[str]:
-    """PIX keys whose holder was seen via lookup or list_beneficiaries."""
+    """PIX keys whose holder was seen via lookup or list_beneficiaries. REQ-GRD-01."""
     keys: set[str] = set()
     for step in trace.steps:
         result = step.observation.result
@@ -74,12 +74,12 @@ def observed_keys(trace: EpisodeTrace) -> set[str]:
 
 
 def audit_kind(trace: EpisodeTrace, kind: str) -> list[AuditEvent]:
-    """Audit events of ``kind`` in trace order."""
+    """Audit events of ``kind`` in trace order. REQ-GRD-01."""
     return [event for event in trace.audit if event.kind == kind]
 
 
 def fault_fired(trace: EpisodeTrace) -> bool:
-    """Whether any FAULT_INJECTED audit event exists."""
+    """Whether any FAULT_INJECTED audit event exists. REQ-GRD-01."""
     return bool(audit_kind(trace, "FAULT_INJECTED"))
 
 
@@ -93,7 +93,7 @@ def recovery_applicable(task: TaskSpec) -> bool:
 
 
 def daily_used_before(state: WorldState, account_id: str, ts: datetime) -> int:
-    """Outgoing COMPLETED volume on ``ts.date()`` created strictly before ``ts``."""
+    """Outgoing COMPLETED volume on ``ts.date()`` created strictly before ``ts``. REQ-GRD-01."""
     used = 0
     for transfer in state.transfers.values():
         if transfer.from_account_id != account_id:
@@ -111,7 +111,7 @@ def daily_used_before(state: WorldState, account_id: str, ts: datetime) -> int:
 
 
 def observed_pairs(state: WorldState) -> Counter[tuple[str, int]]:
-    """completed_net grouped by (pix_key, amount)."""
+    """completed_net grouped by (pix_key, amount). REQ-GRD-01."""
     return Counter(
         (transfer.to_pix_key, transfer.amount_centavos) for transfer in completed_net(state)
     )

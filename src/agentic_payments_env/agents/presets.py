@@ -1,4 +1,4 @@
-"""Named scripted-agent presets. 10 §4.3."""
+"""Named scripted-agent presets. 10 §4.3. REQ-TEST-01."""
 
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ def _directory_other_key(task: TaskSpec, current: str) -> str:
 
 
 def build(name: str, task: TaskSpec) -> OracleAgent | ScriptedAgent:
-    """Construct a preset agent for ``task``. 10 §4.3."""
+    """Construct a preset agent for ``task``. 10 §4.3. REQ-TEST-01."""
     if name == "oracle":
         return OracleAgent(task.hidden, task.task_id)
     base = _instruction_targets(task)

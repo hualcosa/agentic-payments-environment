@@ -1,4 +1,4 @@
-"""Scripted transfer agent used to validate graders. 10 §4.2."""
+"""Scripted transfer agent used to validate graders. REQ-TEST-01."""
 
 from __future__ import annotations
 
@@ -11,11 +11,15 @@ from agentic_payments_env.contracts.tasks import TaskPublic
 
 
 class ScriptedTarget(FrozenModel):
+    """One scripted transfer target. REQ-TEST-01."""
+
     pix_key: str
     amount_centavos: int
 
 
 class ScriptedAgentConfig(FrozenModel):
+    """Configuration for ScriptedAgent presets. REQ-TEST-01."""
+
     name: str
     targets: list[ScriptedTarget]
     list_beneficiaries: bool = True
@@ -40,7 +44,7 @@ class ScriptedAgentConfig(FrozenModel):
 
 
 class ScriptedAgent:
-    """Configurable transfer agent that does not read the instruction. 10 §4.2."""
+    """Configurable transfer agent that does not read the instruction. REQ-TEST-01."""
 
     def __init__(self, config: ScriptedAgentConfig) -> None:
         self._config = config
@@ -65,6 +69,7 @@ class ScriptedAgent:
         self._split_done = False
 
     def reset(self, public: TaskPublic, reset_observation: Observation) -> None:
+        """Initialize scripted state from the reset observation. REQ-TEST-01."""
         del public
         principal = reset_observation.principal or {}
         ids = principal.get("account_ids") or []
@@ -207,6 +212,7 @@ class ScriptedAgent:
         return self._handle_reject()
 
     def act(self, history: Sequence[object], last_observation: Observation) -> Action:
+        """Return the next scripted tool action. REQ-TEST-01."""
         del history
         cfg = self._config
         if cfg.immediate_finish is not None and last_observation.kind == "reset":

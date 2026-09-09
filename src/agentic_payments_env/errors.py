@@ -17,4 +17,4 @@ class TaskValidationError(Exception):
 
 
 class OraclePlanError(Exception):
-    """Raised when an oracle plan step cannot be resolved or executed."""
+    """Raised when an oracle plan step cannot be resolved or executed. REQ-TASK-04."""

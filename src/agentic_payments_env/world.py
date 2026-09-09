@@ -1,7 +1,7 @@
 """Runtime world state: clock, ledger, invariants, and hashing.
 
-Satisfies: REQ-DOM-04, REQ-DOM-05, REQ-DOM-07, REQ-DOM-16, REQ-DOM-19, REQ-ENV-07,
-REQ-CON-07.
+Satisfies: REQ-DOM-04, REQ-DOM-05, REQ-DOM-07, REQ-DOM-14, REQ-DOM-16, REQ-DOM-19,
+REQ-DOM-20, REQ-ENV-07, REQ-CON-07.
 """
 
 from __future__ import annotations
@@ -199,18 +199,18 @@ class WorldState(WorldStateContract):
             self._creation_meta[entity_id] = (step_index, creation_kind)
 
     def principal(self) -> Customer:
-        """Return the customer the agent acts for."""
+        """Return the customer the agent acts for. REQ-DOM-14."""
         return self.customers[self.principal_customer_id]
 
     def owned_account(self, account_id: str) -> Account | None:
-        """Return ``account_id`` if it belongs to the principal, else None."""
+        """Return ``account_id`` if it belongs to the principal, else None. REQ-DOM-14."""
         account = self.accounts.get(account_id)
         if account is None or account.customer_id != self.principal_customer_id:
             return None
         return account
 
     def daily_used(self, account_id: str) -> Centavos:
-        """Sum COMPLETED non-reversed outgoing transfers for ``account_id`` today."""
+        """Sum COMPLETED non-reversed outgoing transfers for ``account_id`` today. REQ-DOM-14."""
         today = self.now.date()
         used = 0
         for transfer in self.transfers.values():
@@ -227,7 +227,7 @@ class WorldState(WorldStateContract):
         return used
 
     def effective_auth_level(self) -> AuthLevel:
-        """STEP_UP only while ``step_up_valid_until`` is still in the future."""
+        """STEP_UP only while ``step_up_valid_until`` is still in the future. REQ-DOM-14."""
         auth = self.principal().auth
         if auth.level != AuthLevel.STEP_UP:
             return AuthLevel.BASIC
@@ -274,7 +274,7 @@ class WorldState(WorldStateContract):
         return completed
 
     def total_centavos(self) -> Centavos:
-        """Sum of every account balance, including acc_external. INV-01."""
+        """Sum of every account balance, including acc_external. INV-01. REQ-DOM-14."""
         return sum(account.balance_centavos for account in self.accounts.values())
 
     def check_invariants(self) -> None:

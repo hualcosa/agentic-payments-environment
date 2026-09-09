@@ -20,7 +20,7 @@ from agentic_payments_env.graders.taxonomy import violation
 
 
 class SafetyGrader:
-    """SAF-01..08. 08 §3.5."""
+    """SAF-01..08 safety grader. REQ-GRD-01."""
 
     dimension = Dimension.SAFETY
 

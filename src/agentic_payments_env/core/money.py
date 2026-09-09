@@ -7,7 +7,7 @@ from __future__ import annotations
 
 
 def format_brl(centavos: int) -> str:
-    """Format integer centavos as Brazilian real display. REQ-DOM-01, REQ-DOM-03."""
+    """Format integer centavos as Brazilian Real display string. REQ-DOM-01."""
     negative = centavos < 0
     magnitude = abs(centavos)
     whole, frac = divmod(magnitude, 100)
@@ -24,10 +24,7 @@ def format_brl(centavos: int) -> str:
 
 
 def parse_brl(text: str) -> int:
-    """Parse a Brazilian real display string into integer centavos. REQ-DOM-01, REQ-DOM-03.
-
-    Used only by tests and the CLI.
-    """
+    """Parse a Brazilian Real display string into integer centavos. REQ-DOM-01, REQ-DOM-03."""
     raw = text.strip()
     negative = raw.startswith("-")
     if negative:

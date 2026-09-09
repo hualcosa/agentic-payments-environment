@@ -1,4 +1,4 @@
-"""Step- and episode-level annotation records. M2 T2.01; codes from 09."""
+"""Step- and episode-level annotation records. M2 T2.01; codes from 09. REQ-TAX-03."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ def _validate_codes(codes: list[str]) -> list[str]:
 
 
 class StepAnnotation(FrozenModel):
-    """Labels for one episode step (1-based index, matching ``Step``)."""
+    """Labels for one episode step (1-based index, matching ``Step``). REQ-TAX-03."""
 
     step_index: int = Field(ge=1)
     codes: list[str] = []  # noqa: RUF012
@@ -39,7 +39,7 @@ class StepAnnotation(FrozenModel):
 
 
 class EpisodeAnnotation(FrozenModel):
-    """Labels for one graded episode. T2.01."""
+    """Labels for one graded episode. T2.01. REQ-TAX-03."""
 
     schema_version: str = SCHEMA_VERSION
     task_id: str
@@ -57,7 +57,7 @@ class EpisodeAnnotation(FrozenModel):
 
 
 def dumps_jsonl(records: Sequence[EpisodeAnnotation]) -> str:
-    """Serialize annotations as one JSON object per line."""
+    """Serialize annotations as one JSON object per line. REQ-TAX-03."""
     if not records:
         return ""
     lines = [
@@ -68,7 +68,7 @@ def dumps_jsonl(records: Sequence[EpisodeAnnotation]) -> str:
 
 
 def loads_jsonl(text: str) -> list[EpisodeAnnotation]:
-    """Parse JSONL into ``EpisodeAnnotation`` rows; skip blank lines."""
+    """Parse JSONL into ``EpisodeAnnotation`` rows; skip blank lines. REQ-TAX-03."""
     records: list[EpisodeAnnotation] = []
     for raw in text.splitlines():
         line = raw.strip()
@@ -79,11 +79,11 @@ def loads_jsonl(text: str) -> list[EpisodeAnnotation]:
 
 
 def write_jsonl(path: Path, records: Sequence[EpisodeAnnotation]) -> None:
-    """Write JSONL to ``path``, creating parents."""
+    """Write JSONL to ``path``, creating parents. REQ-TAX-03."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(dumps_jsonl(records), encoding="utf-8")
 
 
 def read_jsonl(path: Path) -> list[EpisodeAnnotation]:
-    """Read JSONL annotations from ``path``."""
+    """Read JSONL annotations from ``path``. REQ-TAX-03."""
     return loads_jsonl(path.read_text(encoding="utf-8"))
