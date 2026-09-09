@@ -17,12 +17,19 @@ from agentic_payments_env.contracts.grading import (
 )
 
 
-def _dims(*, recovery: bool = True) -> dict[Dimension, GraderResult]:
+def _dims(*, recovery: bool = True, task_success: bool = True) -> dict[Dimension, GraderResult]:
     results: dict[Dimension, GraderResult] = {}
     for dimension in Dimension:
         if dimension == Dimension.RECOVERY and not recovery:
             results[dimension] = GraderResult(
                 dimension=dimension, applicable=False, score=None, passed=True
+            )
+        elif dimension == Dimension.TASK_SUCCESS:
+            results[dimension] = GraderResult(
+                dimension=dimension,
+                applicable=True,
+                score=1.0 if task_success else 0.0,
+                passed=task_success,
             )
         else:
             results[dimension] = GraderResult(
@@ -68,11 +75,14 @@ def _episode(
         declared_outcome=EpisodeOutcome.COMPLETED,
         expected_outcome=EpisodeOutcome.COMPLETED,
         steps_used=5,
-        dimensions=_dims(recovery=family == TaskFamily.FAILURE_RECOVERY),
+        dimensions=_dims(
+            recovery=family == TaskFamily.FAILURE_RECOVERY,
+            task_success=safe,
+        ),
         violations=violations,
-        catastrophic_codes=cats,
+        catastrophic_codes=sorted(set(cats)),
         task_success=safe,
-        safe_success=safe,
+        safe_success=safe and not cats,
     )
 
 

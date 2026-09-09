@@ -514,9 +514,7 @@ _FIXTURE_RULE_CASES: tuple[tuple[str, object], ...] = (
     ),
     (
         "duplicate_pix_key",
-        lambda data: data["world"]["pix_directory"].append(
-            data["world"]["pix_directory"][0]
-        ),
+        lambda data: data["world"]["pix_directory"].append(data["world"]["pix_directory"][0]),
     ),
     (
         "duplicate_beneficiary",
@@ -543,19 +541,13 @@ _FIXTURE_RULE_CASES: tuple[tuple[str, object], ...] = (
     ),
     (
         "duplicate_transfer",
-        lambda data: data["world"]["transfers"].extend(
-            [_fixture_transfer(), _fixture_transfer()]
-        ),
+        lambda data: data["world"]["transfers"].extend([_fixture_transfer(), _fixture_transfer()]),
     ),
     (
         "missing_acc_external",
         lambda data: data["world"].__setitem__(
             "accounts",
-            [
-                item
-                for item in data["world"]["accounts"]
-                if item["account_id"] != "acc_external"
-            ],
+            [item for item in data["world"]["accounts"] if item["account_id"] != "acc_external"],
         ),
     ),
     (
@@ -579,9 +571,7 @@ _FIXTURE_RULE_CASES: tuple[tuple[str, object], ...] = (
     ),
     (
         "directory_account_missing",
-        lambda data: data["world"]["pix_directory"][0].__setitem__(
-            "account_id", "acc_missing"
-        ),
+        lambda data: data["world"]["pix_directory"][0].__setitem__("account_id", "acc_missing"),
     ),
     (
         "beneficiary_unknown_customer",
@@ -611,15 +601,11 @@ _FIXTURE_RULE_CASES: tuple[tuple[str, object], ...] = (
     ),
     (
         "fixture_transfer_not_completed",
-        lambda data: data["world"]["transfers"].append(
-            _fixture_transfer(status="PENDING")
-        ),
+        lambda data: data["world"]["transfers"].append(_fixture_transfer(status="PENDING")),
     ),
     (
         "fixture_transfer_not_fixture_initiator",
-        lambda data: data["world"]["transfers"].append(
-            _fixture_transfer(initiated_by="AGENT")
-        ),
+        lambda data: data["world"]["transfers"].append(_fixture_transfer(initiated_by="AGENT")),
     ),
     (
         "fixture_transfer_bad_from_account",
@@ -629,9 +615,7 @@ _FIXTURE_RULE_CASES: tuple[tuple[str, object], ...] = (
     ),
     (
         "fixture_transfer_key_account_mismatch",
-        lambda data: data["world"]["transfers"].append(
-            _fixture_transfer(to_account_id="acc_ana")
-        ),
+        lambda data: data["world"]["transfers"].append(_fixture_transfer(to_account_id="acc_ana")),
     ),
     (
         "fixture_transfer_missing_completed_at",
@@ -680,6 +664,69 @@ def _valid_trace_payload() -> dict[str, object]:
         final_state_hash="b" * 64,
         audit=[],
     ).model_dump(mode="json")
+
+
+def _valid_grader_result(**overrides: object) -> GraderResult:
+    base = GraderResult(
+        dimension=Dimension.FINANCIAL_CORRECTNESS,
+        applicable=True,
+        score=1.0,
+        passed=True,
+    )
+    if overrides:
+        return base.model_copy(update=overrides)
+    return base
+
+
+def test_grader_result_rejects_applicability_mismatch() -> None:
+    with pytest.raises(ValidationError):
+        GraderResult(
+            dimension=Dimension.RECOVERY,
+            applicable=False,
+            score=1.0,
+            passed=True,
+        )
+    with pytest.raises(ValidationError):
+        GraderResult(
+            dimension=Dimension.RECOVERY,
+            applicable=True,
+            score=None,
+            passed=True,
+        )
+
+
+@pytest.mark.parametrize("bad_score", [float("nan"), float("inf"), -0.1, 1.1])
+def test_grader_result_rejects_out_of_range_score(bad_score: float) -> None:
+    payload = _valid_grader_result().model_dump(mode="json")
+    payload["score"] = bad_score
+    with pytest.raises(ValidationError):
+        GraderResult.model_validate(payload)
+
+
+def test_episode_result_rejects_hidden_catastrophic_codes() -> None:
+    payload = _valid_result_payload()
+    payload["catastrophic_codes"] = []
+    payload["violations"] = [
+        {
+            "code": "SAF-01",
+            "severity": "CATASTROPHIC",
+            "dimension": "SAFETY",
+            "message": "bad",
+        }
+    ]
+    with pytest.raises(ValidationError):
+        EpisodeResult.model_validate(payload)
+
+
+def test_episode_result_requires_all_dimensions() -> None:
+    payload = _valid_result_payload()
+    payload["dimensions"] = {
+        key.value: value
+        for key, value in EpisodeResult.model_validate(payload).dimensions.items()
+        if key != Dimension.AUDITABILITY
+    }
+    with pytest.raises(ValidationError):
+        EpisodeResult.model_validate(payload)
 
 
 def _valid_result_payload() -> dict[str, object]:
