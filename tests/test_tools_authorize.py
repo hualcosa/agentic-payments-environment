@@ -20,7 +20,7 @@ from agentic_payments_env.tools.dispatch import ToolContext, dispatch
 from agentic_payments_env.tools.read import handle_get_customer_profile
 from agentic_payments_env.tools.schemas import GetCustomerProfileArgs
 from agentic_payments_env.world import WorldState
-from tests.test_world import START, default_world_fixture
+from tests.conftest import START, default_world_fixture
 
 MARIA = "maria.oliveira@example.com"
 JOAO = "joao.pereira@example.com"

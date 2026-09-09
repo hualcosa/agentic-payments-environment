@@ -79,8 +79,7 @@ from agentic_payments_env.contracts.grading import (
     FamilySummary,
     GraderResult,
 )
-
-START = datetime(2026, 3, 10, 14, 0, tzinfo=UTC)
+from tests.conftest import START
 
 ENUMS: tuple[type[Enum], ...] = (
     CommonKycLevel,

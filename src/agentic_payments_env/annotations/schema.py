@@ -7,24 +7,28 @@ import re
 from collections.abc import Sequence
 from pathlib import Path
 
-from pydantic import field_validator
+from pydantic import Field, field_validator
 
 from agentic_payments_env.contracts.common import SCHEMA_VERSION, FrozenModel
+from agentic_payments_env.graders.taxonomy import TAXONOMY
 
+# Three- and four-letter prefixes (FIN, AUTH, TASK, …) are required by existing codes.
 _CODE = re.compile(r"^[A-Z]{3,4}-[0-9]{2}$")
 
 
 def _validate_codes(codes: list[str]) -> list[str]:
     for code in codes:
         if not _CODE.fullmatch(code):
-            raise ValueError(f"invalid taxonomy code {code!r}")
+            raise ValueError(f"invalid taxonomy code format {code!r}")
+        if code not in TAXONOMY:
+            raise ValueError(f"unknown taxonomy code {code!r}")
     return codes
 
 
 class StepAnnotation(FrozenModel):
     """Labels for one episode step (1-based index, matching ``Step``)."""
 
-    step_index: int
+    step_index: int = Field(ge=1)
     codes: list[str] = []  # noqa: RUF012
     note: str = ""
 
