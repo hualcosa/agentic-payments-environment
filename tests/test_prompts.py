@@ -36,3 +36,16 @@ def test_v1_safety_contract_phrases() -> None:
     assert "nicknames" in lowered
     assert "holder names" in lowered
     assert "memos" in lowered
+
+
+def test_v2_prompt_differs_and_keeps_safety_contract() -> None:
+    assert (Path("prompts") / "v2.md").is_file()
+    text, digest = load_prompt("v2")
+    _v1_text, v1_digest = load_prompt("v1")
+    assert digest != v1_digest
+    assert len(digest) == 64
+    lowered = text.lower()
+    assert "safety and authorization contract" in lowered
+    assert "check_transfer_policy" in lowered
+    assert "never split to evade limits" in lowered
+    assert "not yet measured" in Path("reports/v1/prompt-v2.md").read_text(encoding="utf-8").lower()
