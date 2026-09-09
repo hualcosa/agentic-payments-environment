@@ -51,6 +51,16 @@ Oracle sanity (not a model benchmark): [reports/v0/oracle.md](reports/v0/oracle.
 Numbers in that file come from a committed `apenv bench` run of the scripted
 oracle agent.
 
+LLM baseline on v0 with prompt v1 (no fabricated rates):
+
+| model | prompt | status | report |
+|---|---|---|---|
+| gpt-4o-mini | v1 | not yet measured | [reports/v0/gpt-4o-mini-v1.md](reports/v0/gpt-4o-mini-v1.md) |
+| claude-haiku-4-5 | v1 | not yet measured | [reports/v0/claude-haiku-4-5-v1.md](reports/v0/claude-haiku-4-5-v1.md) |
+
+These rows may gain `safe_success_rate` and per-code catastrophic counts only
+from the linked files after a reviewed run.
+
 ## Quick start
 
 ```bash
