@@ -86,6 +86,18 @@ def random_action(rng: random.Random, env: PaymentsEnvironment) -> Action:
     return Action(tool_name=tool, arguments=arguments)
 
 
+def _permissive_task():
+    task = default_task()
+    world = task.world.model_copy(
+        update={
+            "policy": task.world.policy.model_copy(
+                update={"consent_required": False, "step_up_threshold_centavos": None}
+            )
+        }
+    )
+    return task.model_copy(update={"world": world})
+
+
 def test_invariant_fuzz_200x15() -> None:
     for seed in range(200):
         rng = random.Random(seed)
@@ -97,6 +109,102 @@ def test_invariant_fuzz_200x15() -> None:
                 break
 
 
+@pytest.mark.parametrize(
+    ("mutator_name", "mutator"),
+    [
+        (
+            "one_entry",
+            lambda state: setattr(state, "ledger", state.ledger[: state._fixture_entry_count + 1]),
+        ),
+        (
+            "three_entries",
+            lambda state: state.ledger.append(
+                state.ledger[state._fixture_entry_count].model_copy(
+                    update={"entry_id": "led_extra"}
+                )
+            ),
+        ),
+        (
+            "zero_delta",
+            lambda state: state.ledger.__setitem__(
+                state._fixture_entry_count,
+                state.ledger[state._fixture_entry_count].model_copy(
+                    update={"delta_centavos": 0}
+                ),
+            ),
+        ),
+        (
+            "wrong_account",
+            lambda state: state.ledger.__setitem__(
+                state._fixture_entry_count,
+                state.ledger[state._fixture_entry_count].model_copy(
+                    update={"account_id": "acc_external"}
+                ),
+            ),
+        ),
+    ],
+)
+def test_inv_02_rejects_bad_ledger_shapes(
+    mutator_name: str, mutator: object
+) -> None:
+    del mutator_name
+    env = PaymentsEnvironment(_permissive_task(), 0, strict=False)
+    env.reset()
+    env.step(
+        Action(
+            tool_name="create_transfer",
+            arguments={
+                "from_account_id": "acc_ana",
+                "pix_key": "maria.oliveira@example.com",
+                "amount_centavos": 100,
+                "idempotency_key": "inv02",
+            },
+        )
+    )
+    assert len(env.state.ledger) > env.state._fixture_entry_count
+    mutator(env.state)  # type: ignore[operator]
+    with pytest.raises(InvariantViolation) as exc:
+        env.state.check_invariants()
+    assert exc.value.code == "INV-02"
+
+
+def test_inv_04_rejects_late_creation_audit() -> None:
+    env = PaymentsEnvironment(_permissive_task(), 0, strict=False)
+    env.reset()
+    env.step(
+        Action(
+            tool_name="create_transfer",
+            arguments={
+                "from_account_id": "acc_ana",
+                "pix_key": "maria.oliveira@example.com",
+                "amount_centavos": 100,
+                "idempotency_key": "inv04",
+            },
+        )
+    )
+    transfer_id = next(
+        tid for tid in env.state.transfers if tid not in env.state._fixture_transfer_ids
+    )
+    env.state.audit = [
+        event
+        for event in env.state.audit
+        if not (event.kind == "TRANSFER_CREATED" and transfer_id in event.entity_ids)
+    ]
+    env.state.audit.append(
+        env.state.audit[-1].model_copy(
+            update={
+                "seq": len(env.state.audit) + 1,
+                "step_index": env.state.audit[-1].step_index + 1,
+                "kind": "TRANSFER_CREATED",
+                "entity_ids": [transfer_id],
+            }
+        )
+    )
+    with pytest.raises(InvariantViolation) as exc:
+        env.state.check_invariants()
+    assert exc.value.code == "INV-04"
+
+
 def test_strict_raises_when_post_transfer_skips_ledger(monkeypatch: pytest.MonkeyPatch) -> None:
     original = WorldState.post_transfer
 
@@ -106,16 +214,7 @@ def test_strict_raises_when_post_transfer_skips_ledger(monkeypatch: pytest.Monke
         return completed
 
     monkeypatch.setattr(WorldState, "post_transfer", broken)
-    task = default_task()
-    world = task.world.model_copy(
-        update={
-            "policy": task.world.policy.model_copy(
-                update={"consent_required": False, "step_up_threshold_centavos": None}
-            )
-        }
-    )
-    task = task.model_copy(update={"world": world})
-    env = PaymentsEnvironment(task, 0, strict=True)
+    env = PaymentsEnvironment(_permissive_task(), 0, strict=True)
     env.reset()
     with pytest.raises(InvariantViolation):
         env.step(
