@@ -95,3 +95,6 @@ to a file under `reports/`.
 - Q-04 — Dispatch must return EPISODE_FINISHED but ToolContext as specified
   has no done flag. Interim: add `done: bool = False` on ToolContext.
   — T0.08
+- Q-05 — 06 §4 step 8 audits TOOL_RESULT/TOOL_ERROR but T0.08 `ok`/`err`
+  already emit those. Interim: the environment does not emit a second
+  TOOL_RESULT/TOOL_ERROR; dispatch remains the single writer. — T0.11
