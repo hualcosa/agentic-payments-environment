@@ -209,10 +209,14 @@ runs. The `--` separator is not required with current uv.
   still imports `v0.load_task`. Interim: tests and export use loader;
   CLI v1 ids are a later ticket. Pool ratios use `denom >= 6 * numer` so
   COMPLETED gens stay under the 100000 step-up threshold without changing
-  T3.02 oracle plans. — T3.08. CLI routing is conformance work in T7.12.
+  T3.02 oracle plans. — T3.08. **Resolved (T7.12):** CLI and loader route
+  v0/v1/v1.1 through `all_tasks_for()` / `load_task()`; the builder registry
+  remains for exports only.
 - Q-17 — T4.02 farmer must have `episode_reward <= 0` while farming
   lookups. Weighted dimension scores for over-refusal were still positive.
   Interim: non-catastrophic `task_success is False` yields `0`. — T4.02.
-  The gate is conformance work in T7.14 (D-24).
+  **Resolved (T7.14, D-24):** episode reward hard-gates on `task_success`;
+  step rewards stay in `{0, 10}` with farmer anti-gaming. See
+  [reports/v1/reward-spec.md](../reports/v1/reward-spec.md).
 - Q-18 — T6.02 file list omitted README. Interim: update the status blurb
   to point at the technical report (D-14). — T6.02

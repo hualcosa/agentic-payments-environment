@@ -75,9 +75,9 @@ Steps:
 8. `tests/test_smoke.py`: imports the package and asserts `__version__`.
 
 Done when:
-- [ ] `uv sync --all-extras` succeeds and `uv.lock` is committed.
-- [ ] All four verification commands pass.
-- [ ] CI file present and valid YAML.
+- [x] `uv sync --all-extras` succeeds and `uv.lock` is committed.
+- [x] All four verification commands pass.
+- [x] CI file present and valid YAML.
 
 ## T0.02 — Core utilities
 

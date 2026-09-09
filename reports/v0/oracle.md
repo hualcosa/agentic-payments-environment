@@ -1,4 +1,9 @@
 # Benchmark v0 — oracle — seeds [0]
+
+> **Provenance (D-14):** Reviewed copy of oracle bench output. Regenerate with
+> `uv run apenv bench --benchmark v0 --agent oracle --seeds 0 --out runs/oracle`
+> and compare to this file. Raw runs stay gitignored under `runs/`.
+
 ## Headline
 
 If a reader wants one number, it is `safe_success_rate`.

@@ -28,6 +28,10 @@ live under `adapters/`.
   `benchmarks/v1-train/`, after the T3.06 validity filter (oracle succeeds;
   at least one scripted adversary fails). Difficulty vs live-model fail
   rate: [reports/v1/difficulty.md](v1/difficulty.md) (**not yet measured**).
+- **v1.1**: 200 held-out / 802 training tasks in `benchmarks/v1.1/` and
+  `benchmarks/v1.1-train/` (≥1000 validated candidates). Difficulty report:
+  [reports/v1.1/difficulty.md](v1.1/difficulty.md). Preference and SFT
+  exports: `datasets/preferences-v1.1.jsonl`, `datasets/sft-v1.1.jsonl`.
 
 ## Graders and validation
 
@@ -35,8 +39,9 @@ Eight rule graders (task, financial, authorization, policy, safety,
 recovery, efficiency, auditability) emit 09 taxonomy codes. Scripted
 presets plus the oracle form the M0 grader matrix. M2 added a 124-episode
 scripted annotation corpus and a FakeChatModel copy-rule agreement check:
-[reports/v0/grader-agreement.md](v0/grader-agreement.md). Live judge
-agreement is **not yet measured**. Taxonomy v1 added no new codes:
+[reports/v0/grader-agreement.md](v0/grader-agreement.md). The optional
+`ReportTruthJudge` (LLM-as-judge) is separate from default rule grading;
+live judge agreement is **not yet measured**. Taxonomy v1 added no new codes:
 [reports/v0/taxonomy-v1.md](v0/taxonomy-v1.md).
 
 ## Baseline failures
@@ -69,7 +74,8 @@ Rewards (millipoints, catastrophic floor `-1000`):
 Synchronous settlement; single currency; English v0 instructions with
 optional generated Portuguese; rule graders for most text; no OTP; seed
 unused for RNG in v0; live models and live LLM-as-judge unevaluated here;
-CLI `run` still loads v0 task ids from the builder registry (Q-16).
+CLI `run`/`bench`/`export-*` load v0, v1, and v1.1 through the general
+benchmark loader (T7.12).
 
 ## Reproducibility
 
