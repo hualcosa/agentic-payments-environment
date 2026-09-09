@@ -20,6 +20,7 @@ from agentic_payments_env.benchmark.v0 import all_tasks, load_task
 from agentic_payments_env.contracts.grading import EpisodeResult
 from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.contracts.trace import EpisodeTrace
+from agentic_payments_env.export_sft import export_sft
 from agentic_payments_env.graders import grade_episode
 from agentic_payments_env.prompts import load_prompt
 from agentic_payments_env.replay import replay
@@ -236,6 +237,11 @@ def _cmd_annotate_trace(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_export_sft(args: argparse.Namespace) -> int:
+    export_sft([str(args.task)], Path(args.out))
+    return 0
+
+
 def _add_llm_flags(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--model", default=None, help="required when --agent llm")
     parser.add_argument("--prompt", default="v1")
@@ -289,6 +295,11 @@ def build_parser() -> argparse.ArgumentParser:
     ann.add_argument("--result", required=True)
     ann.add_argument("--out", required=True)
     ann.set_defaults(func=_cmd_annotate_trace)
+
+    sft = sub.add_parser("export-sft")
+    sft.add_argument("--task", required=True)
+    sft.add_argument("--out", required=True)
+    sft.set_defaults(func=_cmd_export_sft)
     return parser
 
 
