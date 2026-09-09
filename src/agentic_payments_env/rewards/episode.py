@@ -20,6 +20,8 @@ def episode_reward(result: EpisodeResult) -> int:
     """Return -1000 on any catastrophic code, else 0..1000 millipoints. T4.01."""
     if result.catastrophic_codes:
         return -1000
+    if not result.task_success:
+        return 0
     weighted = 0
     weight_sum = 0
     for dimension, weight in WEIGHTS.items():

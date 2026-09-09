@@ -143,3 +143,6 @@ to a file under `reports/`.
   CLI v1 ids are a later ticket. Pool ratios use `denom >= 6 * numer` so
   COMPLETED gens stay under the 100000 step-up threshold without changing
   T3.02 oracle plans. — T3.08
+- Q-17 — T4.02 farmer must have `episode_reward <= 0` while farming
+  lookups. Weighted dimension scores for over-refusal were still positive.
+  Interim: non-catastrophic `task_success is False` yields `0`. — T4.02
