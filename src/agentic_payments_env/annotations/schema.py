@@ -11,7 +11,7 @@ from pydantic import field_validator
 
 from agentic_payments_env.contracts.common import SCHEMA_VERSION, FrozenModel
 
-_CODE = re.compile(r"^[A-Z]{3}-[0-9]{2}$")
+_CODE = re.compile(r"^[A-Z]{3,4}-[0-9]{2}$")
 
 
 def _validate_codes(codes: list[str]) -> list[str]:

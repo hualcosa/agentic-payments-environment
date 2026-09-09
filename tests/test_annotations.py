@@ -49,6 +49,17 @@ def test_rejects_malformed_code() -> None:
         )
 
 
+def test_four_letter_prefix_codes_allowed() -> None:
+    record = EpisodeAnnotation(
+        task_id="v0/rt-001",
+        seed=0,
+        agent_name="x",
+        annotator="rule-graders",
+        episode_codes=["AUTH-07", "TASK-02"],
+    )
+    assert record.episode_codes == ["AUTH-07", "TASK-02"]
+
+
 def test_empty_codes_allowed() -> None:
     record = EpisodeAnnotation(
         task_id="v0/rt-001",

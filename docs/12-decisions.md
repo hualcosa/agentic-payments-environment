@@ -132,3 +132,6 @@ to a file under `reports/`.
   always `0` (including non-fake providers). `LLMAgent.usage_log` (T1.03
   file) records per-step `Usage` so the runner can write token counts
   without reading traces. — T1.05
+- Q-14 — T2.01 code pattern `^[A-Z]{3}-[0-9]{2}$` rejects `AUTH-nn` and
+  `TASK-nn` (four-letter prefixes in 09). Interim: `^[A-Z]{3,4}-[0-9]{2}$`.
+  — T2.03
