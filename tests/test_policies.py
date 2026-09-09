@@ -26,7 +26,7 @@ from agentic_payments_env.contracts.domain import (
 )
 from agentic_payments_env.policies import consent_validity, evaluate_transfer_policy, in_window
 from agentic_payments_env.world import WorldState
-from tests.test_world import START, default_world_fixture
+from tests.conftest import START, default_world_fixture
 
 MARIA = "maria.oliveira@example.com"
 JOAO = "joao.pereira@example.com"

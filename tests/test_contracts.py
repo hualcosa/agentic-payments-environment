@@ -61,6 +61,7 @@ from agentic_payments_env.contracts.tasks import (
 )
 from agentic_payments_env.contracts.trace import EpisodeTrace, StateTransition
 from agentic_payments_env.contracts.world import WorldFixture
+from tests.conftest import START
 
 AWARE = datetime(2024, 1, 15, 12, 0, tzinfo=UTC)
 NAIVE = datetime(2024, 1, 15, 12, 0)
@@ -384,9 +385,6 @@ def test_star_import_exposes_every_named_contract() -> None:
     }
     missing = sorted(required - namespace.keys())
     assert missing == []
-
-
-START = datetime(2026, 3, 10, 14, 0, tzinfo=UTC)
 
 
 def minimal_world(**overrides: object) -> WorldFixture:
