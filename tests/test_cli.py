@@ -36,3 +36,66 @@ def test_run_oracle_and_quitter(tmp_path: Path, capsys: pytest.CaptureFixture[st
     assert main(["replay", str(trace_path)]) == 0
     replay_payload = json.loads(capsys.readouterr().out)
     assert replay_payload["matches"] is True
+
+
+def test_run_llm_fake_writes_meta(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    out = tmp_path / "llm"
+    assert (
+        main(
+            [
+                "run",
+                "--task",
+                "v0/rt-001",
+                "--agent",
+                "llm",
+                "--provider",
+                "fake",
+                "--model",
+                "fake",
+                "--prompt",
+                "v1",
+                "--out",
+                str(out),
+            ]
+        )
+        == 0
+    )
+    capsys.readouterr()
+    meta_path = out / "meta.json"
+    payload = json.loads(meta_path.read_text(encoding="utf-8"))
+    assert payload["prompt_id"] == "v1"
+    assert len(payload["prompt_sha256"]) == 64
+    assert payload["model_id"] == "fake"
+    assert payload["provider"] == "fake"
+    steps = payload["episodes"][0]["steps"]
+    assert steps
+    assert steps[0]["latency_ms"] == 0
+    assert "input_tokens" in steps[0]["usage"]
+
+
+def test_bench_llm_fake_one_task(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    out = tmp_path / "bench"
+    assert (
+        main(
+            [
+                "bench",
+                "--agent",
+                "llm",
+                "--provider",
+                "fake",
+                "--model",
+                "fake",
+                "--prompt",
+                "v1",
+                "--task",
+                "v0/rt-001",
+                "--out",
+                str(out),
+            ]
+        )
+        == 0
+    )
+    capsys.readouterr()
+    payload = json.loads((out / "meta.json").read_text(encoding="utf-8"))
+    assert payload["episodes"][0]["task_id"] == "v0/rt-001"
+    assert payload["prompt_id"] == "v1"

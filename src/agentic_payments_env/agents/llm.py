@@ -6,7 +6,7 @@ import json
 from collections.abc import Sequence
 from typing import Any
 
-from agentic_payments_env.adapters.base import ChatMessage, ChatModel, ModelTurn
+from agentic_payments_env.adapters.base import ChatMessage, ChatModel, ModelTurn, Usage
 from agentic_payments_env.adapters.base import ToolSpec as ChatToolSpec
 from agentic_payments_env.contracts.actions import Action, Observation
 from agentic_payments_env.contracts.common import EpisodeOutcome
@@ -31,11 +31,13 @@ class LLMAgent:
         self._public: TaskPublic | None = None
         self._messages: list[ChatMessage] = []
         self._pending_tool_call_id: str | None = None
+        self.usage_log: list[Usage] = []
 
     def reset(self, public: TaskPublic, reset_observation: Observation) -> None:
         del reset_observation
         self._public = public
         self._pending_tool_call_id = None
+        self.usage_log = []
         self._messages = [
             ChatMessage(role="system", content=self.system_prompt),
             ChatMessage(role="user", content=public.instruction),
@@ -47,6 +49,7 @@ class LLMAgent:
         self._messages.append(self._observation_message(last_observation))
         if len(history) == self._public.max_steps - 1:
             self._pending_tool_call_id = None
+            self.usage_log.append(Usage())
             return Action(
                 tool_name="finish",
                 arguments={
@@ -56,6 +59,7 @@ class LLMAgent:
                 rationale=_FORCED_FINISH,
             )
         turn = self.model.complete(self._messages, _chat_tools())
+        self.usage_log.append(turn.usage)
         self._messages.append(_assistant_message(turn))
         return self._action_from_turn(turn)
 

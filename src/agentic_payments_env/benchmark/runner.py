@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from collections.abc import Callable, Sequence
 from pathlib import Path
+from typing import Any
 
 from agentic_payments_env.agents.base import Agent
 from agentic_payments_env.benchmark.report import render_markdown, summarize
@@ -51,6 +52,28 @@ def _write_json(path: Path, payload: object) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _usage_steps(agent: Agent, n_steps: int) -> list[dict[str, object]]:
+    """Per-step token usage; latency is always 0 in M1 (no wall-clock in src/). T1.05."""
+    rows: list[dict[str, object]] = []
+    raw = getattr(agent, "usage_log", None)
+    if isinstance(raw, list):
+        for item in raw:
+            dump_obj: dict[str, Any]
+            if hasattr(item, "model_dump"):
+                dumped = item.model_dump()
+                dump_obj = dumped if isinstance(dumped, dict) else {}
+            else:
+                dump_obj = {}
+            usage = {
+                "input_tokens": int(dump_obj.get("input_tokens", 0) or 0),
+                "output_tokens": int(dump_obj.get("output_tokens", 0) or 0),
+            }
+            rows.append({"usage": usage, "latency_ms": 0})
+    while len(rows) < n_steps:
+        rows.append({"usage": {"input_tokens": 0, "output_tokens": 0}, "latency_ms": 0})
+    return rows
+
+
 def run_benchmark(
     tasks: Sequence[TaskSpec],
     agent_factory: Callable[[TaskSpec], Agent],
@@ -59,10 +82,12 @@ def run_benchmark(
     out_dir: Path | None = None,
     *,
     benchmark_id: str = "v0",
+    meta: dict[str, Any] | None = None,
 ) -> BenchmarkReport:
     """Run every task-seed pair, grade, and write traces/results. REQ-ENV-17."""
     episodes = []
     agent_name = "unknown"
+    episode_meta: list[dict[str, object]] = []
     for task in tasks:
         for seed in seeds:
             agent = agent_factory(task)
@@ -70,6 +95,13 @@ def run_benchmark(
             env, trace = _drive(task, agent, seed, strict=True)
             result = grade_episode(task, trace, env.state, graders)
             episodes.append(result)
+            episode_meta.append(
+                {
+                    "task_id": task.task_id,
+                    "seed": seed,
+                    "steps": _usage_steps(agent, len(trace.steps)),
+                }
+            )
             if out_dir is not None:
                 slug = task.task_id.replace("/", "_")
                 folder = out_dir / slug
@@ -85,4 +117,8 @@ def run_benchmark(
     if out_dir is not None:
         _write_json(out_dir / "report.json", report.model_dump(mode="json"))
         (out_dir / "report.md").write_text(render_markdown(report), encoding="utf-8")
+        if meta is not None:
+            payload = dict(meta)
+            payload["episodes"] = episode_meta
+            _write_json(out_dir / "meta.json", payload)
     return report

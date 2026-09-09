@@ -127,3 +127,8 @@ to a file under `reports/`.
   T0.17's file list does not include those modules. Interim: add
   `tests/test_req_coverage.py` with the remaining ids in its docstring.
   Q-01–Q-11 are carried as implementation notes; none block M1. — T0.17
+- Q-13 — T1.05 bench concurrency vs AGENTS.md (no `time.time` in `src/`).
+  Interim: `run_benchmark` stays sequential; `meta.json` `latency_ms` is
+  always `0` (including non-fake providers). `LLMAgent.usage_log` (T1.03
+  file) records per-step `Usage` so the runner can write token counts
+  without reading traces. — T1.05
