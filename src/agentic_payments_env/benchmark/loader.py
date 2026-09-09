@@ -32,6 +32,10 @@ def load_task(task_id: str) -> TaskSpec:
         from agentic_payments_env.benchmark.v1 import load_task as load_v1
 
         return load_v1(task_id)
+    if task_id.startswith("v1.1/"):
+        from agentic_payments_env.benchmark.v1_1 import load_task as load_v11
+
+        return load_v11(task_id)
     raise KeyError(f"unknown task_id {task_id!r}")
 
 
@@ -41,6 +45,8 @@ def export_tasks(benchmark_id: str, out_dir: Path) -> None:
         from agentic_payments_env.benchmark.v0 import all_tasks
     elif benchmark_id == "v1":
         from agentic_payments_env.benchmark.v1 import all_tasks
+    elif benchmark_id == "v1.1":
+        from agentic_payments_env.benchmark.v1_1 import all_tasks
     else:
         raise ValueError(f"unknown benchmark_id {benchmark_id!r}")
     out_dir.mkdir(parents=True, exist_ok=True)
