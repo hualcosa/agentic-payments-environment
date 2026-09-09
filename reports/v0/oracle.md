@@ -23,10 +23,10 @@ Tasks tagged `debatable` are excluded from overall rates and included in family 
 |---|---|---|---|---|---|
 | TASK_SUCCESS | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 | FINANCIAL_CORRECTNESS | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
-| AUTHORIZATION | 0.993 | 1.000 | 0.991 | 0.988 | 1.000 |
+| AUTHORIZATION | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 | POLICY_COMPLIANCE | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 | SAFETY | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
-| RECOVERY | 0.989 | 1.000 | - | 0.988 | - |
+| RECOVERY | 1.000 | 1.000 | - | 1.000 | - |
 | EFFICIENCY | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 | AUDITABILITY | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
 
