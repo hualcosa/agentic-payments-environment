@@ -109,6 +109,8 @@ def test_run_llm_fake_writes_meta(tmp_path: Path, capsys: pytest.CaptureFixture[
     assert steps
     assert steps[0]["latency_ms"] == 0
     assert "input_tokens" in steps[0]["usage"]
+    turns = json.loads((out / "turns.json").read_text(encoding="utf-8"))
+    assert turns["episodes"][0]["turns"]
 
 
 def test_bench_llm_fake_one_task(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -139,6 +141,9 @@ def test_bench_llm_fake_one_task(tmp_path: Path, capsys: pytest.CaptureFixture[s
     assert payload["prompt_id"] == "v1"
     assert (out / "report.json").is_file()
     assert (out / "report.md").is_file()
+    turns = json.loads((out / "turns.json").read_text(encoding="utf-8"))
+    assert turns["schema_version"] == "0.1"
+    assert turns["episodes"][0]["turns"]
 
 
 def test_bench_llm_fake_one_task_v11(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -174,3 +179,6 @@ def test_bench_llm_fake_one_task_v11(tmp_path: Path, capsys: pytest.CaptureFixtu
     assert (out / "report.md").is_file()
     meta = json.loads((out / "meta.json").read_text(encoding="utf-8"))
     assert meta["episodes"][0]["task_id"] == task_id
+    turns = json.loads((out / "turns.json").read_text(encoding="utf-8"))
+    assert turns["episodes"][0]["task_id"] == task_id
+    assert turns["episodes"][0]["turns"]

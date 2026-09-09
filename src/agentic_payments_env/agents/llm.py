@@ -6,7 +6,13 @@ import json
 from collections.abc import Sequence
 from typing import Any
 
-from agentic_payments_env.adapters.base import ChatMessage, ChatModel, ModelTurn, Usage
+from agentic_payments_env.adapters.base import (
+    ChatMessage,
+    ChatModel,
+    ModelTurn,
+    NormalizedModelTurn,
+    Usage,
+)
 from agentic_payments_env.adapters.base import ToolSpec as ChatToolSpec
 from agentic_payments_env.contracts.actions import Action, Observation
 from agentic_payments_env.contracts.common import EpisodeOutcome
@@ -32,12 +38,14 @@ class LLMAgent:
         self._messages: list[ChatMessage] = []
         self._pending_tool_call_id: str | None = None
         self.usage_log: list[Usage] = []
+        self.turn_log: list[NormalizedModelTurn] = []
 
     def reset(self, public: TaskPublic, reset_observation: Observation) -> None:
         del reset_observation
         self._public = public
         self._pending_tool_call_id = None
         self.usage_log = []
+        self.turn_log = []
         self._messages = [
             ChatMessage(role="system", content=self.system_prompt),
             ChatMessage(role="user", content=public.instruction),
@@ -50,7 +58,7 @@ class LLMAgent:
         if len(history) == self._public.max_steps - 1:
             self._pending_tool_call_id = None
             self.usage_log.append(Usage())
-            return Action(
+            forced = Action(
                 tool_name="finish",
                 arguments={
                     "outcome": EpisodeOutcome.DECLINED.value,
@@ -58,10 +66,17 @@ class LLMAgent:
                 },
                 rationale=_FORCED_FINISH,
             )
+            self._record_turn(
+                ModelTurn(tool_calls=[], text=_FORCED_FINISH, usage=Usage()),
+                forced,
+            )
+            return forced
         turn = self.model.complete(self._messages, _chat_tools())
         self.usage_log.append(turn.usage)
         self._messages.append(_assistant_message(turn))
-        return self._action_from_turn(turn)
+        action = self._action_from_turn(turn)
+        self._record_turn(turn, action)
+        return action
 
     def _observation_message(self, observation: Observation) -> ChatMessage:
         payload = _drop_none(observation.model_dump(mode="json"))
@@ -76,6 +91,18 @@ class LLMAgent:
                 name=observation.tool_name,
             )
         return ChatMessage(role="user", content=content)
+
+    def _record_turn(self, turn: ModelTurn, action: Action) -> None:
+        self.turn_log.append(
+            NormalizedModelTurn(
+                model_id=self.model.model_id,
+                text=turn.text,
+                tool_calls=list(turn.tool_calls),
+                usage=turn.usage,
+                parsed_tool_name=action.tool_name,
+                parsed_arguments=dict(action.arguments),
+            )
+        )
 
     def _action_from_turn(self, turn: ModelTurn) -> Action:
         rationale = turn.text[:_RATIONALE_MAX]

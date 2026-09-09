@@ -20,7 +20,12 @@ from agentic_payments_env.benchmark.loader import (
     export_tasks,
     load_task,
 )
-from agentic_payments_env.benchmark.runner import _drive, _usage_steps, run_benchmark
+from agentic_payments_env.benchmark.runner import (
+    _drive,
+    _episode_turn_log,
+    _usage_steps,
+    run_benchmark,
+)
 from agentic_payments_env.contracts.grading import EpisodeResult
 from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.contracts.trace import EpisodeTrace
@@ -160,6 +165,9 @@ def _cmd_run(args: argparse.Namespace) -> int:
                 }
             ]
             _write_json(out / "meta.json", payload)
+        turn_log = _episode_turn_log(agent, task.task_id, args.seed)
+        if turn_log is not None:
+            _write_json(out / "turns.json", {"schema_version": "0.1", "episodes": [turn_log]})
     print(
         json.dumps(
             {

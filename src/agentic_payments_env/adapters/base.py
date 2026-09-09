@@ -48,6 +48,26 @@ class ModelTurn(FrozenModel):
     usage: Usage = Usage()
 
 
+class NormalizedModelTurn(FrozenModel):
+    """Provider-agnostic record of one LLM completion. REQ-CON-10."""
+
+    model_id: str
+    text: str
+    tool_calls: list[dict[str, object]]
+    usage: Usage = Usage()
+    parsed_tool_name: str
+    parsed_arguments: dict[str, object]
+
+
+class ModelTurnLog(FrozenModel):
+    """Sidecar log written beside ``meta.json``. REQ-CON-10."""
+
+    schema_version: str = "0.1"
+    model_id: str
+    prompt_id: str | None = None
+    turns: list[NormalizedModelTurn]
+
+
 class ChatModel(Protocol):
     """Minimal chat-completions surface used by LLMAgent. T1.01."""
 

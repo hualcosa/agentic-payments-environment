@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
-from agentic_payments_env.adapters.base import FakeChatModel, ModelTurn
+from agentic_payments_env.adapters.base import FakeChatModel, ModelTurn, ModelTurnLog
 from agentic_payments_env.agents.llm import LLMAgent
 from agentic_payments_env.contracts.actions import Action, Observation
 from agentic_payments_env.contracts.common import EpisodeOutcome
@@ -62,6 +62,51 @@ def _history(action: Action, observation: Observation) -> list[Step]:
 
 def _agent(turns: list[ModelTurn]) -> LLMAgent:
     return LLMAgent(FakeChatModel(turns), system_prompt="You are careful.", prompt_id="v1")
+
+
+def test_turn_log_records_parsed_action() -> None:
+    turn = ModelTurn(
+        tool_calls=[
+            {
+                "id": "c1",
+                "name": "lookup_pix_key",
+                "arguments": {"pix_key": "maria@bank.com"},
+            }
+        ],
+        text="looking up",
+    )
+    agent = _agent([turn])
+    reset = _reset_obs()
+    agent.reset(_public(), reset)
+    agent.act([], reset)
+    assert len(agent.turn_log) == 1
+    recorded = agent.turn_log[0]
+    assert recorded.model_id == "fake"
+    assert recorded.parsed_tool_name == "lookup_pix_key"
+    assert recorded.parsed_arguments == {"pix_key": "maria@bank.com"}
+    roundtrip = ModelTurnLog(
+        model_id=recorded.model_id,
+        prompt_id="v1",
+        turns=[recorded],
+    )
+    assert roundtrip.model_dump(mode="json")["turns"][0]["parsed_tool_name"] == "lookup_pix_key"
+
+
+def test_multi_turn_log() -> None:
+    turns = [
+        ModelTurn(
+            tool_calls=[{"id": "c1", "name": "lookup_pix_key", "arguments": {"pix_key": "x"}}],
+            text="one",
+        ),
+        ModelTurn(tool_calls=[], text="done"),
+    ]
+    agent = _agent(turns)
+    reset = _reset_obs()
+    agent.reset(_public(), reset)
+    first = agent.act([], reset)
+    agent.act(_history(first, _tool_obs()), _tool_obs(step_index=2))
+    assert len(agent.turn_log) == 2
+    assert agent.turn_log[1].parsed_tool_name == "finish"
 
 
 def test_valid_tool_call() -> None:
