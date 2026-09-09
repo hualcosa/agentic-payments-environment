@@ -12,6 +12,8 @@ from agentic_payments_env.adapters.base import ChatModel, FakeChatModel, ModelTu
 from agentic_payments_env.agents.base import Agent
 from agentic_payments_env.agents.llm import LLMAgent
 from agentic_payments_env.agents.presets import NAMES, build
+from agentic_payments_env.annotations.from_grade import from_episode
+from agentic_payments_env.annotations.schema import dumps_jsonl
 from agentic_payments_env.benchmark.loader import export_tasks
 from agentic_payments_env.benchmark.runner import _drive, _usage_steps, run_benchmark
 from agentic_payments_env.benchmark.v0 import all_tasks, load_task
@@ -220,6 +222,18 @@ def _cmd_export(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_annotate_trace(args: argparse.Namespace) -> int:
+    trace = EpisodeTrace.model_validate(json.loads(Path(args.trace).read_text(encoding="utf-8")))
+    result = EpisodeResult.model_validate(json.loads(Path(args.result).read_text(encoding="utf-8")))
+    task = load_task(trace.task_id)
+    record = from_episode(task, trace, result)
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("a", encoding="utf-8") as handle:
+        handle.write(dumps_jsonl([record]))
+    return 0
+
+
 def _add_llm_flags(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--model", default=None, help="required when --agent llm")
     parser.add_argument("--prompt", default="v1")
@@ -267,6 +281,12 @@ def build_parser() -> argparse.ArgumentParser:
     exp.add_argument("--benchmark", default="v0")
     exp.add_argument("--out", required=True)
     exp.set_defaults(func=_cmd_export)
+
+    ann = sub.add_parser("annotate-trace")
+    ann.add_argument("--trace", required=True)
+    ann.add_argument("--result", required=True)
+    ann.add_argument("--out", required=True)
+    ann.set_defaults(func=_cmd_annotate_trace)
     return parser
 
 
