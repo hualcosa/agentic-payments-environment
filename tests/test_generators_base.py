@@ -26,3 +26,16 @@ def test_gen_params_int_ratios() -> None:
     )
     assert params.amount_limit_ratio_numer == 1
     assert params.fault_kind is None
+
+
+def test_pick_recipients_respects_count() -> None:
+    from agentic_payments_env.generators.base import pick_recipients
+
+    params = GenParams(
+        family=TaskFamily.ROUTINE_TRANSFER,
+        amount_limit_ratio_numer=1,
+        amount_limit_ratio_denom=2,
+        n_recipients=2,
+    )
+    recipients = pick_recipients(SeededRng(0), params)
+    assert len(recipients) == 2
