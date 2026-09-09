@@ -135,3 +135,6 @@ to a file under `reports/`.
 - Q-14 — T2.01 code pattern `^[A-Z]{3}-[0-9]{2}$` rejects `AUTH-nn` and
   `TASK-nn` (four-letter prefixes in 09). Interim: `^[A-Z]{3,4}-[0-9]{2}$`.
   — T2.03
+- Q-15 — M3 generators need stochastic knobs. Interim: `SeededRng` wraps
+  `random.Random(seed)` and never calls module-level `random.random()`,
+  `uuid4`, or `time.time`. — T3.01
