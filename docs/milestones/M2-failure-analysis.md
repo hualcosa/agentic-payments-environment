@@ -136,7 +136,7 @@ decision file exists.
 
 ## M2 exit checklist
 
-- [ ] ≥ 100 annotated episodes committed.
-- [ ] Rule-vs-LLM grader agreement reported (live or explicitly
+- [x] ≥ 100 annotated episodes committed.
+- [x] Rule-vs-LLM grader agreement reported (live or explicitly
       "not yet measured" plus fake-judge sanity).
-- [ ] Taxonomy changes recorded with evidence (including "none").
+- [x] Taxonomy changes recorded with evidence (including "none").
