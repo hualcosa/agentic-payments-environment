@@ -6,7 +6,13 @@ import json
 from collections.abc import Sequence
 from typing import Any
 
-from agentic_payments_env.adapters.base import ChatMessage, ChatModel, ModelTurn, Usage
+from agentic_payments_env.adapters.base import (
+    ChatMessage,
+    ChatModel,
+    ModelTurn,
+    NormalizedModelTurn,
+    Usage,
+)
 from agentic_payments_env.adapters.base import ToolSpec as ChatToolSpec
 from agentic_payments_env.contracts.actions import Action, Observation
 from agentic_payments_env.contracts.common import EpisodeOutcome
@@ -37,6 +43,7 @@ class LLMAgent:
         self._pending_tool_call_id: str | None = None
         self._protocol_error: str | None = None
         self.usage_log: list[Usage] = []
+        self.turn_log: list[NormalizedModelTurn] = []
 
     @property
     def protocol_error(self) -> str | None:
@@ -49,6 +56,7 @@ class LLMAgent:
         self._pending_tool_call_id = None
         self._protocol_error = None
         self.usage_log = []
+        self.turn_log = []
         self._messages = [
             ChatMessage(role="system", content=self.system_prompt),
             ChatMessage(role="user", content=public.instruction),
@@ -63,7 +71,7 @@ class LLMAgent:
         if len(history) == self._public.max_steps - 1:
             self._pending_tool_call_id = None
             self.usage_log.append(Usage())
-            return Action(
+            forced = Action(
                 tool_name="finish",
                 arguments={
                     "outcome": EpisodeOutcome.DECLINED.value,
@@ -71,15 +79,23 @@ class LLMAgent:
                 },
                 rationale=_FORCED_FINISH,
             )
+            self._record_turn(
+                ModelTurn(tool_calls=[], text=_FORCED_FINISH, usage=Usage()),
+                forced,
+            )
+            return forced
         turn = self.model.complete(self._messages, _chat_tools())
         self.usage_log.append(turn.usage)
         try:
             tool_call_id = _validate_turn(turn)
         except LLMAgentProtocolError as exc:
             self._protocol_error = str(exc)
+            self._record_turn(turn, None)
             raise
         self._messages.append(_assistant_message(turn))
-        return self._action_from_turn(turn, tool_call_id)
+        action = self._action_from_turn(turn, tool_call_id)
+        self._record_turn(turn, action)
+        return action
 
     def _observation_message(self, observation: Observation) -> ChatMessage:
         payload = _drop_none(observation.model_dump(mode="json"))
@@ -94,6 +110,20 @@ class LLMAgent:
                 name=observation.tool_name,
             )
         return ChatMessage(role="user", content=content)
+
+    def _record_turn(self, turn: ModelTurn, action: Action | None) -> None:
+        """Append a normalized, SDK-free record of one completion. REQ-CON-10."""
+        self.turn_log.append(
+            NormalizedModelTurn(
+                model_id=self.model.model_id,
+                text=turn.text,
+                tool_calls=list(turn.tool_calls),
+                usage=turn.usage,
+                parsed_tool_name=action.tool_name if action is not None else None,
+                parsed_arguments=dict(action.arguments) if action is not None else {},
+                protocol_error=self._protocol_error if action is None else None,
+            )
+        )
 
     def _action_from_turn(self, turn: ModelTurn, tool_call_id: str | None) -> Action:
         rationale = turn.text[:_RATIONALE_MAX]

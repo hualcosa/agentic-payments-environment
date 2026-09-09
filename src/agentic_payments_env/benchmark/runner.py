@@ -58,6 +58,28 @@ def _write_json(path: Path, payload: object) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def _episode_turn_log(agent: Agent, task_id: str, seed: int) -> dict[str, object] | None:
+    """Serialize ``LLMAgent.turn_log`` when present. REQ-CON-10."""
+    raw = getattr(agent, "turn_log", None)
+    if not raw:
+        return None
+    model = getattr(agent, "model", None)
+    model_id = getattr(model, "model_id", "unknown")
+    prompt_id = getattr(agent, "prompt_id", None)
+    turns = [
+        item.model_dump(mode="json") if hasattr(item, "model_dump") else dict(item) for item in raw
+    ]
+    payload: dict[str, object] = {
+        "task_id": task_id,
+        "seed": seed,
+        "model_id": model_id,
+        "turns": turns,
+    }
+    if isinstance(prompt_id, str):
+        payload["prompt_id"] = prompt_id
+    return payload
+
+
 def _usage_steps(agent: Agent, n_steps: int) -> list[dict[str, object]]:
     """Per-step token usage; latency is always 0 in M1 (no wall-clock in src/). T1.05."""
     rows: list[dict[str, object]] = []
@@ -107,6 +129,7 @@ def run_benchmark(
     episodes = []
     agent_name = "unknown"
     episode_meta: list[dict[str, object]] = []
+    episode_turns: list[dict[str, object]] = []
     for task in tasks:
         for seed in seeds:
             agent = agent_factory(task)
@@ -115,6 +138,9 @@ def run_benchmark(
             result = grade_episode(task, trace, env.state, graders)
             episodes.append(result)
             episode_meta.append(_episode_meta(task.task_id, seed, agent, len(trace.steps)))
+            turn_log = _episode_turn_log(agent, task.task_id, seed)
+            if turn_log is not None:
+                episode_turns.append(turn_log)
             if out_dir is not None:
                 slug = task.task_id.replace("/", "_")
                 folder = out_dir / slug
@@ -134,4 +160,9 @@ def run_benchmark(
             payload = dict(meta)
             payload["episodes"] = episode_meta
             _write_json(out_dir / "meta.json", payload)
+        if episode_turns:
+            _write_json(
+                out_dir / "turns.json",
+                {"schema_version": "0.1", "episodes": episode_turns},
+            )
     return report
