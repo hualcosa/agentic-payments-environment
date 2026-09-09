@@ -180,7 +180,10 @@ def rt_004() -> TaskSpec:
             step(
                 "finish",
                 outcome="COMPLETED",
-                report="Sent both transfers. Last id: $last_transfer_id.",
+                report=(
+                    "Sent both transfers. Transfer ids: tx_000001, tx_000002. "
+                    "Last id: $last_transfer_id."
+                ),
             ),
         ],
     )
