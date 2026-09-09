@@ -170,13 +170,13 @@ class PaymentsEnvironment:
         except Exception:
             if self._strict:
                 raise
-            observation = Observation(
-                step_index=self._step_index,
-                sim_time=self._state.now,
-                kind="tool_error",
-                tool_name=action.tool_name,
-                error=ToolError(code=ToolErrorCode.SERVICE_UNAVAILABLE, message="internal error"),
-                observed_at=self._state.now,
+            from agentic_payments_env.tools.dispatch import err
+
+            observation = err(
+                ctx,
+                action.tool_name,
+                ToolErrorCode.SERVICE_UNAVAILABLE,
+                "internal error",
             )
         if action.tool_name == "finish" and observation.kind == "final":
             self._done = True

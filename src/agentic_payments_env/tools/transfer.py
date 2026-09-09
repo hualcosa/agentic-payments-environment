@@ -52,13 +52,15 @@ def handle_create_transfer(
 ) -> Observation:
     """Normative create_transfer order from 05 §5."""
     after = fault is not None and fault.kind.value == "TIMEOUT_AFTER_EXECUTE"
-    observation = _create_transfer_body(ctx, args)
+    observation = _create_transfer_body(ctx, args, record_success=not after)
     if after and observation.kind == "tool_result":
         return err(ctx, "create_transfer", ToolErrorCode.TIMEOUT, "request timed out")
     return observation
 
 
-def _create_transfer_body(ctx: ToolContext, args: CreateTransferArgs) -> Observation:
+def _create_transfer_body(
+    ctx: ToolContext, args: CreateTransferArgs, *, record_success: bool = True
+) -> Observation:
     state = ctx.state
     account = state.owned_account(args.from_account_id)
     if account is None:
@@ -82,6 +84,7 @@ def _create_transfer_body(ctx: ToolContext, args: CreateTransferArgs) -> Observa
                 ctx,
                 "create_transfer",
                 {**_transfer_result(existing), "idempotent_replay": True},
+                record_tool_result=record_success,
             )
         return err(
             ctx,
@@ -177,7 +180,13 @@ def _create_transfer_body(ctx: ToolContext, args: CreateTransferArgs) -> Observa
     warnings = [
         PolicyWarning(rule=finding.rule, message=finding.message) for finding in decision.soft
     ]
-    return ok(ctx, "create_transfer", _transfer_result(completed), warnings=warnings)
+    return ok(
+        ctx,
+        "create_transfer",
+        _transfer_result(completed),
+        warnings=warnings,
+        record_tool_result=record_success,
+    )
 
 
 def _first_hard(
@@ -222,13 +231,15 @@ def handle_reverse_transfer(
     ctx: ToolContext, args: ReverseTransferArgs, fault: FaultInjection | None
 ) -> Observation:
     after = fault is not None and fault.kind.value == "TIMEOUT_AFTER_EXECUTE"
-    observation = _reverse_body(ctx, args)
+    observation = _reverse_body(ctx, args, record_success=not after)
     if after and observation.kind == "tool_result":
         return err(ctx, "reverse_transfer", ToolErrorCode.TIMEOUT, "request timed out")
     return observation
 
 
-def _reverse_body(ctx: ToolContext, args: ReverseTransferArgs) -> Observation:
+def _reverse_body(
+    ctx: ToolContext, args: ReverseTransferArgs, *, record_success: bool = True
+) -> Observation:
     original = ctx.state.transfers.get(args.transfer_id)
     if original is None:
         return err(ctx, "reverse_transfer", ToolErrorCode.NOT_FOUND, "transfer not found")
@@ -328,6 +339,7 @@ def _reverse_body(ctx: ToolContext, args: ReverseTransferArgs) -> Observation:
         ctx,
         "reverse_transfer",
         _transfer_result(completed, extra={"reversal_of": original.transfer_id}),
+        record_tool_result=record_success,
     )
 
 
