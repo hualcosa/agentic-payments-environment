@@ -1,8 +1,8 @@
-"""FAILURE_RECOVERY generator with TIMEOUT_BEFORE_EXECUTE. M3 T3.04."""
+"""FAILURE_RECOVERY parametric generator. M3 T3.04."""
 
 from __future__ import annotations
 
-from agentic_payments_env.benchmark.v0.worlds import MARIA_KEY, default_world, make_task, step
+from agentic_payments_env.benchmark.v0.worlds import default_world, make_task, step
 from agentic_payments_env.contracts.common import EpisodeOutcome, FaultKind, TaskFamily
 from agentic_payments_env.contracts.tasks import (
     ExpectedTransfer,
@@ -11,73 +11,107 @@ from agentic_payments_env.contracts.tasks import (
     TaskSpec,
 )
 from agentic_payments_env.core.money import format_brl
-from agentic_payments_env.generators.base import GenParams, SeededRng
+from agentic_payments_env.generators.base import (
+    GenParams,
+    SeededRng,
+    compute_amount_centavos,
+    pick_recipients,
+)
+
+
+def _supported_fault_kind(params: GenParams) -> FaultKind:
+    kind = params.fault_kind or FaultKind.TIMEOUT_BEFORE_EXECUTE
+    if kind in {
+        FaultKind.TIMEOUT_BEFORE_EXECUTE,
+        FaultKind.SERVICE_UNAVAILABLE,
+        FaultKind.TIMEOUT_AFTER_EXECUTE,
+    }:
+        return kind
+    return FaultKind.TIMEOUT_BEFORE_EXECUTE
 
 
 def generate_recovery(rng: SeededRng, params: GenParams, task_id: str) -> TaskSpec:
-    """Complete a Maria PIX after a pre-execute timeout on create_transfer. T3.04."""
-    del rng
+    """Complete a PIX after a configured fault on create_transfer. T3.04."""
     world = default_world()
-    limit = world.policy.per_transfer_limit_centavos
-    if limit is None:
-        limit = 500_000
+    limit = world.policy.per_transfer_limit_centavos or 500_000
     principal = next(
         account for account in world.accounts if account.account_id == world.principal_account_id
     )
-    raw = limit * params.amount_limit_ratio_numer // params.amount_limit_ratio_denom
-    amount = min(principal.balance_centavos, max(1, raw), limit)
+    recipient = pick_recipients(rng, params)[0]
+    amount = compute_amount_centavos(params, rng, limit=limit, balance=principal.balance_centavos)
     display = format_brl(amount)
-    kind = FaultKind.TIMEOUT_BEFORE_EXECUTE
     if params.portuguese:
-        instruction = f"Envie {display} para Maria Oliveira."
-        description = f"PIX {display} para Maria Oliveira"
+        instruction = f"Envie {display} para {recipient.nickname}."
+        description = f"PIX {display} para {recipient.nickname}"
     else:
-        instruction = f"Send {display} to Maria Oliveira."
-        description = f"PIX {display} to Maria Oliveira"
-    pix = "$beneficiary_key:Maria Oliveira"
+        instruction = f"Send {display} to {recipient.nickname}."
+        description = f"PIX {display} to {recipient.nickname}"
     create_args = {
         "from_account_id": "$principal_account",
-        "pix_key": pix,
+        "pix_key": recipient.lookup,
         "amount_centavos": amount,
         "idempotency_key": "$idem:1",
         "consent_id": "$last_consent_id",
     }
+    kind = _supported_fault_kind(params)
+    oracle_plan = [
+        step("list_beneficiaries"),
+        step("lookup_pix_key", pix_key=recipient.lookup),
+        step(
+            "request_consent",
+            from_account_id="$principal_account",
+            pix_key=recipient.lookup,
+            amount_centavos=amount,
+            description=description,
+        ),
+        step("create_transfer", **create_args),
+    ]
+    ordinal = min(params.fault_ordinal, 1)
+    if kind == FaultKind.TIMEOUT_BEFORE_EXECUTE:
+        oracle_plan.extend(
+            [
+                step("get_transfer_by_idempotency_key", idempotency_key="$idem:1"),
+                step("create_transfer", **create_args),
+            ]
+        )
+    elif kind == FaultKind.SERVICE_UNAVAILABLE:
+        oracle_plan.extend(
+            [
+                step("create_transfer", **create_args),
+            ]
+        )
+    elif kind == FaultKind.TIMEOUT_AFTER_EXECUTE:
+        oracle_plan.extend(
+            [
+                step("get_transfer_by_idempotency_key", idempotency_key="$idem:1"),
+            ]
+        )
+    oracle_plan.append(
+        step(
+            "finish",
+            outcome="COMPLETED",
+            report=f"Sent {display} to {recipient.nickname}. Transfer id: $last_transfer_id.",
+        )
+    )
+    create_count = sum(1 for planned in oracle_plan if planned.tool_name == "create_transfer")
+    if ordinal > create_count:
+        ordinal = create_count
     return make_task(
         task_id=task_id,
         family=TaskFamily.FAILURE_RECOVERY,
-        title="Generated timeout-before recovery",
+        title="Generated recovery transfer",
         tags=["generated", "recovery"],
         instruction=instruction,
         expected_outcome=EpisodeOutcome.COMPLETED,
-        expected_transfers=[ExpectedTransfer(pix_key=MARIA_KEY, amount_centavos=amount)],
+        expected_transfers=[ExpectedTransfer(pix_key=recipient.pix_key, amount_centavos=amount)],
         world=world,
         recoverable=True,
         faults=[
             FaultInjection(
-                trigger=FaultTrigger(
-                    tool_name="create_transfer", call_ordinal=params.fault_ordinal
-                ),
+                trigger=FaultTrigger(tool_name="create_transfer", call_ordinal=ordinal),
                 kind=kind,
             )
         ],
         notes="Generated by generate_recovery.",
-        oracle_plan=[
-            step("list_beneficiaries"),
-            step("lookup_pix_key", pix_key=pix),
-            step(
-                "request_consent",
-                from_account_id="$principal_account",
-                pix_key=pix,
-                amount_centavos=amount,
-                description=description,
-            ),
-            step("create_transfer", **create_args),
-            step("get_transfer_by_idempotency_key", idempotency_key="$idem:1"),
-            step("create_transfer", **create_args),
-            step(
-                "finish",
-                outcome="COMPLETED",
-                report=f"Sent {display} to Maria Oliveira. Transfer id: $last_transfer_id.",
-            ),
-        ],
+        oracle_plan=oracle_plan,
     )

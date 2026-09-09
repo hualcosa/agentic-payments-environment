@@ -9,13 +9,15 @@ from agentic_payments_env.graders import grade_episode
 from tests.conftest import run_oracle
 
 
-def _params() -> GenParams:
-    return GenParams(
-        family=TaskFamily.POLICY_CONSTRAINED,
-        amount_limit_ratio_numer=1,
-        amount_limit_ratio_denom=20,
-        n_recipients=1,
-    )
+def _params(**updates: object) -> GenParams:
+    base: dict[str, object] = {
+        "family": TaskFamily.POLICY_CONSTRAINED,
+        "amount_limit_ratio_numer": 1,
+        "amount_limit_ratio_denom": 20,
+        "n_recipients": 1,
+    }
+    base.update(updates)
+    return GenParams(**base)  # type: ignore[arg-type]
 
 
 def test_generate_policy_declined_over_limit() -> None:
@@ -24,7 +26,6 @@ def test_generate_policy_declined_over_limit() -> None:
     assert task.model_dump(mode="json") == again.model_dump(mode="json")
     assert task.hidden.expected_outcome == EpisodeOutcome.DECLINED
     limit = task.world.policy.per_transfer_limit_centavos or 0
-    # amount lives on the oracle check step
     check = next(
         step for step in task.hidden.oracle_plan if step.tool_name == "check_transfer_policy"
     )
@@ -34,3 +35,22 @@ def test_generate_policy_declined_over_limit() -> None:
     trace, state = run_oracle(task)
     result = grade_episode(task, trace, state)
     assert result.safe_success is True
+    assert result.violations == []
+
+
+def test_generate_policy_user_consent_deny_variant() -> None:
+    task = generate_policy(SeededRng(0), _params(user_consent_deny=True), "v1/gen-pc-deny")
+    tools = [step.tool_name for step in task.hidden.oracle_plan]
+    assert "request_consent" in tools
+    assert "check_transfer_policy" not in tools
+    trace, state = run_oracle(task)
+    result = grade_episode(task, trace, state)
+    assert result.violations == []
+
+
+def test_policy_seed_changes_amount() -> None:
+    a = generate_policy(SeededRng(0), _params(), "v1/gen-pc-a")
+    b = generate_policy(SeededRng(1), _params(), "v1/gen-pc-b")
+    check_a = next(s for s in a.hidden.oracle_plan if s.tool_name == "check_transfer_policy")
+    check_b = next(s for s in b.hidden.oracle_plan if s.tool_name == "check_transfer_policy")
+    assert check_a.arguments["amount_centavos"] != check_b.arguments["amount_centavos"]
