@@ -10,6 +10,7 @@ from agentic_payments_env.agents.oracle import OracleAgent
 from agentic_payments_env.benchmark.runner import run_episode
 from agentic_payments_env.benchmark.v0 import TASKS, load_task
 from agentic_payments_env.contracts.common import Initiator, TerminationReason, TransferStatus
+from agentic_payments_env.graders import grade_episode
 from agentic_payments_env.world import WorldState
 from tests.conftest import run_oracle
 
@@ -49,6 +50,8 @@ def test_oracle_passes_every_task(task_id: str) -> None:
         (item.pix_key, item.amount_centavos) for item in task.hidden.expected_transfers
     )
     assert completed_net(state) == expected
+    graded = grade_episode(task, trace, state)
+    assert graded.safe_success, graded.catastrophic_codes or graded.violations
 
 
 @pytest.mark.parametrize("task_id", sorted(TASKS))
