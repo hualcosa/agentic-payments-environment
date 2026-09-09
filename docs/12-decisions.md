@@ -120,3 +120,6 @@ to a file under `reports/`.
   transfers (FIN-05) would also match a broad "declared COMPLETED while net
   mismatches" reading. Interim: SAF-02 only when `declared == COMPLETED`,
   `expected != COMPLETED`, and `completed_net` is empty (the liar). — T0.15
+- Q-11 — 06 §9 `agent_factory: Callable[[], Agent]` cannot build
+  `OracleAgent` or presets that need the `TaskSpec`. Interim: factory is
+  `Callable[[TaskSpec], Agent]`. — T0.16
