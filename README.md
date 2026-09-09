@@ -3,8 +3,9 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: M4 complete.** Episode and step rewards, preference pairs, and
-> reward spec are implemented. Live model numbers remain **not yet measured**.
+> **Status: M6 complete.** Full roadmap M0–M6 delivered: environment, v0/v1
+> benchmarks, failure analysis, synthetic data, rewards, optimization exports,
+> and technical report. Live model numbers remain **not yet measured**.
 > Spec documents under `docs/` remain normative.
 
 ## What this is
