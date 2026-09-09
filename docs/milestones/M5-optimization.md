@@ -62,6 +62,6 @@ Tests: the interventions file contains `stretch` and `not run` or
 
 ## M5 exit checklist
 
-- [ ] Two interventions described (prompt v2; SFT export).
-- [ ] Evaluation report does not invent live-model deltas.
-- [ ] Stretch PO is explicitly not run.
+- [x] Two interventions described (prompt v2; SFT export).
+- [x] Evaluation report does not invent live-model deltas.
+- [x] Stretch PO is explicitly not run.

@@ -14,3 +14,9 @@ See `reports/v1/prompt-v2.md`. Live-model pre/post on v1 held-out is
 Data export: `apenv export-sft`. Training is out of this repository.
 Evaluation of a fine-tuned checkpoint on v1 held-out is **not yet
 measured**. No invented deltas.
+
+## Stretch: preference optimization (DPO/GRPO)
+
+This stretch intervention is **not run**. No DPO/GRPO trainer is in this
+repository and no preference-optimization numbers are claimed.
+
