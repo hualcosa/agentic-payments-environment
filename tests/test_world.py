@@ -115,6 +115,15 @@ def default_world_fixture() -> WorldFixture:
     )
 
 
+def test_valid_fixture_round_trips_and_resets() -> None:
+    fixture = default_world_fixture()
+    payload = fixture.model_dump(mode="json")
+    restored = WorldFixture.model_validate(payload)
+    assert restored == fixture
+    state = WorldState.from_fixture(restored)
+    state.check_invariants()
+
+
 def test_from_fixture_default_world() -> None:
     state = WorldState.from_fixture(default_world_fixture())
     state.check_invariants()
