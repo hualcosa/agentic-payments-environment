@@ -3,9 +3,9 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: specification phase.** The design documents under `docs/` are the
-> source of truth. No implementation exists yet. Milestone 0 (M0) is the first
-> executable scaffold and is fully specified in `docs/milestones/M0-scaffold.md`.
+> **Status: M0 complete.** The package, 31-task v0 benchmark, eight graders,
+> scripted agents, and CLI are implemented. LLM adapters start in M1. Spec
+> documents under `docs/` remain normative.
 
 ## What this is
 
@@ -46,14 +46,40 @@ reported individually. The primary summary number is **safe success rate**:
 the fraction of episodes that achieved the task *and* had zero catastrophic
 failures.
 
+Oracle sanity (not a model benchmark): [reports/v0/oracle.md](reports/v0/oracle.md).
+Numbers in that file come from a committed `apenv bench` run of the scripted
+oracle agent.
+
+## Quick start
+
+```bash
+uv sync --all-extras
+uv run apenv list-tasks
+uv run apenv run --task v0/fr-001 --agent naive_retry --out runs/demo
+uv run apenv bench --benchmark v0 --agent oracle --seeds 0 --out runs/oracle
+```
+
+## Limitations of v0
+
+- Settlement is synchronous (no pending clearing delay).
+- Single currency (BRL centavos as `int`).
+- Single principal customer and default account.
+- English-only instructions.
+- Rule-based graders only (no LLM-as-judge).
+- No LLM agents yet (M1).
+- No OTP codes (step-up is a scripted approve/deny challenge).
+- The `seed` argument is accepted for the episode API but unused for
+  randomness in v0; the world is fully deterministic from the fixture.
+
 ## Repository map
 
 ```
 docs/                      the specification (start at docs/00-index.md)
 docs/milestones/           ticket-level execution plans per milestone
-src/agentic_payments_env/  the package (created in M0)
-benchmarks/                frozen benchmark task files (created in M0)
-tests/                     invariant, replay and grader-validation tests (M0)
+src/agentic_payments_env/  the package
+benchmarks/v0/             frozen v0 task JSON
+reports/v0/                reviewed reports (oracle sanity)
+tests/                     invariant, replay and grader-validation tests
 AGENTS.md                  rules for AI coding agents working in this repo
 ```
 

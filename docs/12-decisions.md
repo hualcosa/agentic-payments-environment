@@ -123,3 +123,7 @@ to a file under `reports/`.
 - Q-11 — 06 §9 `agent_factory: Callable[[], Agent]` cannot build
   `OracleAgent` or presets that need the `TaskSpec`. Interim: factory is
   `Callable[[TaskSpec], Agent]`. — T0.16
+- Q-12 — M0 exit requires every docs 02–10 `REQ-` id in `src/` or `tests/`;
+  T0.17's file list does not include those modules. Interim: add
+  `tests/test_req_coverage.py` with the remaining ids in its docstring.
+  Q-01–Q-11 are carried as implementation notes; none block M1. — T0.17
