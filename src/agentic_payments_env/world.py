@@ -6,6 +6,7 @@ REQ-CON-07.
 
 from __future__ import annotations
 
+from collections import defaultdict
 from datetime import timedelta
 from typing import Any
 
@@ -37,6 +38,7 @@ class WorldState(WorldStateContract):
     _fixture_entry_count: int = PrivateAttr(default=0)
     _fixture_transfer_ids: set[str] = PrivateAttr(default_factory=set)
     _fixture_beneficiary_ids: set[str] = PrivateAttr(default_factory=set)
+    _creation_meta: dict[str, tuple[int, str]] = PrivateAttr(default_factory=dict)
 
     @classmethod
     def from_fixture(cls, fixture: WorldFixture) -> WorldState:
@@ -150,7 +152,51 @@ class WorldState(WorldStateContract):
             visible_to_agent=visible_to_agent,
         )
         self.audit.append(event)
+        self._track_creation(step_index=step_index, kind=kind, entity_ids=event.entity_ids)
         return event
+
+    @staticmethod
+    def _normative_creation_kind(entity_id: str, kind: str) -> str | None:
+        """Return ``kind`` when it is the normative creation event for ``entity_id``."""
+        if entity_id.startswith("tx_") and kind in {"TRANSFER_CREATED", "TRANSFER_REVERSED"}:
+            return kind
+        if entity_id.startswith("cons_") and kind == "CONSENT_REQUESTED":
+            return kind
+        if entity_id.startswith("chal_") and kind == "STEP_UP_REQUESTED":
+            return kind
+        if entity_id.startswith("ben_") and kind == "BENEFICIARY_ADDED":
+            return kind
+        if entity_id.startswith("led_") and kind in {"TRANSFER_COMPLETED", "TRANSFER_REVERSED"}:
+            return kind
+        return None
+
+    def _track_creation(self, *, step_index: int, kind: str, entity_ids: list[str]) -> None:
+        """Record normative creation step/kind for runtime entities. INV-04."""
+        for entity_id in entity_ids:
+            creation_kind = self._normative_creation_kind(entity_id, kind)
+            if creation_kind is None:
+                continue
+            skip = (
+                (
+                    entity_id.startswith("tx_")
+                    and (
+                        entity_id in self._fixture_transfer_ids
+                        or (
+                            creation_kind == "TRANSFER_REVERSED"
+                            and entity_id in self._creation_meta
+                        )
+                    )
+                )
+                or (entity_id.startswith("ben_") and entity_id in self._fixture_beneficiary_ids)
+                or (
+                    entity_id.startswith("led_")
+                    and entity_id
+                    in {entry.entry_id for entry in self.ledger[: self._fixture_entry_count]}
+                )
+            )
+            if skip:
+                continue
+            self._creation_meta[entity_id] = (step_index, creation_kind)
 
     def principal(self) -> Customer:
         """Return the customer the agent acts for."""
@@ -238,21 +284,57 @@ class WorldState(WorldStateContract):
                 "INV-01",
                 "sum of account balances does not match initial_total_centavos",
             )
-        by_transfer: dict[str, int] = {}
+        entries_by_transfer: dict[str, list[LedgerEntry]] = defaultdict(list)
         runtime_by_account: dict[str, int] = dict.fromkeys(self.accounts, 0)
         for index, entry in enumerate(self.ledger):
-            by_transfer[entry.transfer_id] = (
-                by_transfer.get(entry.transfer_id, 0) + entry.delta_centavos
-            )
+            entries_by_transfer[entry.transfer_id].append(entry)
             if index >= self._fixture_entry_count:
                 runtime_by_account[entry.account_id] = (
                     runtime_by_account.get(entry.account_id, 0) + entry.delta_centavos
                 )
         for transfer in self.transfers.values():
-            if (
-                transfer.status in (TransferStatus.COMPLETED, TransferStatus.REVERSED)
-                and by_transfer.get(transfer.transfer_id, 0) != 0
-            ):
+            if transfer.status not in (TransferStatus.COMPLETED, TransferStatus.REVERSED):
+                continue
+            entries = entries_by_transfer.get(transfer.transfer_id, [])
+            if len(entries) != 2:
+                raise InvariantViolation(
+                    "INV-02",
+                    f"transfer {transfer.transfer_id} requires exactly two ledger entries",
+                )
+            debits = [item for item in entries if item.delta_centavos < 0]
+            credits = [item for item in entries if item.delta_centavos > 0]
+            if len(debits) != 1 or len(credits) != 1:
+                raise InvariantViolation(
+                    "INV-02",
+                    f"transfer {transfer.transfer_id} requires one debit and one credit",
+                )
+            debit, credit = debits[0], credits[0]
+            if debit.delta_centavos == 0 or credit.delta_centavos == 0:
+                raise InvariantViolation(
+                    "INV-02",
+                    f"transfer {transfer.transfer_id} has zero-valued ledger entry",
+                )
+            if debit.account_id != transfer.from_account_id:
+                raise InvariantViolation(
+                    "INV-02",
+                    f"transfer {transfer.transfer_id} debit account mismatch",
+                )
+            if credit.account_id != transfer.to_account_id:
+                raise InvariantViolation(
+                    "INV-02",
+                    f"transfer {transfer.transfer_id} credit account mismatch",
+                )
+            if debit.delta_centavos != -transfer.amount_centavos:
+                raise InvariantViolation(
+                    "INV-02",
+                    f"transfer {transfer.transfer_id} debit amount mismatch",
+                )
+            if credit.delta_centavos != transfer.amount_centavos:
+                raise InvariantViolation(
+                    "INV-02",
+                    f"transfer {transfer.transfer_id} credit amount mismatch",
+                )
+            if debit.delta_centavos + credit.delta_centavos != 0:
                 raise InvariantViolation(
                     "INV-02",
                     f"ledger entries for {transfer.transfer_id} do not sum to zero",
@@ -310,27 +392,61 @@ class WorldState(WorldStateContract):
                 raise InvariantViolation("INV-08", f"{original_id} reversed more than once")
 
     def _check_audit_completeness(self) -> None:
-        referenced: dict[str, set[int]] = {}
-        for event in self.audit:
-            for entity_id in event.entity_ids:
-                referenced.setdefault(entity_id, set()).add(event.step_index)
-        runtime_transfers = [tid for tid in self.transfers if tid not in self._fixture_transfer_ids]
-        runtime_beneficiaries = [
-            bid for bid in self.beneficiaries if bid not in self._fixture_beneficiary_ids
-        ]
-        runtime_ledger = [entry.entry_id for entry in self.ledger[self._fixture_entry_count :]]
-        for entity_id in (
-            runtime_transfers
-            + list(self.consents)
-            + list(self.challenges)
-            + runtime_beneficiaries
-            + runtime_ledger
-        ):
-            if entity_id not in referenced:
+        runtime_entities: list[tuple[str, int, str]] = []
+        for transfer_id in self.transfers:
+            if transfer_id in self._fixture_transfer_ids:
+                continue
+            meta = self._creation_meta.get(transfer_id)
+            if meta is None:
+                meta = self._derive_creation_meta(transfer_id)
+            if meta is not None:
+                runtime_entities.append((transfer_id, meta[0], meta[1]))
+        for consent_id in self.consents:
+            meta = self._creation_meta.get(consent_id) or self._derive_creation_meta(consent_id)
+            if meta is not None:
+                runtime_entities.append((consent_id, meta[0], meta[1]))
+        for challenge_id in self.challenges:
+            meta = self._creation_meta.get(challenge_id) or self._derive_creation_meta(challenge_id)
+            if meta is not None:
+                runtime_entities.append((challenge_id, meta[0], meta[1]))
+        for beneficiary_id in self.beneficiaries:
+            if beneficiary_id in self._fixture_beneficiary_ids:
+                continue
+            meta = self._creation_meta.get(beneficiary_id) or self._derive_creation_meta(
+                beneficiary_id
+            )
+            if meta is not None:
+                runtime_entities.append((beneficiary_id, meta[0], meta[1]))
+        for entry in self.ledger[self._fixture_entry_count :]:
+            meta = self._creation_meta.get(entry.entry_id) or self._derive_creation_meta(
+                entry.entry_id
+            )
+            if meta is not None:
+                runtime_entities.append((entry.entry_id, meta[0], meta[1]))
+
+        for entity_id, step_index, kind in runtime_entities:
+            if not any(
+                event.step_index == step_index
+                and event.kind == kind
+                and entity_id in event.entity_ids
+                for event in self.audit
+            ):
                 raise InvariantViolation(
                     "INV-04",
-                    f"{entity_id} created after reset is not referenced in audit",
+                    f"{entity_id} lacks {kind} audit at step {step_index}",
                 )
+
+    def _derive_creation_meta(self, entity_id: str) -> tuple[int, str] | None:
+        """Derive creation step/kind from audit when tracking missed an emit. INV-04."""
+        candidates: list[tuple[int, str]] = []
+        for event in self.audit:
+            if entity_id not in event.entity_ids:
+                continue
+            if self._normative_creation_kind(entity_id, event.kind) is not None:
+                candidates.append((event.step_index, event.kind))
+        if not candidates:
+            return None
+        return min(candidates, key=lambda item: item[0])
 
     def canonical_json(self) -> str:
         """Canonical JSON of state excluding ``audit``. REQ-ENV-07, REQ-CON-04."""
