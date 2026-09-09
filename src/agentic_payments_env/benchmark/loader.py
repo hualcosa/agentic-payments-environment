@@ -22,12 +22,27 @@ def task_to_json(task: TaskSpec) -> str:
     )
 
 
+def load_task(task_id: str) -> TaskSpec:
+    """Load v0 from the builder registry or v1 from frozen JSON. REQ-TASK-02."""
+    if task_id.startswith("v0/"):
+        from agentic_payments_env.benchmark.v0 import load_task as load_v0
+
+        return load_v0(task_id)
+    if task_id.startswith("v1/"):
+        from agentic_payments_env.benchmark.v1 import load_task as load_v1
+
+        return load_v1(task_id)
+    raise KeyError(f"unknown task_id {task_id!r}")
+
+
 def export_tasks(benchmark_id: str, out_dir: Path) -> None:
     """Write ``<suffix>.json`` for every task in ``benchmark_id``. REQ-TASK-02."""
-    if benchmark_id != "v0":
+    if benchmark_id == "v0":
+        from agentic_payments_env.benchmark.v0 import all_tasks
+    elif benchmark_id == "v1":
+        from agentic_payments_env.benchmark.v1 import all_tasks
+    else:
         raise ValueError(f"unknown benchmark_id {benchmark_id!r}")
-    from agentic_payments_env.benchmark.v0 import all_tasks
-
     out_dir.mkdir(parents=True, exist_ok=True)
     for task in all_tasks():
         suffix = task.task_id.split("/", 1)[1]

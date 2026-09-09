@@ -138,3 +138,8 @@ to a file under `reports/`.
 - Q-15 — M3 generators need stochastic knobs. Interim: `SeededRng` wraps
   `random.Random(seed)` and never calls module-level `random.random()`,
   `uuid4`, or `time.time`. — T3.01
+- Q-16 — T3.08 `load_task("v1/...")` is `benchmark/loader.py`; CLI `run`
+  still imports `v0.load_task`. Interim: tests and export use loader;
+  CLI v1 ids are a later ticket. Pool ratios use `denom >= 6 * numer` so
+  COMPLETED gens stay under the 100000 step-up threshold without changing
+  T3.02 oracle plans. — T3.08

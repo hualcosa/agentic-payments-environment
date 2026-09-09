@@ -133,7 +133,7 @@ stable sort.
 
 ## M3 exit checklist
 
-- [ ] ≥ 200 held-out v1 tasks frozen (or Q-nn if generators cannot reach
+- [x] ≥ 200 held-out v1 tasks frozen (or Q-nn if generators cannot reach
       200 valid in-repo).
-- [ ] Validity filter enforced in tests.
-- [ ] Difficulty ordering is deterministic.
+- [x] Validity filter enforced in tests.
+- [x] Difficulty ordering is deterministic.
