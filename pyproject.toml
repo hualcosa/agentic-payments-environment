@@ -28,6 +28,9 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.ruff.lint.per-file-ignores]
 "src/agentic_payments_env/contracts/common.py" = ["UP042"]
+"src/agentic_payments_env/contracts/actions.py" = ["UP042"]
+"src/agentic_payments_env/contracts/tasks.py" = ["UP042"]
+"src/agentic_payments_env/contracts/grading.py" = ["UP042"]
 
 [tool.mypy]
 strict = true
