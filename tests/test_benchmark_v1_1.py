@@ -9,11 +9,13 @@ from pathlib import Path
 import pytest
 
 from agentic_payments_env.benchmark.loader import (
+    all_tasks_for,
     export_tasks,
     load_task,
     load_task_file,
     task_to_json,
 )
+from agentic_payments_env.benchmark.runner import tasks_for_benchmark
 from agentic_payments_env.benchmark.v1_1 import all_tasks
 from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.environment import PaymentsEnvironment
@@ -98,3 +100,9 @@ def test_frozen_v11_json_validates_resets_and_exports(path: Path) -> None:
 def test_load_task_v11() -> None:
     task = load_task(all_tasks()[0].task_id)
     assert task.task_id.startswith("v1.1/")
+
+
+def test_v11_loader_and_runner_registry() -> None:
+    loaded = all_tasks_for("v1.1")
+    assert len(loaded) == V11_HELD_OUT
+    assert tasks_for_benchmark("v1.1")[0].task_id == loaded[0].task_id

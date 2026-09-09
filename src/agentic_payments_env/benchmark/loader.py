@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Callable
 from pathlib import Path
 
 from agentic_payments_env.contracts.tasks import TaskSpec
+
+BENCHMARK_IDS: tuple[str, ...] = ("v0", "v1", "v1.1")
 
 
 def load_task_file(path: Path) -> TaskSpec:
@@ -39,17 +42,27 @@ def load_task(task_id: str) -> TaskSpec:
     raise KeyError(f"unknown task_id {task_id!r}")
 
 
+def _all_tasks_registry() -> dict[str, Callable[[], list[TaskSpec]]]:
+    """Lazy registry of held-out task lists keyed by benchmark id."""
+    from agentic_payments_env.benchmark.v0 import all_tasks as all_v0
+    from agentic_payments_env.benchmark.v1 import all_tasks as all_v1
+    from agentic_payments_env.benchmark.v1_1 import all_tasks as all_v11
+
+    return {"v0": all_v0, "v1": all_v1, "v1.1": all_v11}
+
+
+def all_tasks_for(benchmark_id: str) -> list[TaskSpec]:
+    """Return every held-out task for ``benchmark_id``. REQ-TASK-02, REQ-ENV-17."""
+    registry = _all_tasks_registry()
+    if benchmark_id not in registry:
+        msg = f"unknown benchmark_id {benchmark_id!r}"
+        raise ValueError(msg)
+    return registry[benchmark_id]()
+
+
 def export_tasks(benchmark_id: str, out_dir: Path) -> None:
     """Write ``<suffix>.json`` for every task in ``benchmark_id``. REQ-TASK-02."""
-    if benchmark_id == "v0":
-        from agentic_payments_env.benchmark.v0 import all_tasks
-    elif benchmark_id == "v1":
-        from agentic_payments_env.benchmark.v1 import all_tasks
-    elif benchmark_id == "v1.1":
-        from agentic_payments_env.benchmark.v1_1 import all_tasks
-    else:
-        raise ValueError(f"unknown benchmark_id {benchmark_id!r}")
     out_dir.mkdir(parents=True, exist_ok=True)
-    for task in all_tasks():
+    for task in all_tasks_for(benchmark_id):
         suffix = task.task_id.split("/", 1)[1]
         (out_dir / f"{suffix}.json").write_text(task_to_json(task), encoding="utf-8")
