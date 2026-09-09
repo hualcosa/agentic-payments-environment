@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from agentic_payments_env.contracts.actions import Action, Observation
 from agentic_payments_env.contracts.common import (
@@ -11,6 +11,7 @@ from agentic_payments_env.contracts.common import (
     EpisodeOutcome,
     FrozenModel,
     TerminationReason,
+    validate_schema_version,
 )
 from agentic_payments_env.contracts.domain import AuditEvent
 
@@ -42,4 +43,9 @@ class EpisodeTrace(FrozenModel):
     declared_outcome: EpisodeOutcome | None
     final_report: str | None
     final_state_hash: str
-    audit: list[AuditEvent] = Field(default_factory=list)
+    audit: list[AuditEvent]
+
+    @field_validator("schema_version")
+    @classmethod
+    def _validate_schema_version(cls, value: str) -> str:
+        return validate_schema_version(value)

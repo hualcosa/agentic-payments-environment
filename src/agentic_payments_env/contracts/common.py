@@ -12,6 +12,20 @@ UntrustedStr = str  # may contain adversarial content; see 02 §8
 
 SCHEMA_VERSION = "0.1"
 
+_SUPPORTED_SCHEMA_MAJOR = 0
+
+
+def validate_schema_version(value: str) -> str:
+    """Validate major.minor syntax and accept only v0 major. REQ-CON-03."""
+    parts = value.split(".")
+    if len(parts) != 2 or not parts[0].isdigit() or not parts[1].isdigit():
+        msg = f"schema_version must be major.minor with integer parts, got {value!r}"
+        raise ValueError(msg)
+    if int(parts[0]) != _SUPPORTED_SCHEMA_MAJOR:
+        msg = f"unsupported schema_version major {parts[0]!r}"
+        raise ValueError(msg)
+    return value
+
 
 class FrozenModel(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")

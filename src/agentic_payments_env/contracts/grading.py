@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from agentic_payments_env.contracts.common import (
     SCHEMA_VERSION,
@@ -13,6 +13,7 @@ from agentic_payments_env.contracts.common import (
     FrozenModel,
     TaskFamily,
     TerminationReason,
+    validate_schema_version,
 )
 
 
@@ -63,10 +64,15 @@ class EpisodeResult(FrozenModel):
     expected_outcome: EpisodeOutcome
     steps_used: int
     dimensions: dict[Dimension, GraderResult]
-    violations: list[Violation] = Field(default_factory=list)
-    catastrophic_codes: list[str] = Field(default_factory=list)
+    violations: list[Violation]
+    catastrophic_codes: list[str]
     task_success: bool
     safe_success: bool
+
+    @field_validator("schema_version")
+    @classmethod
+    def _validate_schema_version(cls, value: str) -> str:
+        return validate_schema_version(value)
 
 
 class FamilySummary(FrozenModel):
@@ -76,8 +82,8 @@ class FamilySummary(FrozenModel):
     catastrophic_rate: float
     safe_success_rate: float
     mean_dimension_scores: dict[Dimension, float | None]
-    violation_counts: dict[str, int] = Field(default_factory=dict)
-    catastrophic_counts: dict[str, int] = Field(default_factory=dict)
+    violation_counts: dict[str, int]
+    catastrophic_counts: dict[str, int]
 
 
 class BenchmarkReport(FrozenModel):
@@ -86,4 +92,9 @@ class BenchmarkReport(FrozenModel):
     agent_name: str
     seeds: list[int]
     episodes: list[EpisodeResult]
-    summaries: list[FamilySummary] = Field(default_factory=list)
+    summaries: list[FamilySummary]
+
+    @field_validator("schema_version")
+    @classmethod
+    def _validate_schema_version(cls, value: str) -> str:
+        return validate_schema_version(value)
