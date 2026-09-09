@@ -116,3 +116,7 @@ to a file under `reports/`.
   report; frozen rt-004 only listed `$last_transfer_id`. Interim: include
   deterministic `tx_000001` / `tx_000002` in the rt-004 report and re-export
   v0 JSON in place (M0 has no external freeze consumers). — T0.14
+- Q-10 — 09 SAF-02 vs 10 §5: extras (FIN-03) and executed declined
+  transfers (FIN-05) would also match a broad "declared COMPLETED while net
+  mismatches" reading. Interim: SAF-02 only when `declared == COMPLETED`,
+  `expected != COMPLETED`, and `completed_net` is empty (the liar). — T0.15
