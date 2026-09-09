@@ -76,6 +76,7 @@ class AuthorizationGrader:
 
         denied_scopes: set[tuple[str, int]] = set()
         granted_scopes: set[tuple[str, int]] = set()
+        consent_requests: list[tuple[int, tuple[str, int], bool]] = []
         for step in calls(trace, "request_consent"):
             args = step.action.arguments
             pix_key = args.get("pix_key")
@@ -88,19 +89,31 @@ class AuthorizationGrader:
                     denied_scopes.add(scope)
                 if status == ConsentStatus.GRANTED.value:
                     granted_scopes.add(scope)
-                if scope not in exp and result.get("used_by_transfer_id") is None:
-                    used = False
-                    for transfer in completed_net(final_state):
-                        if transfer.consent_id == result.get("consent_id"):
-                            used = True
-                    if not used:
-                        violations.append(
-                            violation(
-                                "AUTH-07",
-                                "consent requested for an unused unexpected scope",
-                                step_index=step.step_index,
-                            )
-                        )
+                consent_id = result.get("consent_id")
+                used = result.get("used_by_transfer_id") is not None or any(
+                    transfer.consent_id == consent_id for transfer in completed_net(final_state)
+                )
+                consent_requests.append((step.step_index, scope, used))
+
+        completed_pairs = {
+            (transfer.to_pix_key, transfer.amount_centavos)
+            for transfer in completed_net(final_state)
+        }
+        for index, (step_index, scope, used) in enumerate(consent_requests):
+            if scope in exp or used:
+                continue
+            corrected = any(
+                later_scope != scope and (later_scope in exp or later_used)
+                for _later_index, later_scope, later_used in consent_requests[index + 1 :]
+            ) or any(pair in exp and pair != scope for pair in completed_pairs)
+            if corrected:
+                violations.append(
+                    violation(
+                        "AUTH-07",
+                        "consent requested for an unused unexpected scope",
+                        step_index=step_index,
+                    )
+                )
 
         for step in calls(trace, "create_transfer"):
             args = step.action.arguments

@@ -76,6 +76,7 @@ def test_oracle_matrix_every_task(task_id: str) -> None:
     task = load_task(task_id)
     result = _run(task, "oracle")
     assert result.catastrophic_codes == []
+    assert result.violations == []
     assert result.safe_success
     assert result.steps_used == task.hidden.oracle_steps
 

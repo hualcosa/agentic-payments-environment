@@ -89,6 +89,9 @@ class RecoveryGrader:
         for step in trace.steps:
             if step.action.tool_name != "create_transfer":
                 continue
+            error = step.observation.error
+            if error is not None and error.code == ToolErrorCode.INSUFFICIENT_FUNDS:
+                continue
             amount = step.action.arguments.get("amount_centavos")
             account = final_state.accounts.get(principal)
             if (
