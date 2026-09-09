@@ -3,10 +3,10 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: M0 complete.** The deterministic environment, v0 benchmark (31
-> tasks), eight-dimension graders, scripted agents, and CLI are implemented.
-> LLM adapters and live model numbers are **not yet measured** (M1+). Spec
-> documents under `docs/` remain normative.
+> **Status: M1 complete.** M0 environment and v0 benchmark are implemented;
+> LLM adapters, prompt v1, and CLI `--agent llm` are in place. Live model
+> numbers are **not yet measured** (see reports below). Spec documents under
+> `docs/` remain normative.
 
 ## What this is
 
