@@ -398,7 +398,13 @@ def minimal_world(**overrides: object) -> WorldFixture:
                 display_name="Ana",
                 document_masked="***",
                 kyc_level=KycLevel.FULL,
-            )
+            ),
+            Customer(
+                customer_id="cus_external",
+                display_name="External",
+                document_masked="***",
+                kyc_level=KycLevel.NONE,
+            ),
         ],
         accounts=[
             Account(
@@ -699,3 +705,171 @@ def test_final_observation_accepts_valid_shape() -> None:
         observed_at=START,
     )
     assert obs.result == {"outcome": "COMPLETED", "report": "done"}
+
+
+def _fixture_transfer(**overrides: object) -> dict[str, object]:
+    base = {
+        "transfer_id": "tx_fix",
+        "from_account_id": "acc_ana",
+        "to_pix_key": "maria@example.com",
+        "to_account_id": "acc_external",
+        "to_holder_name_snapshot": "MARIA",
+        "amount_centavos": 100,
+        "status": "COMPLETED",
+        "idempotency_key": "fix-1",
+        "consent_id": None,
+        "created_at": START.isoformat(),
+        "completed_at": START.isoformat(),
+        "initiated_by": "FIXTURE",
+    }
+    base.update(overrides)
+    return base
+
+
+def _mutated_task(mutator: object) -> dict[str, object]:
+    data = minimal_task().model_dump(mode="json")
+    mutator(data)  # type: ignore[operator]
+    return data
+
+
+_FIXTURE_RULE_CASES: tuple[tuple[str, object], ...] = (
+    (
+        "duplicate_customer",
+        lambda data: data["world"]["customers"].append(data["world"]["customers"][0]),
+    ),
+    (
+        "duplicate_account",
+        lambda data: data["world"]["accounts"].append(data["world"]["accounts"][0]),
+    ),
+    (
+        "duplicate_pix_key",
+        lambda data: data["world"]["pix_directory"].append(data["world"]["pix_directory"][0]),
+    ),
+    (
+        "duplicate_beneficiary",
+        lambda data: data["world"]["beneficiaries"].extend(
+            [
+                {
+                    "beneficiary_id": "ben_x",
+                    "customer_id": "cus_ana",
+                    "nickname": "X",
+                    "pix_key": "maria@example.com",
+                    "created_at": START.isoformat(),
+                    "trusted": True,
+                },
+                {
+                    "beneficiary_id": "ben_x",
+                    "customer_id": "cus_ana",
+                    "nickname": "Y",
+                    "pix_key": "maria@example.com",
+                    "created_at": START.isoformat(),
+                    "trusted": True,
+                },
+            ]
+        ),
+    ),
+    (
+        "duplicate_transfer",
+        lambda data: data["world"]["transfers"].extend([_fixture_transfer(), _fixture_transfer()]),
+    ),
+    (
+        "missing_acc_external",
+        lambda data: data["world"].__setitem__(
+            "accounts",
+            [item for item in data["world"]["accounts"] if item["account_id"] != "acc_external"],
+        ),
+    ),
+    (
+        "acc_external_wrong_owner",
+        lambda data: next(
+            item.__setitem__("customer_id", "cus_ana")
+            for item in data["world"]["accounts"]
+            if item["account_id"] == "acc_external"
+        ),
+    ),
+    (
+        "missing_cus_external",
+        lambda data: data["world"].__setitem__(
+            "customers",
+            [item for item in data["world"]["customers"] if item["customer_id"] != "cus_external"],
+        ),
+    ),
+    (
+        "missing_principal_customer",
+        lambda data: data["world"].__setitem__("principal_customer_id", "cus_missing"),
+    ),
+    (
+        "directory_account_missing",
+        lambda data: data["world"]["pix_directory"][0].__setitem__("account_id", "acc_missing"),
+    ),
+    (
+        "beneficiary_unknown_customer",
+        lambda data: data["world"]["beneficiaries"].append(
+            {
+                "beneficiary_id": "ben_bad",
+                "customer_id": "cus_missing",
+                "nickname": "Bad",
+                "pix_key": "maria@example.com",
+                "created_at": START.isoformat(),
+                "trusted": True,
+            }
+        ),
+    ),
+    (
+        "beneficiary_unknown_pix_key",
+        lambda data: data["world"]["beneficiaries"].append(
+            {
+                "beneficiary_id": "ben_bad",
+                "customer_id": "cus_ana",
+                "nickname": "Bad",
+                "pix_key": "missing@example.com",
+                "created_at": START.isoformat(),
+                "trusted": True,
+            }
+        ),
+    ),
+    (
+        "fixture_transfer_not_completed",
+        lambda data: data["world"]["transfers"].append(_fixture_transfer(status="PENDING")),
+    ),
+    (
+        "fixture_transfer_not_fixture_initiator",
+        lambda data: data["world"]["transfers"].append(_fixture_transfer(initiated_by="AGENT")),
+    ),
+    (
+        "fixture_transfer_bad_from_account",
+        lambda data: data["world"]["transfers"].append(
+            _fixture_transfer(from_account_id="acc_missing")
+        ),
+    ),
+    (
+        "fixture_transfer_key_account_mismatch",
+        lambda data: data["world"]["transfers"].append(_fixture_transfer(to_account_id="acc_ana")),
+    ),
+    (
+        "fixture_transfer_missing_completed_at",
+        lambda data: data["world"]["transfers"].append(
+            {key: value for key, value in _fixture_transfer().items() if key != "completed_at"}
+        ),
+    ),
+)
+
+
+@pytest.mark.parametrize(("rule_name", "mutator"), _FIXTURE_RULE_CASES)
+def test_task_spec_rejects_invalid_fixture(rule_name: str, mutator: object) -> None:
+    del rule_name
+    with pytest.raises(ValidationError):
+        TaskSpec.model_validate(_mutated_task(mutator))
+
+
+@pytest.mark.parametrize(("rule_name", "mutator"), _FIXTURE_RULE_CASES)
+def test_load_task_file_rejects_invalid_fixture(
+    rule_name: str, mutator: object, tmp_path: object
+) -> None:
+    from pathlib import Path
+
+    del rule_name
+    path = Path(str(tmp_path)) / "bad-fixture.json"
+    path.write_text(__import__("json").dumps(_mutated_task(mutator)), encoding="utf-8")
+    with pytest.raises(ValidationError):
+        load_task_file(path)
