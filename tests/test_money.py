@@ -3,12 +3,17 @@
 from __future__ import annotations
 
 import ast
+from decimal import Decimal
 from pathlib import Path
 
 import pytest
+from pydantic import ValidationError
 
+from agentic_payments_env.contracts.common import validate_centavos
+from agentic_payments_env.contracts.domain import Account, ConsentScope
 from agentic_payments_env.core.hashing import canonical_json, sha256_hex
 from agentic_payments_env.core.money import format_brl, parse_brl
+from agentic_payments_env.tools.schemas import CreateTransferArgs
 
 ROUND_TRIP_VALUES = (
     0,
@@ -75,3 +80,37 @@ def test_no_float_or_decimal_in_core() -> None:
                 assert node.id not in {"float", "Decimal"}, path
             if isinstance(node, ast.Attribute):
                 assert node.attr != "Decimal", path
+
+
+@pytest.mark.parametrize("bad_value", [True, False, "100", 1.5, Decimal("100")])
+def test_validate_centavos_rejects_non_int(bad_value: object) -> None:
+    with pytest.raises(ValueError):
+        validate_centavos(bad_value)
+
+
+def test_account_rejects_bool_balance() -> None:
+    with pytest.raises(ValidationError):
+        Account(
+            account_id="acc_001",
+            customer_id="cus_001",
+            balance_centavos=True,  # type: ignore[arg-type]
+        )
+
+
+def test_consent_scope_rejects_float_amount() -> None:
+    with pytest.raises(ValidationError):
+        ConsentScope(
+            from_account_id="acc_001",
+            pix_key="a@b.com",
+            amount_centavos=100.0,  # type: ignore[arg-type]
+        )
+
+
+def test_create_transfer_args_rejects_string_amount() -> None:
+    with pytest.raises(ValidationError):
+        CreateTransferArgs(
+            from_account_id="acc_001",
+            pix_key="a@b.com",
+            amount_centavos="100",  # type: ignore[arg-type]
+            idempotency_key="k1",
+        )

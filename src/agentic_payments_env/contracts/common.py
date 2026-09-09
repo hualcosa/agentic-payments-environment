@@ -5,17 +5,41 @@ Satisfies: REQ-CON-01, REQ-CON-02, REQ-CON-04, REQ-CON-05.
 
 from __future__ import annotations
 
-from datetime import datetime
+import math
+from datetime import datetime, timedelta
+from decimal import Decimal
 from enum import Enum
-from typing import Any
+from typing import Annotated, Any
 
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, BeforeValidator, ConfigDict, field_validator
 
 # Spec requires `class X(str, Enum)` with values equal to member names (REQ-CON-02).
 # ruff: noqa: UP042
 
-Centavos = int  # integer minor units of BRL; never float
 UntrustedStr = str  # may contain adversarial content; see 02 §8
+
+
+def validate_centavos(value: object) -> int:
+    """Reject bool/str/float/Decimal coercion at money boundaries. REQ-DOM-01/03."""
+    if isinstance(value, bool):
+        msg = "centavos must be int, not bool"
+        raise ValueError(msg)
+    if isinstance(value, float):
+        msg = "centavos must be int, not float"
+        raise ValueError(msg)
+    if isinstance(value, str):
+        msg = "centavos must be int, not str"
+        raise ValueError(msg)
+    if isinstance(value, Decimal):
+        msg = "centavos must be int, not Decimal"
+        raise ValueError(msg)
+    if not isinstance(value, int):
+        msg = f"centavos must be int, not {type(value).__name__}"
+        raise ValueError(msg)
+    return value
+
+
+Centavos = Annotated[int, BeforeValidator(validate_centavos)]
 
 SCHEMA_VERSION = "0.1"
 
@@ -43,10 +67,17 @@ class MutableModel(BaseModel):
 
 
 def _require_aware(dt: datetime) -> datetime:
-    """Reject naive datetimes. REQ-CON-05."""
+    """Reject naive or non-UTC datetimes. REQ-CON-05, D-19."""
     if dt.tzinfo is None or dt.tzinfo.utcoffset(dt) is None:
         raise ValueError("datetime must be timezone-aware")
+    if dt.utcoffset() != timedelta(0):
+        raise ValueError("datetime must be UTC with zero offset")
     return dt
+
+
+def require_utc(value: datetime) -> datetime:
+    """Validate one datetime value as aware zero-offset UTC. REQ-CON-05, D-19."""
+    return _require_aware(value)
 
 
 def aware_datetime_validator(*fields: str) -> Any:
@@ -58,6 +89,38 @@ def aware_datetime_validator(*fields: str) -> Any:
         return _require_aware(value)
 
     return field_validator(*fields, mode="after")(_validate)
+
+
+def validate_json_value(value: object) -> object:
+    """Recursively validate JSON-serializable audit payload values. REQ-CON-04."""
+    if value is None:
+        return value
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            msg = "non-finite float in JSON payload"
+            raise ValueError(msg)
+        return value
+    if isinstance(value, list):
+        return [validate_json_value(item) for item in value]
+    if isinstance(value, dict):
+        return {str(key): validate_json_value(item) for key, item in value.items()}
+    msg = f"non-JSON value in payload: {type(value).__name__}"
+    raise ValueError(msg)
+
+
+def validate_json_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    """Validate an audit payload dict at construction time. REQ-CON-04."""
+    validated = validate_json_value(payload)
+    if not isinstance(validated, dict):
+        msg = "audit payload must be a JSON object"
+        raise ValueError(msg)
+    return validated
 
 
 class KycLevel(str, Enum):

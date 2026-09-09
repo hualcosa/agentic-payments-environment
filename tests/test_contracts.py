@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta, timezone
 from enum import Enum
 
 import pytest
@@ -26,6 +26,7 @@ from agentic_payments_env.contracts.common import (
     TaskFamily,
     TerminationReason,
     TransferStatus,
+    validate_json_payload,
 )
 from agentic_payments_env.contracts.domain import (
     Account,
@@ -607,3 +608,94 @@ def test_load_task_file_rejects_unknown_major(tmp_path: object) -> None:
     path.write_text(__import__("json").dumps(payload), encoding="utf-8")
     with pytest.raises(ValidationError):
         load_task_file(path)
+
+
+def test_datetime_rejects_non_utc_offset() -> None:
+    sao_paulo = timezone(timedelta(hours=-3))
+    with pytest.raises(ValidationError):
+        Beneficiary(
+            beneficiary_id="ben_001",
+            customer_id="cus_001",
+            nickname="Maria",
+            pix_key="maria@example.com",
+            created_at=datetime(2026, 3, 10, 14, 0, tzinfo=sao_paulo),
+        )
+
+
+def test_balance_history_seed_rejects_non_utc_and_bad_centavos() -> None:
+    base = minimal_world()
+    sao_paulo = timezone(timedelta(hours=-3))
+    payload = base.model_dump()
+    payload["balance_history_seed"] = {
+        "acc_ana": [(datetime(2026, 3, 10, 14, 0, tzinfo=sao_paulo), 100)]
+    }
+    with pytest.raises(ValidationError):
+        WorldFixture.model_validate(payload)
+    payload["balance_history_seed"] = {"acc_ana": [(START.isoformat(), 100.5)]}
+    with pytest.raises(ValidationError):
+        WorldFixture.model_validate(payload)
+
+
+def test_audit_payload_accepts_nested_json() -> None:
+    event = AuditEvent(
+        seq=1,
+        timestamp=START,
+        step_index=0,
+        actor=ActorKind.SYSTEM,
+        kind="RESET",
+        payload={"nested": {"items": [1, "x", None], "ok": True}},
+    )
+    assert event.payload["nested"]["items"] == [1, "x", None]
+
+
+def test_audit_payload_rejects_set_value() -> None:
+    with pytest.raises(ValueError):
+        validate_json_payload({"items": {1, 2}})  # type: ignore[dict-item]
+
+
+def test_audit_payload_rejects_non_finite_float() -> None:
+    with pytest.raises(ValueError):
+        validate_json_payload({"nan": float("nan")})
+
+
+def test_audit_event_rejects_callable_payload() -> None:
+    with pytest.raises(ValidationError):
+        AuditEvent(
+            seq=1,
+            timestamp=START,
+            step_index=0,
+            actor=ActorKind.SYSTEM,
+            kind="RESET",
+            payload={"fn": lambda: None},  # type: ignore[dict-item]
+        )
+
+
+@pytest.mark.parametrize(
+    "result",
+    [
+        None,
+        {"outcome": 1, "report": "ok"},
+        {"outcome": "COMPLETED", "report": 1},
+        {"outcome": "COMPLETED"},
+    ],
+)
+def test_final_observation_requires_string_outcome_and_report(result: object) -> None:
+    with pytest.raises(ValidationError):
+        Observation(
+            step_index=1,
+            sim_time=START,
+            kind="final",
+            result=result,  # type: ignore[arg-type]
+            observed_at=START,
+        )
+
+
+def test_final_observation_accepts_valid_shape() -> None:
+    obs = Observation(
+        step_index=1,
+        sim_time=START,
+        kind="final",
+        result={"outcome": "COMPLETED", "report": "done"},
+        observed_at=START,
+    )
+    assert obs.result == {"outcome": "COMPLETED", "report": "done"}

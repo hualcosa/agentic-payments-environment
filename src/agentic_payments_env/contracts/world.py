@@ -16,6 +16,7 @@ from agentic_payments_env.contracts.common import (
     TransferStatus,
     _require_aware,
     aware_datetime_validator,
+    validate_centavos,
 )
 from agentic_payments_env.contracts.domain import (
     Account,
@@ -54,6 +55,7 @@ class WorldFixture(FrozenModel):
         for snapshots in self.balance_history_seed.values():
             for ts, _amount in snapshots:
                 _require_aware(ts)
+                validate_centavos(_amount)
         return self
 
 
@@ -87,4 +89,5 @@ class WorldState(MutableModel):
         for snapshots in self.balance_history.values():
             for ts, _amount in snapshots:
                 _require_aware(ts)
+                validate_centavos(_amount)
         return self

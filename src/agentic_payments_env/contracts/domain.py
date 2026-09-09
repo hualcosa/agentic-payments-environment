@@ -8,7 +8,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from agentic_payments_env.contracts.common import (
     AccountStatus,
@@ -26,6 +26,7 @@ from agentic_payments_env.contracts.common import (
     TransferStatus,
     UntrustedStr,
     aware_datetime_validator,
+    validate_json_payload,
 )
 
 
@@ -141,6 +142,11 @@ class AuditEvent(FrozenModel):
     visible_to_agent: bool = True
 
     _aware = aware_datetime_validator("timestamp")
+
+    @field_validator("payload", mode="after")
+    @classmethod
+    def _validate_payload(cls, value: dict[str, Any]) -> dict[str, Any]:
+        return validate_json_payload(value)
 
 
 class NightWindow(FrozenModel):
