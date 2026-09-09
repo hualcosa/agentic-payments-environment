@@ -2,13 +2,38 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+import math
+from datetime import datetime, timedelta
+from decimal import Decimal
 from enum import Enum
+from typing import Annotated, Any
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, BeforeValidator, ConfigDict
 
-Centavos = int  # integer minor units of BRL; never float
 UntrustedStr = str  # may contain adversarial content; see 02 §8
+
+
+def validate_centavos(value: object) -> int:
+    """Reject bool/str/float/Decimal coercion at money boundaries. REQ-DOM-01/03."""
+    if isinstance(value, bool):
+        msg = "centavos must be int, not bool"
+        raise ValueError(msg)
+    if isinstance(value, float):
+        msg = "centavos must be int, not float"
+        raise ValueError(msg)
+    if isinstance(value, str):
+        msg = "centavos must be int, not str"
+        raise ValueError(msg)
+    if isinstance(value, Decimal):
+        msg = "centavos must be int, not Decimal"
+        raise ValueError(msg)
+    if not isinstance(value, int):
+        msg = f"centavos must be int, not {type(value).__name__}"
+        raise ValueError(msg)
+    return value
+
+
+Centavos = Annotated[int, BeforeValidator(validate_centavos)]
 
 SCHEMA_VERSION = "0.1"
 
@@ -35,16 +60,51 @@ class MutableModel(BaseModel):
     model_config = ConfigDict(frozen=False, extra="forbid", validate_assignment=True)
 
 
-def _require_aware(dt: datetime) -> datetime:
+def _require_utc(dt: datetime) -> datetime:
     if dt.tzinfo is None or dt.tzinfo.utcoffset(dt) is None:
         msg = "datetime must be timezone-aware"
+        raise ValueError(msg)
+    if dt.utcoffset() != timedelta(0):
+        msg = "datetime must be UTC with zero offset"
         raise ValueError(msg)
     return dt
 
 
 def aware_datetime_validator(value: datetime) -> datetime:
-    """Reject naive datetimes for contract fields. REQ-CON-05."""
-    return _require_aware(value)
+    """Reject naive or non-UTC datetimes for contract fields. REQ-CON-05, D-17."""
+    return _require_utc(value)
+
+
+def validate_json_value(value: object) -> object:
+    """Recursively validate JSON-serializable audit payload values. REQ-CON-04."""
+    if value is None:
+        return value
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            msg = "non-finite float in JSON payload"
+            raise ValueError(msg)
+        return value
+    if isinstance(value, list):
+        return [validate_json_value(item) for item in value]
+    if isinstance(value, dict):
+        return {str(key): validate_json_value(item) for key, item in value.items()}
+    msg = f"non-JSON value in payload: {type(value).__name__}"
+    raise ValueError(msg)
+
+
+def validate_json_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    """Validate an audit payload dict at construction time. REQ-CON-04."""
+    validated = validate_json_value(payload)
+    if not isinstance(validated, dict):
+        msg = "audit payload must be a JSON object"
+        raise ValueError(msg)
+    return validated
 
 
 class KycLevel(str, Enum):

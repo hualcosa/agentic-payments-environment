@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-from agentic_payments_env.contracts.common import EpisodeOutcome, FrozenModel
+from agentic_payments_env.contracts.common import Centavos, EpisodeOutcome, FrozenModel
 
 
 class GetCustomerProfileArgs(FrozenModel):
@@ -26,7 +26,7 @@ class LookupPixKeyArgs(FrozenModel):
 class CheckTransferPolicyArgs(FrozenModel):
     from_account_id: str
     pix_key: str = Field(min_length=1, max_length=77)
-    amount_centavos: int = Field(gt=0)
+    amount_centavos: Centavos = Field(gt=0)
 
 
 class AddBeneficiaryArgs(FrozenModel):
@@ -37,7 +37,7 @@ class AddBeneficiaryArgs(FrozenModel):
 class RequestConsentArgs(FrozenModel):
     from_account_id: str
     pix_key: str = Field(min_length=1, max_length=77)
-    amount_centavos: int = Field(gt=0)
+    amount_centavos: Centavos = Field(gt=0)
     description: str = Field(max_length=200)
 
 
@@ -48,7 +48,7 @@ class RequestStepUpAuthArgs(FrozenModel):
 class CreateTransferArgs(FrozenModel):
     from_account_id: str
     pix_key: str = Field(min_length=1, max_length=77)
-    amount_centavos: int = Field(gt=0)
+    amount_centavos: Centavos = Field(gt=0)
     idempotency_key: str = Field(min_length=1, max_length=64)
     consent_id: str | None = None
     memo: str = Field(default="", max_length=140)

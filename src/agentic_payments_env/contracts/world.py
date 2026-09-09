@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 from agentic_payments_env.contracts.common import (
     Centavos,
@@ -12,6 +12,7 @@ from agentic_payments_env.contracts.common import (
     MutableModel,
     TransferStatus,
     aware_datetime_validator,
+    validate_centavos,
 )
 from agentic_payments_env.contracts.domain import (
     Account,
@@ -47,6 +48,14 @@ class WorldFixture(FrozenModel):
     def _validate_start_time(cls, value: datetime) -> datetime:
         return aware_datetime_validator(value)
 
+    @model_validator(mode="after")
+    def _validate_balance_history_seed(self) -> WorldFixture:
+        for entries in self.balance_history_seed.values():
+            for when, amount in entries:
+                aware_datetime_validator(when)
+                validate_centavos(amount)
+        return self
+
 
 class WorldState(MutableModel):
     """The full hidden state. Mutated only by environment/tools code."""
@@ -75,3 +84,11 @@ class WorldState(MutableModel):
     @classmethod
     def _validate_now(cls, value: datetime) -> datetime:
         return aware_datetime_validator(value)
+
+    @model_validator(mode="after")
+    def _validate_balance_history(self) -> WorldState:
+        for entries in self.balance_history.values():
+            for when, amount in entries:
+                aware_datetime_validator(when)
+                validate_centavos(amount)
+        return self

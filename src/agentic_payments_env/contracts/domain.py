@@ -23,6 +23,7 @@ from agentic_payments_env.contracts.common import (
     TransferStatus,
     UntrustedStr,
     aware_datetime_validator,
+    validate_json_payload,
 )
 
 
@@ -163,6 +164,11 @@ class AuditEvent(FrozenModel):
     @classmethod
     def _validate_timestamp(cls, value: datetime) -> datetime:
         return aware_datetime_validator(value)
+
+    @field_validator("payload", mode="after")
+    @classmethod
+    def _validate_payload(cls, value: dict[str, Any]) -> dict[str, Any]:
+        return validate_json_payload(value)
 
 
 class NightWindow(FrozenModel):

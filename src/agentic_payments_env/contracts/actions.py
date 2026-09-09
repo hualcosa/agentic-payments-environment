@@ -77,4 +77,13 @@ class Observation(FrozenModel):
         if self.kind == "tool_error" and (self.error is None or self.result is not None):
             msg = "tool_error requires error and forbids result"
             raise ValueError(msg)
+        if self.kind == "final":
+            if self.result is None or self.error is not None:
+                msg = "final requires result and forbids error"
+                raise ValueError(msg)
+            outcome = self.result.get("outcome")
+            report = self.result.get("report")
+            if not isinstance(outcome, str) or not isinstance(report, str):
+                msg = "final result requires string outcome and report"
+                raise ValueError(msg)
         return self
