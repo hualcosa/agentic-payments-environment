@@ -178,20 +178,22 @@ class WorldState(WorldStateContract):
             if creation_kind is None:
                 continue
             skip = (
-                entity_id.startswith("tx_")
-                and (
-                    entity_id in self._fixture_transfer_ids
-                    or (
-                        creation_kind == "TRANSFER_REVERSED"
-                        and entity_id in self._creation_meta
+                (
+                    entity_id.startswith("tx_")
+                    and (
+                        entity_id in self._fixture_transfer_ids
+                        or (
+                            creation_kind == "TRANSFER_REVERSED"
+                            and entity_id in self._creation_meta
+                        )
                     )
                 )
-            ) or (
-                entity_id.startswith("ben_") and entity_id in self._fixture_beneficiary_ids
-            ) or (
-                entity_id.startswith("led_")
-                and entity_id
-                in {entry.entry_id for entry in self.ledger[: self._fixture_entry_count]}
+                or (entity_id.startswith("ben_") and entity_id in self._fixture_beneficiary_ids)
+                or (
+                    entity_id.startswith("led_")
+                    and entity_id
+                    in {entry.entry_id for entry in self.ledger[: self._fixture_entry_count]}
+                )
             )
             if skip:
                 continue
@@ -402,9 +404,7 @@ class WorldState(WorldStateContract):
             if meta is not None:
                 runtime_entities.append((consent_id, meta[0], meta[1]))
         for challenge_id in self.challenges:
-            meta = self._creation_meta.get(challenge_id) or self._derive_creation_meta(
-                challenge_id
-            )
+            meta = self._creation_meta.get(challenge_id) or self._derive_creation_meta(challenge_id)
             if meta is not None:
                 runtime_entities.append((challenge_id, meta[0], meta[1]))
         for beneficiary_id in self.beneficiaries:

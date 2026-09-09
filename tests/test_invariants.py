@@ -128,9 +128,7 @@ def test_invariant_fuzz_200x15() -> None:
             "zero_delta",
             lambda state: state.ledger.__setitem__(
                 state._fixture_entry_count,
-                state.ledger[state._fixture_entry_count].model_copy(
-                    update={"delta_centavos": 0}
-                ),
+                state.ledger[state._fixture_entry_count].model_copy(update={"delta_centavos": 0}),
             ),
         ),
         (
@@ -144,9 +142,7 @@ def test_invariant_fuzz_200x15() -> None:
         ),
     ],
 )
-def test_inv_02_rejects_bad_ledger_shapes(
-    mutator_name: str, mutator: object
-) -> None:
+def test_inv_02_rejects_bad_ledger_shapes(mutator_name: str, mutator: object) -> None:
     del mutator_name
     env = PaymentsEnvironment(_permissive_task(), 0, strict=False)
     env.reset()
