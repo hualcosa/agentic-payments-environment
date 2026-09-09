@@ -79,6 +79,6 @@ Tests: file exists; contains `WEIGHTS` or the numeric weights and
 
 ## M4 exit checklist
 
-- [ ] Reward spec committed.
-- [ ] Preference construction tested.
-- [ ] Farmer episode reward ≤ 0.
+- [x] Reward spec committed.
+- [x] Preference construction tested.
+- [x] Farmer episode reward ≤ 0.
