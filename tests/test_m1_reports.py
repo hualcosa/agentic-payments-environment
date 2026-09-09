@@ -10,6 +10,12 @@ _REPORTS = (
 )
 
 
+def test_examples_readme_not_yet_measured() -> None:
+    path = Path("reports/v0/examples/README.md")
+    assert path.is_file()
+    assert "not yet measured" in path.read_text(encoding="utf-8").lower()
+
+
 def test_two_v1_reports_exist() -> None:
     for path in _REPORTS:
         assert path.is_file(), path

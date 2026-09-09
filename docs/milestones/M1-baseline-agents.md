@@ -170,8 +170,8 @@ first real run is reviewed.
 
 ## M1 exit checklist
 
-- [ ] Two committed reports (measured or explicitly "not yet measured").
-- [ ] FakeChatModel tests cover valid call, malformed JSON, unknown tool,
+- [x] Two committed reports (measured or explicitly "not yet measured").
+- [x] FakeChatModel tests cover valid call, malformed JSON, unknown tool,
       text-only, forced finish.
-- [ ] `import agentic_payments_env` does not import `openai` or `anthropic`.
-- [ ] Prompt v1 hashed into `meta.json` on llm runs.
+- [x] `import agentic_payments_env` does not import `openai` or `anthropic`.
+- [x] Prompt v1 hashed into `meta.json` on llm runs.
