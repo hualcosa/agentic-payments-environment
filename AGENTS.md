@@ -44,8 +44,11 @@ deterministic. Write the ambiguity and your choice into
 - **No randomness outside the seeded RNG.** No `random.random()`, no
   `uuid4()`, no `time.time()`, no `datetime.now()` inside the package. IDs
   come from `IdGenerator`; time comes from `SimClock`.
-- **No network calls** anywhere in `src/` for milestones M0–M2. No HTTP
-  clients, no SDKs, no environment-variable credentials.
+- **No network calls in core.** The package core (`src/agentic_payments_env/`
+  except `adapters/`) and all tests/benchmark generation remain network-free:
+  no HTTP clients, no provider SDKs, no environment-variable credentials.
+  Optional provider networking is allowed only in M1+ adapter modules behind
+  optional extras; importing the package/core must not load an SDK.
 - **No new runtime dependencies** beyond those listed in
   `docs/12-decisions.md` (currently: `pydantic>=2`). Dev dependencies are
   `pytest`, `ruff`, `mypy`. Ask before adding anything else.
