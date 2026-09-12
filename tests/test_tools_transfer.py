@@ -96,6 +96,17 @@ def _grant(ctx: ToolContext, amount: int = 100) -> str:
         created_at=START,
         expires_at=START + timedelta(seconds=300),
     )
+    ctx.state._record_creation(
+        entity_id=consent_id,
+        step_index=ctx.step_index,
+        kind="CONSENT_REQUESTED",
+    )
+    ctx.state.emit(
+        step_index=ctx.step_index,
+        actor=ActorKind.SYSTEM,
+        kind="CONSENT_REQUESTED",
+        entity_ids=[consent_id],
+    )
     ctx.state.emit(
         step_index=ctx.step_index,
         actor=ActorKind.SYSTEM,

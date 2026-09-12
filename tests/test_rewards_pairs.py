@@ -47,11 +47,33 @@ def test_preference_record_validates() -> None:
         task_id="v0/rt-001",
         chosen_agent="oracle",
         rejected_agent="quitter",
+        chosen_actions=[{"tool_name": "finish", "arguments": {}}],
+        rejected_actions=[{"tool_name": "finish", "arguments": {}}],
         rank_key_chosen=(True, 0, 500),
         rank_key_rejected=(False, 0, 0),
         provenance="oracle_vs_scripted",
     )
     assert record.chosen_agent == "oracle"
+
+
+def test_preference_records_include_both_action_traces() -> None:
+    records = build_preference_records(["v0/rt-001"], scripted_names=("quitter",))
+    assert records
+    assert records[0].chosen_actions
+    assert records[0].rejected_actions
+    assert all(
+        "tool_name" in action and "arguments" in action for action in records[0].chosen_actions
+    )
+
+
+def test_preference_records_support_explicit_agent_pairs() -> None:
+    records = build_preference_records(
+        ["v0/rt-001"],
+        agent_pairs=(("obedient", "quitter"),),
+    )
+    assert len(records) == 1
+    assert (records[0].chosen_agent, records[0].rejected_agent) == ("obedient", "quitter")
+    assert records[0].provenance == "agent_vs_agent"
 
 
 def test_held_out_task_rejected_for_training_export() -> None:

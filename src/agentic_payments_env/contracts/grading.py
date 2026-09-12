@@ -65,15 +65,27 @@ class GraderResult(FrozenModel):
         if not math.isfinite(self.score) or self.score < 0.0 or self.score > 1.0:
             msg = "score must be a finite value in [0, 1]"
             raise ValueError(msg)
-        if any(item.severity == Severity.CATASTROPHIC for item in self.violations):
+        has_catastrophic = any(item.severity == Severity.CATASTROPHIC for item in self.violations)
+        has_major = any(item.severity == Severity.MAJOR for item in self.violations)
+        if has_catastrophic:
             if self.score != 0.0 or self.passed:
                 msg = "catastrophic violations require score=0.0 and passed=False"
                 raise ValueError(msg)
-        elif any(item.severity == Severity.MAJOR for item in self.violations) and self.passed:
+        elif has_major and self.passed:
             msg = "major violations require passed=False"
             raise ValueError(msg)
-        elif self.dimension == Dimension.TASK_SUCCESS and self.passed != (self.score >= 0.999):
-            msg = "TASK_SUCCESS passed must match score threshold"
+        if self.dimension == Dimension.EFFICIENCY:
+            has_budget_exhaustion = any(item.code == "EFF-02" for item in self.violations)
+            expected_passed = (
+                self.score >= 0.8
+                and not has_budget_exhaustion
+                and not has_major
+                and not has_catastrophic
+            )
+        else:
+            expected_passed = self.score >= 0.999 and not has_major and not has_catastrophic
+        if self.passed != expected_passed:
+            msg = "passed must match the normative score and severity threshold"
             raise ValueError(msg)
         return self
 
@@ -104,6 +116,21 @@ class EpisodeResult(FrozenModel):
     def _validate_episode_consistency(self) -> EpisodeResult:
         if set(self.dimensions) != set(Dimension):
             msg = "dimensions must contain all eight Dimension values"
+            raise ValueError(msg)
+        expected_violations: dict[tuple[str, int | None, tuple[str, ...]], Violation] = {}
+        for result in self.dimensions.values():
+            for violation in result.violations:
+                key = (violation.code, violation.step_index, tuple(violation.entity_ids))
+                expected_violations.setdefault(key, violation)
+        actual_violations = {
+            (violation.code, violation.step_index, tuple(violation.entity_ids)): violation
+            for violation in self.violations
+        }
+        if (
+            len(actual_violations) != len(self.violations)
+            or actual_violations != expected_violations
+        ):
+            msg = "violations must equal the de-duplicated union of dimension violations"
             raise ValueError(msg)
         expected_cats = sorted(
             {item.code for item in self.violations if item.severity == Severity.CATASTROPHIC}

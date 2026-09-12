@@ -684,3 +684,42 @@ ticket instead of weakening the checker.
 7. `tests/test_req_coverage.py` and `tests/test_source_conventions.py` green
    for all 102 REQ ids.
 
+### T7.21 — Close post-audit safety and artifact gaps
+
+**Files**: `src/agentic_payments_env/world.py`,
+`src/agentic_payments_env/tools/authorize.py`,
+`src/agentic_payments_env/tools/misc.py`,
+`src/agentic_payments_env/tools/transfer.py`,
+`src/agentic_payments_env/contracts/grading.py`,
+`src/agentic_payments_env/contracts/training.py`,
+`src/agentic_payments_env/rewards/pairs.py`,
+`src/agentic_payments_env/reproduce.py`, `tests/test_invariants.py`,
+`tests/test_world.py`, `tests/test_tools_transfer.py`, `tests/test_contracts.py`,
+`tests/test_report.py`, `tests/test_rewards_pairs.py`,
+`tests/test_reproducibility.py`, `datasets/preferences-v1.1.jsonl`,
+`reports/v1/reward-spec.md`, and this file.
+
+**Spec references**: `docs/02-domain-model.md` INV-04;
+`docs/03-contracts.md` section 8; `docs/08-graders-and-metrics.md`
+REQ-GRD-03--06; `docs/11-roadmap.md` M4--M6; T7.05, T7.06, T7.15 and
+T7.19 above.
+
+- Record runtime entity creation at the mutation site and reject missing
+  creation metadata, so a missing or later audit event cannot satisfy INV-04.
+- Require `GraderResult.passed` to match the normative threshold for every
+  applicable dimension. Require `EpisodeResult.violations` to equal the
+  de-duplicated union of all dimensional violations.
+- Store chosen and rejected action traces in every preference record and
+  support explicit agent-A/agent-B pairs as well as the default
+  oracle/scripted pairs.
+- Generate the reward specification and executable reward examples from code;
+  compare the regenerated file in `apenv reproduce --check` rather than
+  copying it from the checkout.
+
+**Tests**: direct unaudited-entity and late-event probes; hidden dimensional
+catastrophe and non-normative `passed` probes; preference action-pair and
+explicit-agent-pair coverage; reward artifact tamper/check coverage.
+
+**Done when**: all four independent review findings are covered by failing
+regressions before the fixes, the generated datasets/reports are refreshed,
+and the full Python 3.11 verification gate passes.

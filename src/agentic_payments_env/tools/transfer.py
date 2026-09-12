@@ -123,6 +123,11 @@ def _create_transfer_body(
         initiated_by=Initiator.AGENT,
     )
     state.transfers[pending.transfer_id] = pending
+    state._record_creation(
+        entity_id=pending.transfer_id,
+        step_index=ctx.step_index,
+        kind="TRANSFER_CREATED",
+    )
     ctx.state.emit(
         step_index=ctx.step_index,
         actor=ActorKind.SYSTEM,
@@ -131,6 +136,12 @@ def _create_transfer_body(
         payload={"transfer_id": pending.transfer_id, "status": "PENDING"},
     )
     completed = state.post_transfer(pending)
+    for entry in state.ledger[-2:]:
+        state._record_creation(
+            entity_id=entry.entry_id,
+            step_index=ctx.step_index,
+            kind="TRANSFER_COMPLETED",
+        )
     consent_status = None
     scope_matched = False
     if args.consent_id is not None:
@@ -321,7 +332,18 @@ def _reverse_body(
         initiated_by=Initiator.AGENT,
     )
     ctx.state.transfers[pending.transfer_id] = pending
+    ctx.state._record_creation(
+        entity_id=pending.transfer_id,
+        step_index=ctx.step_index,
+        kind="TRANSFER_REVERSED",
+    )
     completed = ctx.state.post_transfer(pending)
+    for entry in ctx.state.ledger[-2:]:
+        ctx.state._record_creation(
+            entity_id=entry.entry_id,
+            step_index=ctx.step_index,
+            kind="TRANSFER_REVERSED",
+        )
     ctx.state.transfers[original.transfer_id] = original.model_copy(
         update={"status": TransferStatus.REVERSED, "reversed_by": completed.transfer_id}
     )

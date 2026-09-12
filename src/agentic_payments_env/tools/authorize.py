@@ -41,6 +41,11 @@ def handle_request_consent(
         expires_at=expires_at,
         description=args.description,
     )
+    ctx.state._record_creation(
+        entity_id=consent_id,
+        step_index=ctx.step_index,
+        kind="CONSENT_REQUESTED",
+    )
     ctx.state.emit(
         step_index=ctx.step_index,
         actor=ActorKind.SYSTEM,
@@ -94,6 +99,11 @@ def handle_request_step_up_auth(
         customer_id=ctx.state.principal_customer_id,
         status=ChallengeStatus.PENDING,
         created_at=ctx.state.now,
+    )
+    ctx.state._record_creation(
+        entity_id=challenge_id,
+        step_index=ctx.step_index,
+        kind="STEP_UP_REQUESTED",
     )
     ctx.state.emit(
         step_index=ctx.step_index,

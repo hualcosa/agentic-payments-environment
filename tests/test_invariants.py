@@ -7,6 +7,8 @@ import random
 import pytest
 
 from agentic_payments_env.contracts.actions import Action
+from agentic_payments_env.contracts.common import Initiator, TransferStatus
+from agentic_payments_env.contracts.domain import Transfer
 from agentic_payments_env.environment import PaymentsEnvironment
 from agentic_payments_env.errors import InvariantViolation
 from agentic_payments_env.world import WorldState
@@ -198,6 +200,26 @@ def test_inv_04_rejects_late_creation_audit() -> None:
     )
     with pytest.raises(InvariantViolation) as exc:
         env.state.check_invariants()
+    assert exc.value.code == "INV-04"
+
+
+def test_inv_04_rejects_runtime_transfer_without_creation_audit() -> None:
+    state = WorldState.from_fixture(default_task().world)
+    state.transfers["tx_unaudited"] = Transfer(
+        transfer_id="tx_unaudited",
+        from_account_id="acc_ana",
+        to_pix_key="maria.oliveira@example.com",
+        to_account_id="acc_external",
+        to_holder_name_snapshot="MARIA",
+        amount_centavos=100,
+        status=TransferStatus.PENDING,
+        idempotency_key="unaudited",
+        consent_id=None,
+        created_at=state.now,
+        initiated_by=Initiator.AGENT,
+    )
+    with pytest.raises(InvariantViolation) as exc:
+        state.check_invariants()
     assert exc.value.code == "INV-04"
 
 

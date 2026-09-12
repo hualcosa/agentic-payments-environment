@@ -15,6 +15,8 @@ class PreferenceRecord(FrozenModel):
     seed: int = 0
     chosen_agent: str
     rejected_agent: str
+    chosen_actions: list[dict[str, object]]
+    rejected_actions: list[dict[str, object]]
     rank_key_chosen: tuple[bool, int, int]
     rank_key_rejected: tuple[bool, int, int]
     provenance: str = Field(min_length=1)
