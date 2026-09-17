@@ -12,14 +12,14 @@ Do not duplicate evolving strategy here or infer measured results from feature c
 
 - On 2026-09-17 local main was fast-forwarded from e27f756 to remote main
   dae3b9598570d80d0e8a1f86aa8cb962e25b2d55 (50 commits); fetched remote matched.
-- Local integration branch: `codex/sync-workspace`; workspace changes are
-  uncommitted and not pushed. Files on disk are not yet shared through Git.
+- Local integration branch: `codex/sync-workspace`; reviewed implementation is committed
+  through `7d88183` locally. No push has been performed.
 - The revision includes environment, benchmark v0/v1, graders, adapters,
   generators, reward/export tooling and reports. Milestone labels describe
   implemented infrastructure, not proof of completed live experiments.
 - Live-model benchmark/intervention results remain **not yet measured** in
   the checked-in reports. Git does not recover ignored Cloud-only run files.
-- Completed tasks `20260917-001` through `20260917-006` are recorded in
+- Completed tasks `20260917-001` through `20260917-007` are recorded in
   `tasks/done/`. The latest slice implemented and verified the offline LLM
   single-tool-turn protocol in the agent, both provider adapters and integration.
 - No active research experiment is assumed. Live-model behavior remains unmeasured.
@@ -38,14 +38,20 @@ Do not duplicate evolving strategy here or infer measured results from feature c
   change environment contracts, dependencies or experiments.
 
 ## Latest validation (2026-09-17)
-The offline LLM tool-protocol slice is complete. `LLMAgent` rejects multi-call
-turns and invalid IDs atomically, both provider adapters request serial tool use,
-and 20 integration cases cover correlation, protocol errors, successful payment,
-unknown/malformed correction, timeout recovery, reset isolation, replay and CLI
-artifacts. Full verification passed: Ruff format/lint, mypy on 80 source files,
-464 pytest tests and `git diff --check`. Shared workspace validation also passed.
-Oracle v0 seed 0 produced 31 episodes, safe success 1.0 and zero catastrophics at
-`runs/llm-protocol-integration-20260917T113140Z`; its report is byte-identical to
-`reports/v0/oracle.md`. This is offline scripted evidence only, not a live-model
-experiment. All changes remain uncommitted and unpushed on `codex/sync-workspace`;
-remote CI has not run.
+Acceptance review 007 verified tasks 004–006 and fixed two gaps: safe protocol
+reasons now persist in existing episode metadata, and a rejected agent requires
+reset before another model request. Integration compares complete observation
+bodies and audit state, not only correlation IDs. Public contracts are unchanged.
+
+Full gate rerun on committed code `7d88183`: uv sync, Ruff format/lint, mypy
+(80 source files), and 469 pytest tests passed. Shared validator and diff checks
+passed. Oracle evidence at `runs/llm-protocol-review-20260917T113919Z` contains
+31 episodes, safe success 1.0, zero catastrophics; report byte-identical to
+`reports/v0/oracle.md`, with all 31 traces replayed during review. This is offline
+scripted evidence only, not a live-model experiment. Remote CI has not run.
+
+Local commits: `bc5102e` workspace, `e821417` pytest imports, `a974a32` agent,
+`650ec91` adapters, `7d88183` integration/diagnostics. Review closure is recorded
+separately. Preexisting `.serena/` configuration remains untracked and untouched.
+No paid calls, provisioning, publication or push performed. No implementation
+follow-up remains for this protocol slice; further experiments require approval.
