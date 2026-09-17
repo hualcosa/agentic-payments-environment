@@ -1,0 +1,12 @@
+{
+  "lastAnalyzedAt": "2026-09-17T17:33:01.120Z",
+  "gitCommitHash": "24e6f36a3741713d966eb9cfe4b4da48655bbb24",
+  "version": "1.0.0",
+  "analyzedFiles": 480,
+  "fileCategoryBreakdown": {
+    "docs": 68,
+    "code": 137,
+    "infra": 1,
+    "config": 274
+  }
+}

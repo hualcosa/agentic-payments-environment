@@ -1,0 +1,3835 @@
+{
+  "name": "agentic-payments-env",
+  "description": "Deterministic research environment for agentic payment workflows. Note: this project has over 100 source files; consider scoping analysis to a subdirectory for faster results.",
+  "languages": [
+    "json",
+    "jsonl",
+    "markdown",
+    "mdc",
+    "python",
+    "toml",
+    "unknown",
+    "yaml"
+  ],
+  "frameworks": [
+    "pydantic",
+    "pytest",
+    "GitHub Actions"
+  ],
+  "files": [
+    {
+      "path": ".coordination/README.md",
+      "language": "markdown",
+      "sizeLines": 90,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/context/project.md",
+      "language": "markdown",
+      "sizeLines": 57,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/decisions/ADR-0001-single-tool-turn.md",
+      "language": "markdown",
+      "sizeLines": 32,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/decisions/README.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/handoffs/20260917-0942-20260917-001-sync-workspace-codex-to-owner.md",
+      "language": "markdown",
+      "sizeLines": 36,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/handoffs/20260917-0956-20260917-001-sync-workspace-codex-to-owner.md",
+      "language": "markdown",
+      "sizeLines": 33,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/handoffs/20260917-1119-20260917-003-prepare-llm-tool-tasks-codex-to-cursor.md",
+      "language": "markdown",
+      "sizeLines": 44,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/handoffs/20260917-1132-20260917-006-llm-protocol-integration-codex-to-owner.md",
+      "language": "markdown",
+      "sizeLines": 42,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/handoffs/20260917-1143-20260917-007-review-llm-protocol-codex-to-owner.md",
+      "language": "markdown",
+      "sizeLines": 39,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/handoffs/README.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/plans/2026-09-17-llm-tool-protocol.md",
+      "language": "markdown",
+      "sizeLines": 88,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/plans/2026-09-17-pytest-import-path.md",
+      "language": "markdown",
+      "sizeLines": 57,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/plans/2026-09-17-sync-workspace.md",
+      "language": "markdown",
+      "sizeLines": 36,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/plans/README.md",
+      "language": "markdown",
+      "sizeLines": 8,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/backlog/README.md",
+      "language": "markdown",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-001-sync-workspace.md",
+      "language": "markdown",
+      "sizeLines": 91,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-002-pytest-import-path.md",
+      "language": "markdown",
+      "sizeLines": 123,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-003-prepare-llm-tool-tasks.md",
+      "language": "markdown",
+      "sizeLines": 50,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-004-llm-agent-protocol.md",
+      "language": "markdown",
+      "sizeLines": 109,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-005-provider-tool-protocol.md",
+      "language": "markdown",
+      "sizeLines": 104,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-006-llm-protocol-integration.md",
+      "language": "markdown",
+      "sizeLines": 132,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-007-review-llm-protocol.md",
+      "language": "markdown",
+      "sizeLines": 115,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/20260917-008-concise-communication.md",
+      "language": "markdown",
+      "sizeLines": 43,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/done/README.md",
+      "language": "markdown",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/tasks/in-progress/README.md",
+      "language": "markdown",
+      "sizeLines": 5,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/templates/decision.md",
+      "language": "markdown",
+      "sizeLines": 25,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/templates/handoff.md",
+      "language": "markdown",
+      "sizeLines": 26,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".coordination/templates/task.md",
+      "language": "markdown",
+      "sizeLines": 38,
+      "fileCategory": "docs"
+    },
+    {
+      "path": ".cursor/rules/coordination.mdc",
+      "language": "mdc",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".cursor/rules/project-context.mdc",
+      "language": "mdc",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "language": "yaml",
+      "sizeLines": 28,
+      "fileCategory": "infra"
+    },
+    {
+      "path": ".serena/project.yml",
+      "language": "yaml",
+      "sizeLines": 170,
+      "fileCategory": "config"
+    },
+    {
+      "path": ".ua/.understandignore",
+      "language": "unknown",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": ".ua/config.json",
+      "language": "json",
+      "sizeLines": 1,
+      "fileCategory": "config"
+    },
+    {
+      "path": "AGENTS.md",
+      "language": "markdown",
+      "sizeLines": 193,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "CLAUDE.md",
+      "language": "markdown",
+      "sizeLines": 33,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "sizeLines": 107,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "annotations/v0-scripted.jsonl",
+      "language": "jsonl",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "benchmarks/v0/adv-001.json",
+      "language": "json",
+      "sizeLines": 211,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/adv-002.json",
+      "language": "json",
+      "sizeLines": 206,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/adv-003.json",
+      "language": "json",
+      "sizeLines": 235,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/adv-004.json",
+      "language": "json",
+      "sizeLines": 185,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/adv-005.json",
+      "language": "json",
+      "sizeLines": 185,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/adv-006.json",
+      "language": "json",
+      "sizeLines": 213,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-001.json",
+      "language": "json",
+      "sizeLines": 220,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-002.json",
+      "language": "json",
+      "sizeLines": 230,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-003.json",
+      "language": "json",
+      "sizeLines": 216,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-004.json",
+      "language": "json",
+      "sizeLines": 222,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-005.json",
+      "language": "json",
+      "sizeLines": 242,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-006.json",
+      "language": "json",
+      "sizeLines": 215,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-007.json",
+      "language": "json",
+      "sizeLines": 220,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/fr-008.json",
+      "language": "json",
+      "sizeLines": 220,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-001.json",
+      "language": "json",
+      "sizeLines": 185,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-002.json",
+      "language": "json",
+      "sizeLines": 185,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-003.json",
+      "language": "json",
+      "sizeLines": 185,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-004.json",
+      "language": "json",
+      "sizeLines": 187,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-005.json",
+      "language": "json",
+      "sizeLines": 192,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-006.json",
+      "language": "json",
+      "sizeLines": 187,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-007.json",
+      "language": "json",
+      "sizeLines": 222,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-008.json",
+      "language": "json",
+      "sizeLines": 187,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-009.json",
+      "language": "json",
+      "sizeLines": 207,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-010.json",
+      "language": "json",
+      "sizeLines": 211,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/pc-011.json",
+      "language": "json",
+      "sizeLines": 187,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/rt-001.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/rt-002.json",
+      "language": "json",
+      "sizeLines": 201,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/rt-003.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/rt-004.json",
+      "language": "json",
+      "sizeLines": 234,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/rt-005.json",
+      "language": "json",
+      "sizeLines": 227,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v0/rt-006.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-004.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-005.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-007.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-013.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-018.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-021.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-033.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-038.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/adv-041.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-002.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-006.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-019.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-027.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-028.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-032.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-033.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-038.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-043.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-051.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/fr-054.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-004.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-013.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-015.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-025.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-027.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-035.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-038.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-042.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-049.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-056.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/pc-057.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-011.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-016.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-029.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-033.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-037.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-038.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-041.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-042.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1-train/rt-050.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-001.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-002.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-003.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-006.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-008.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-009.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-010.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-011.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-012.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-014.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-015.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-016.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-017.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-019.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-020.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-022.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-023.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-024.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-025.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-026.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-027.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-028.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-029.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-030.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-031.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-032.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-034.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-035.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-036.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-037.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-039.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-040.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-042.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-043.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-044.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-045.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-046.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-047.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-048.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-049.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-050.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-051.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-052.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-053.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-054.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-055.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-056.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-057.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-058.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-059.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/adv-060.json",
+      "language": "json",
+      "sizeLines": 214,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-001.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-003.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-004.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-005.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-007.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-008.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-009.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-010.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-011.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-012.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-013.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-014.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-015.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-016.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-017.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-018.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-020.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-021.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-022.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-023.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-024.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-025.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-026.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-029.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-030.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-031.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-034.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-035.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-036.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-037.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-039.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-040.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-041.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-042.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-044.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-045.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-046.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-047.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-048.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-049.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-050.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-052.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-053.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-055.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-056.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-057.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-058.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-059.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/fr-060.json",
+      "language": "json",
+      "sizeLines": 233,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-001.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-002.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-003.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-005.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-006.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-007.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-008.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-009.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-010.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-011.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-012.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-014.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-016.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-017.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-018.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-019.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-020.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-021.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-022.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-023.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-024.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-026.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-028.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-029.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-030.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-031.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-032.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-033.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-034.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-036.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-037.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-039.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-040.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-041.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-043.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-044.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-045.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-046.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-047.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-048.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-050.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-051.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-052.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-053.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-054.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-055.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-058.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-059.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/pc-060.json",
+      "language": "json",
+      "sizeLines": 188,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-001.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-002.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-003.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-004.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-005.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-006.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-007.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-008.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-009.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-010.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-012.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-013.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-014.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-015.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-017.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-018.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-019.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-020.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-021.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-022.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-023.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-024.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-025.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-026.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-027.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-028.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-030.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-031.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-032.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-034.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-035.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-036.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-039.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-040.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-043.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-044.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-045.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-046.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-047.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-048.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-049.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-051.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-052.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-053.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-054.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-055.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-056.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-057.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-058.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-059.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "benchmarks/v1/rt-060.json",
+      "language": "json",
+      "sizeLines": 209,
+      "fileCategory": "config"
+    },
+    {
+      "path": "docs/00-index.md",
+      "language": "markdown",
+      "sizeLines": 54,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/00-project-context.md",
+      "language": "markdown",
+      "sizeLines": 135,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/01-vision-and-scope.md",
+      "language": "markdown",
+      "sizeLines": 135,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/02-domain-model.md",
+      "language": "markdown",
+      "sizeLines": 222,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/03-contracts.md",
+      "language": "markdown",
+      "sizeLines": 537,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/04-tools-and-actions.md",
+      "language": "markdown",
+      "sizeLines": 238,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/05-policies-and-authorization.md",
+      "language": "markdown",
+      "sizeLines": 181,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/06-environment-runtime.md",
+      "language": "markdown",
+      "sizeLines": 224,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/07-tasks-and-benchmark-v0.md",
+      "language": "markdown",
+      "sizeLines": 240,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/08-graders-and-metrics.md",
+      "language": "markdown",
+      "sizeLines": 176,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/09-failure-taxonomy.md",
+      "language": "markdown",
+      "sizeLines": 134,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/10-testing-strategy.md",
+      "language": "markdown",
+      "sizeLines": 187,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/11-roadmap.md",
+      "language": "markdown",
+      "sizeLines": 103,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/12-decisions.md",
+      "language": "markdown",
+      "sizeLines": 172,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/appendix-plan-review.md",
+      "language": "markdown",
+      "sizeLines": 60,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/milestones/M0-scaffold.md",
+      "language": "markdown",
+      "sizeLines": 423,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/milestones/M1-baseline-agents.md",
+      "language": "markdown",
+      "sizeLines": 177,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/milestones/M2-failure-analysis.md",
+      "language": "markdown",
+      "sizeLines": 142,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/milestones/M3-synthetic.md",
+      "language": "markdown",
+      "sizeLines": 139,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/milestones/M4-rewards.md",
+      "language": "markdown",
+      "sizeLines": 84,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/milestones/M5-optimization.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "docs/milestones/M6-report.md",
+      "language": "markdown",
+      "sizeLines": 44,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "prompts/v1.md",
+      "language": "markdown",
+      "sizeLines": 46,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "prompts/v2.md",
+      "language": "markdown",
+      "sizeLines": 49,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "pyproject.toml",
+      "language": "toml",
+      "sizeLines": 45,
+      "fileCategory": "config"
+    },
+    {
+      "path": "reports/reproducibility.md",
+      "language": "markdown",
+      "sizeLines": 37,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/technical-report.md",
+      "language": "markdown",
+      "sizeLines": 77,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v0/claude-haiku-4-5-v1.md",
+      "language": "markdown",
+      "sizeLines": 12,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v0/examples/README.md",
+      "language": "markdown",
+      "sizeLines": 10,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v0/gpt-4o-mini-v1.md",
+      "language": "markdown",
+      "sizeLines": 12,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v0/grader-agreement.md",
+      "language": "markdown",
+      "sizeLines": 24,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v0/oracle.md",
+      "language": "markdown",
+      "sizeLines": 67,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v0/taxonomy-v1.md",
+      "language": "markdown",
+      "sizeLines": 40,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v0/v0.1-decision.md",
+      "language": "markdown",
+      "sizeLines": 9,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v1/difficulty.md",
+      "language": "markdown",
+      "sizeLines": 18,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v1/interventions.md",
+      "language": "markdown",
+      "sizeLines": 22,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v1/prompt-v2.md",
+      "language": "markdown",
+      "sizeLines": 10,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "reports/v1/reward-spec.md",
+      "language": "markdown",
+      "sizeLines": 58,
+      "fileCategory": "docs"
+    },
+    {
+      "path": "src/agentic_payments_env/__init__.py",
+      "language": "python",
+      "sizeLines": 9,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/adapters/__init__.py",
+      "language": "python",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/adapters/anthropic.py",
+      "language": "python",
+      "sizeLines": 152,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/adapters/base.py",
+      "language": "python",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/adapters/openai_compat.py",
+      "language": "python",
+      "sizeLines": 152,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/agents/__init__.py",
+      "language": "python",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/agents/base.py",
+      "language": "python",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/agents/llm.py",
+      "language": "python",
+      "sizeLines": 166,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/agents/oracle.py",
+      "language": "python",
+      "sizeLines": 144,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/agents/presets.py",
+      "language": "python",
+      "sizeLines": 151,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/agents/scripted.py",
+      "language": "python",
+      "sizeLines": 299,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/annotations/__init__.py",
+      "language": "python",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/annotations/agreement.py",
+      "language": "python",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/annotations/corpus.py",
+      "language": "python",
+      "sizeLines": 42,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/annotations/from_grade.py",
+      "language": "python",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/annotations/schema.py",
+      "language": "python",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/__init__.py",
+      "language": "python",
+      "sizeLines": 1,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/loader.py",
+      "language": "python",
+      "sizeLines": 49,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/report.py",
+      "language": "python",
+      "sizeLines": 173,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/runner.py",
+      "language": "python",
+      "sizeLines": 131,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/v0/__init__.py",
+      "language": "python",
+      "sizeLines": 94,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/v0/tasks_adversarial.py",
+      "language": "python",
+      "sizeLines": 267,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/v0/tasks_policy.py",
+      "language": "python",
+      "sizeLines": 323,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/v0/tasks_recovery.py",
+      "language": "python",
+      "sizeLines": 360,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/v0/tasks_routine.py",
+      "language": "python",
+      "sizeLines": 286,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "language": "python",
+      "sizeLines": 218,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/benchmark/v1/__init__.py",
+      "language": "python",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/cli.py",
+      "language": "python",
+      "sizeLines": 308,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/__init__.py",
+      "language": "python",
+      "sizeLines": 141,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/actions.py",
+      "language": "python",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/common.py",
+      "language": "python",
+      "sizeLines": 144,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/domain.py",
+      "language": "python",
+      "sizeLines": 172,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/grading.py",
+      "language": "python",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/tasks.py",
+      "language": "python",
+      "sizeLines": 138,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/trace.py",
+      "language": "python",
+      "sizeLines": 46,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/contracts/world.py",
+      "language": "python",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/core/hashing.py",
+      "language": "python",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/core/money.py",
+      "language": "python",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/environment.py",
+      "language": "python",
+      "sizeLines": 269,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/errors.py",
+      "language": "python",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/export_sft.py",
+      "language": "python",
+      "sizeLines": 30,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/faults.py",
+      "language": "python",
+      "sizeLines": 44,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/__init__.py",
+      "language": "python",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/adversarial.py",
+      "language": "python",
+      "sizeLines": 80,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/base.py",
+      "language": "python",
+      "sizeLines": 50,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/difficulty.py",
+      "language": "python",
+      "sizeLines": 73,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/policy.py",
+      "language": "python",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/pool.py",
+      "language": "python",
+      "sizeLines": 120,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/recovery.py",
+      "language": "python",
+      "sizeLines": 83,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/routine.py",
+      "language": "python",
+      "sizeLines": 70,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/generators/validate.py",
+      "language": "python",
+      "sizeLines": 22,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/__init__.py",
+      "language": "python",
+      "sizeLines": 81,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/_helpers.py",
+      "language": "python",
+      "sizeLines": 161,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/auditability.py",
+      "language": "python",
+      "sizeLines": 59,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/authorization.py",
+      "language": "python",
+      "sizeLines": 141,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/base.py",
+      "language": "python",
+      "sizeLines": 20,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/efficiency.py",
+      "language": "python",
+      "sizeLines": 90,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/financial.py",
+      "language": "python",
+      "sizeLines": 128,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/llm_judge.py",
+      "language": "python",
+      "sizeLines": 68,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/policy.py",
+      "language": "python",
+      "sizeLines": 125,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/recovery.py",
+      "language": "python",
+      "sizeLines": 176,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/safety.py",
+      "language": "python",
+      "sizeLines": 104,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/task_success.py",
+      "language": "python",
+      "sizeLines": 70,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/graders/taxonomy.py",
+      "language": "python",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/policies.py",
+      "language": "python",
+      "sizeLines": 263,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/prompts.py",
+      "language": "python",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/replay.py",
+      "language": "python",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/rewards/__init__.py",
+      "language": "python",
+      "sizeLines": 5,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/rewards/episode.py",
+      "language": "python",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/rewards/pairs.py",
+      "language": "python",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/rewards/step.py",
+      "language": "python",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/simulated_user.py",
+      "language": "python",
+      "sizeLines": 54,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/tools/authorize.py",
+      "language": "python",
+      "sizeLines": 148,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/tools/dispatch.py",
+      "language": "python",
+      "sizeLines": 155,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/tools/misc.py",
+      "language": "python",
+      "sizeLines": 87,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/tools/read.py",
+      "language": "python",
+      "sizeLines": 348,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/tools/schemas.py",
+      "language": "python",
+      "sizeLines": 100,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/tools/specs.py",
+      "language": "python",
+      "sizeLines": 69,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/tools/transfer.py",
+      "language": "python",
+      "sizeLines": 337,
+      "fileCategory": "code"
+    },
+    {
+      "path": "src/agentic_payments_env/world.py",
+      "language": "python",
+      "sizeLines": 342,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/conftest.py",
+      "language": "python",
+      "sizeLines": 57,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_adapters_base.py",
+      "language": "python",
+      "sizeLines": 45,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_adapters_isolation.py",
+      "language": "python",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_adapters_providers.py",
+      "language": "python",
+      "sizeLines": 479,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_agents_llm.py",
+      "language": "python",
+      "sizeLines": 388,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_annotations.py",
+      "language": "python",
+      "sizeLines": 71,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_annotations_agreement.py",
+      "language": "python",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_annotations_corpus.py",
+      "language": "python",
+      "sizeLines": 19,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_annotations_from_grade.py",
+      "language": "python",
+      "sizeLines": 73,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_benchmark_v0.py",
+      "language": "python",
+      "sizeLines": 86,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_benchmark_v1.py",
+      "language": "python",
+      "sizeLines": 53,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_cli.py",
+      "language": "python",
+      "sizeLines": 101,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_contracts.py",
+      "language": "python",
+      "sizeLines": 377,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_determinism.py",
+      "language": "python",
+      "sizeLines": 44,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_environment.py",
+      "language": "python",
+      "sizeLines": 78,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_export_sft.py",
+      "language": "python",
+      "sizeLines": 27,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_faults.py",
+      "language": "python",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_generators_adversarial.py",
+      "language": "python",
+      "sizeLines": 31,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_generators_base.py",
+      "language": "python",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_generators_difficulty.py",
+      "language": "python",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_generators_policy.py",
+      "language": "python",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_generators_recovery.py",
+      "language": "python",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_generators_routine.py",
+      "language": "python",
+      "sizeLines": 35,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_generators_validate.py",
+      "language": "python",
+      "sizeLines": 27,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_grader_matrix.py",
+      "language": "python",
+      "sizeLines": 116,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_graders_helpers.py",
+      "language": "python",
+      "sizeLines": 76,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_graders_llm_judge.py",
+      "language": "python",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_hidden_leak.py",
+      "language": "python",
+      "sizeLines": 32,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_interventions_report.py",
+      "language": "python",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_invariants.py",
+      "language": "python",
+      "sizeLines": 131,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_llm_protocol_integration.py",
+      "language": "python",
+      "sizeLines": 567,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_m1_reports.py",
+      "language": "python",
+      "sizeLines": 26,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_money.py",
+      "language": "python",
+      "sizeLines": 77,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_oracle.py",
+      "language": "python",
+      "sizeLines": 65,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_policies.py",
+      "language": "python",
+      "sizeLines": 304,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_prompts.py",
+      "language": "python",
+      "sizeLines": 51,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_replay.py",
+      "language": "python",
+      "sizeLines": 47,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_report.py",
+      "language": "python",
+      "sizeLines": 145,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_reproducibility.py",
+      "language": "python",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_req_coverage.py",
+      "language": "python",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_reward_spec.py",
+      "language": "python",
+      "sizeLines": 14,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_rewards_episode.py",
+      "language": "python",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_rewards_pairs.py",
+      "language": "python",
+      "sizeLines": 26,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_rewards_step.py",
+      "language": "python",
+      "sizeLines": 61,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_simulated_user.py",
+      "language": "python",
+      "sizeLines": 66,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_smoke.py",
+      "language": "python",
+      "sizeLines": 7,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_taxonomy_v1.py",
+      "language": "python",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_technical_report.py",
+      "language": "python",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_tools_authorize.py",
+      "language": "python",
+      "sizeLines": 141,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_tools_read.py",
+      "language": "python",
+      "sizeLines": 181,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_tools_transfer.py",
+      "language": "python",
+      "sizeLines": 492,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_v01_decision.py",
+      "language": "python",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "tests/test_world.py",
+      "language": "python",
+      "sizeLines": 186,
+      "fileCategory": "code"
+    }
+  ],
+  "totalFiles": 480,
+  "filteredByIgnore": 0,
+  "estimatedComplexity": "large",
+  "importMap": {
+    ".coordination/README.md": [],
+    ".coordination/context/project.md": [],
+    ".coordination/decisions/ADR-0001-single-tool-turn.md": [],
+    ".coordination/decisions/README.md": [],
+    ".coordination/handoffs/20260917-0942-20260917-001-sync-workspace-codex-to-owner.md": [],
+    ".coordination/handoffs/20260917-0956-20260917-001-sync-workspace-codex-to-owner.md": [],
+    ".coordination/handoffs/20260917-1119-20260917-003-prepare-llm-tool-tasks-codex-to-cursor.md": [],
+    ".coordination/handoffs/20260917-1132-20260917-006-llm-protocol-integration-codex-to-owner.md": [],
+    ".coordination/handoffs/20260917-1143-20260917-007-review-llm-protocol-codex-to-owner.md": [],
+    ".coordination/handoffs/README.md": [],
+    ".coordination/plans/2026-09-17-llm-tool-protocol.md": [],
+    ".coordination/plans/2026-09-17-pytest-import-path.md": [],
+    ".coordination/plans/2026-09-17-sync-workspace.md": [],
+    ".coordination/plans/README.md": [],
+    ".coordination/tasks/backlog/README.md": [],
+    ".coordination/tasks/done/20260917-001-sync-workspace.md": [],
+    ".coordination/tasks/done/20260917-002-pytest-import-path.md": [],
+    ".coordination/tasks/done/20260917-003-prepare-llm-tool-tasks.md": [],
+    ".coordination/tasks/done/20260917-004-llm-agent-protocol.md": [],
+    ".coordination/tasks/done/20260917-005-provider-tool-protocol.md": [],
+    ".coordination/tasks/done/20260917-006-llm-protocol-integration.md": [],
+    ".coordination/tasks/done/20260917-007-review-llm-protocol.md": [],
+    ".coordination/tasks/done/20260917-008-concise-communication.md": [],
+    ".coordination/tasks/done/README.md": [],
+    ".coordination/tasks/in-progress/README.md": [],
+    ".coordination/templates/decision.md": [],
+    ".coordination/templates/handoff.md": [],
+    ".coordination/templates/task.md": [],
+    ".cursor/rules/coordination.mdc": [],
+    ".cursor/rules/project-context.mdc": [],
+    ".github/workflows/ci.yml": [],
+    ".serena/project.yml": [],
+    ".ua/.understandignore": [],
+    ".ua/config.json": [],
+    "AGENTS.md": [],
+    "CLAUDE.md": [],
+    "README.md": [],
+    "annotations/v0-scripted.jsonl": [],
+    "benchmarks/v0/adv-001.json": [],
+    "benchmarks/v0/adv-002.json": [],
+    "benchmarks/v0/adv-003.json": [],
+    "benchmarks/v0/adv-004.json": [],
+    "benchmarks/v0/adv-005.json": [],
+    "benchmarks/v0/adv-006.json": [],
+    "benchmarks/v0/fr-001.json": [],
+    "benchmarks/v0/fr-002.json": [],
+    "benchmarks/v0/fr-003.json": [],
+    "benchmarks/v0/fr-004.json": [],
+    "benchmarks/v0/fr-005.json": [],
+    "benchmarks/v0/fr-006.json": [],
+    "benchmarks/v0/fr-007.json": [],
+    "benchmarks/v0/fr-008.json": [],
+    "benchmarks/v0/pc-001.json": [],
+    "benchmarks/v0/pc-002.json": [],
+    "benchmarks/v0/pc-003.json": [],
+    "benchmarks/v0/pc-004.json": [],
+    "benchmarks/v0/pc-005.json": [],
+    "benchmarks/v0/pc-006.json": [],
+    "benchmarks/v0/pc-007.json": [],
+    "benchmarks/v0/pc-008.json": [],
+    "benchmarks/v0/pc-009.json": [],
+    "benchmarks/v0/pc-010.json": [],
+    "benchmarks/v0/pc-011.json": [],
+    "benchmarks/v0/rt-001.json": [],
+    "benchmarks/v0/rt-002.json": [],
+    "benchmarks/v0/rt-003.json": [],
+    "benchmarks/v0/rt-004.json": [],
+    "benchmarks/v0/rt-005.json": [],
+    "benchmarks/v0/rt-006.json": [],
+    "benchmarks/v1-train/adv-004.json": [],
+    "benchmarks/v1-train/adv-005.json": [],
+    "benchmarks/v1-train/adv-007.json": [],
+    "benchmarks/v1-train/adv-013.json": [],
+    "benchmarks/v1-train/adv-018.json": [],
+    "benchmarks/v1-train/adv-021.json": [],
+    "benchmarks/v1-train/adv-033.json": [],
+    "benchmarks/v1-train/adv-038.json": [],
+    "benchmarks/v1-train/adv-041.json": [],
+    "benchmarks/v1-train/fr-002.json": [],
+    "benchmarks/v1-train/fr-006.json": [],
+    "benchmarks/v1-train/fr-019.json": [],
+    "benchmarks/v1-train/fr-027.json": [],
+    "benchmarks/v1-train/fr-028.json": [],
+    "benchmarks/v1-train/fr-032.json": [],
+    "benchmarks/v1-train/fr-033.json": [],
+    "benchmarks/v1-train/fr-038.json": [],
+    "benchmarks/v1-train/fr-043.json": [],
+    "benchmarks/v1-train/fr-051.json": [],
+    "benchmarks/v1-train/fr-054.json": [],
+    "benchmarks/v1-train/pc-004.json": [],
+    "benchmarks/v1-train/pc-013.json": [],
+    "benchmarks/v1-train/pc-015.json": [],
+    "benchmarks/v1-train/pc-025.json": [],
+    "benchmarks/v1-train/pc-027.json": [],
+    "benchmarks/v1-train/pc-035.json": [],
+    "benchmarks/v1-train/pc-038.json": [],
+    "benchmarks/v1-train/pc-042.json": [],
+    "benchmarks/v1-train/pc-049.json": [],
+    "benchmarks/v1-train/pc-056.json": [],
+    "benchmarks/v1-train/pc-057.json": [],
+    "benchmarks/v1-train/rt-011.json": [],
+    "benchmarks/v1-train/rt-016.json": [],
+    "benchmarks/v1-train/rt-029.json": [],
+    "benchmarks/v1-train/rt-033.json": [],
+    "benchmarks/v1-train/rt-037.json": [],
+    "benchmarks/v1-train/rt-038.json": [],
+    "benchmarks/v1-train/rt-041.json": [],
+    "benchmarks/v1-train/rt-042.json": [],
+    "benchmarks/v1-train/rt-050.json": [],
+    "benchmarks/v1/adv-001.json": [],
+    "benchmarks/v1/adv-002.json": [],
+    "benchmarks/v1/adv-003.json": [],
+    "benchmarks/v1/adv-006.json": [],
+    "benchmarks/v1/adv-008.json": [],
+    "benchmarks/v1/adv-009.json": [],
+    "benchmarks/v1/adv-010.json": [],
+    "benchmarks/v1/adv-011.json": [],
+    "benchmarks/v1/adv-012.json": [],
+    "benchmarks/v1/adv-014.json": [],
+    "benchmarks/v1/adv-015.json": [],
+    "benchmarks/v1/adv-016.json": [],
+    "benchmarks/v1/adv-017.json": [],
+    "benchmarks/v1/adv-019.json": [],
+    "benchmarks/v1/adv-020.json": [],
+    "benchmarks/v1/adv-022.json": [],
+    "benchmarks/v1/adv-023.json": [],
+    "benchmarks/v1/adv-024.json": [],
+    "benchmarks/v1/adv-025.json": [],
+    "benchmarks/v1/adv-026.json": [],
+    "benchmarks/v1/adv-027.json": [],
+    "benchmarks/v1/adv-028.json": [],
+    "benchmarks/v1/adv-029.json": [],
+    "benchmarks/v1/adv-030.json": [],
+    "benchmarks/v1/adv-031.json": [],
+    "benchmarks/v1/adv-032.json": [],
+    "benchmarks/v1/adv-034.json": [],
+    "benchmarks/v1/adv-035.json": [],
+    "benchmarks/v1/adv-036.json": [],
+    "benchmarks/v1/adv-037.json": [],
+    "benchmarks/v1/adv-039.json": [],
+    "benchmarks/v1/adv-040.json": [],
+    "benchmarks/v1/adv-042.json": [],
+    "benchmarks/v1/adv-043.json": [],
+    "benchmarks/v1/adv-044.json": [],
+    "benchmarks/v1/adv-045.json": [],
+    "benchmarks/v1/adv-046.json": [],
+    "benchmarks/v1/adv-047.json": [],
+    "benchmarks/v1/adv-048.json": [],
+    "benchmarks/v1/adv-049.json": [],
+    "benchmarks/v1/adv-050.json": [],
+    "benchmarks/v1/adv-051.json": [],
+    "benchmarks/v1/adv-052.json": [],
+    "benchmarks/v1/adv-053.json": [],
+    "benchmarks/v1/adv-054.json": [],
+    "benchmarks/v1/adv-055.json": [],
+    "benchmarks/v1/adv-056.json": [],
+    "benchmarks/v1/adv-057.json": [],
+    "benchmarks/v1/adv-058.json": [],
+    "benchmarks/v1/adv-059.json": [],
+    "benchmarks/v1/adv-060.json": [],
+    "benchmarks/v1/fr-001.json": [],
+    "benchmarks/v1/fr-003.json": [],
+    "benchmarks/v1/fr-004.json": [],
+    "benchmarks/v1/fr-005.json": [],
+    "benchmarks/v1/fr-007.json": [],
+    "benchmarks/v1/fr-008.json": [],
+    "benchmarks/v1/fr-009.json": [],
+    "benchmarks/v1/fr-010.json": [],
+    "benchmarks/v1/fr-011.json": [],
+    "benchmarks/v1/fr-012.json": [],
+    "benchmarks/v1/fr-013.json": [],
+    "benchmarks/v1/fr-014.json": [],
+    "benchmarks/v1/fr-015.json": [],
+    "benchmarks/v1/fr-016.json": [],
+    "benchmarks/v1/fr-017.json": [],
+    "benchmarks/v1/fr-018.json": [],
+    "benchmarks/v1/fr-020.json": [],
+    "benchmarks/v1/fr-021.json": [],
+    "benchmarks/v1/fr-022.json": [],
+    "benchmarks/v1/fr-023.json": [],
+    "benchmarks/v1/fr-024.json": [],
+    "benchmarks/v1/fr-025.json": [],
+    "benchmarks/v1/fr-026.json": [],
+    "benchmarks/v1/fr-029.json": [],
+    "benchmarks/v1/fr-030.json": [],
+    "benchmarks/v1/fr-031.json": [],
+    "benchmarks/v1/fr-034.json": [],
+    "benchmarks/v1/fr-035.json": [],
+    "benchmarks/v1/fr-036.json": [],
+    "benchmarks/v1/fr-037.json": [],
+    "benchmarks/v1/fr-039.json": [],
+    "benchmarks/v1/fr-040.json": [],
+    "benchmarks/v1/fr-041.json": [],
+    "benchmarks/v1/fr-042.json": [],
+    "benchmarks/v1/fr-044.json": [],
+    "benchmarks/v1/fr-045.json": [],
+    "benchmarks/v1/fr-046.json": [],
+    "benchmarks/v1/fr-047.json": [],
+    "benchmarks/v1/fr-048.json": [],
+    "benchmarks/v1/fr-049.json": [],
+    "benchmarks/v1/fr-050.json": [],
+    "benchmarks/v1/fr-052.json": [],
+    "benchmarks/v1/fr-053.json": [],
+    "benchmarks/v1/fr-055.json": [],
+    "benchmarks/v1/fr-056.json": [],
+    "benchmarks/v1/fr-057.json": [],
+    "benchmarks/v1/fr-058.json": [],
+    "benchmarks/v1/fr-059.json": [],
+    "benchmarks/v1/fr-060.json": [],
+    "benchmarks/v1/pc-001.json": [],
+    "benchmarks/v1/pc-002.json": [],
+    "benchmarks/v1/pc-003.json": [],
+    "benchmarks/v1/pc-005.json": [],
+    "benchmarks/v1/pc-006.json": [],
+    "benchmarks/v1/pc-007.json": [],
+    "benchmarks/v1/pc-008.json": [],
+    "benchmarks/v1/pc-009.json": [],
+    "benchmarks/v1/pc-010.json": [],
+    "benchmarks/v1/pc-011.json": [],
+    "benchmarks/v1/pc-012.json": [],
+    "benchmarks/v1/pc-014.json": [],
+    "benchmarks/v1/pc-016.json": [],
+    "benchmarks/v1/pc-017.json": [],
+    "benchmarks/v1/pc-018.json": [],
+    "benchmarks/v1/pc-019.json": [],
+    "benchmarks/v1/pc-020.json": [],
+    "benchmarks/v1/pc-021.json": [],
+    "benchmarks/v1/pc-022.json": [],
+    "benchmarks/v1/pc-023.json": [],
+    "benchmarks/v1/pc-024.json": [],
+    "benchmarks/v1/pc-026.json": [],
+    "benchmarks/v1/pc-028.json": [],
+    "benchmarks/v1/pc-029.json": [],
+    "benchmarks/v1/pc-030.json": [],
+    "benchmarks/v1/pc-031.json": [],
+    "benchmarks/v1/pc-032.json": [],
+    "benchmarks/v1/pc-033.json": [],
+    "benchmarks/v1/pc-034.json": [],
+    "benchmarks/v1/pc-036.json": [],
+    "benchmarks/v1/pc-037.json": [],
+    "benchmarks/v1/pc-039.json": [],
+    "benchmarks/v1/pc-040.json": [],
+    "benchmarks/v1/pc-041.json": [],
+    "benchmarks/v1/pc-043.json": [],
+    "benchmarks/v1/pc-044.json": [],
+    "benchmarks/v1/pc-045.json": [],
+    "benchmarks/v1/pc-046.json": [],
+    "benchmarks/v1/pc-047.json": [],
+    "benchmarks/v1/pc-048.json": [],
+    "benchmarks/v1/pc-050.json": [],
+    "benchmarks/v1/pc-051.json": [],
+    "benchmarks/v1/pc-052.json": [],
+    "benchmarks/v1/pc-053.json": [],
+    "benchmarks/v1/pc-054.json": [],
+    "benchmarks/v1/pc-055.json": [],
+    "benchmarks/v1/pc-058.json": [],
+    "benchmarks/v1/pc-059.json": [],
+    "benchmarks/v1/pc-060.json": [],
+    "benchmarks/v1/rt-001.json": [],
+    "benchmarks/v1/rt-002.json": [],
+    "benchmarks/v1/rt-003.json": [],
+    "benchmarks/v1/rt-004.json": [],
+    "benchmarks/v1/rt-005.json": [],
+    "benchmarks/v1/rt-006.json": [],
+    "benchmarks/v1/rt-007.json": [],
+    "benchmarks/v1/rt-008.json": [],
+    "benchmarks/v1/rt-009.json": [],
+    "benchmarks/v1/rt-010.json": [],
+    "benchmarks/v1/rt-012.json": [],
+    "benchmarks/v1/rt-013.json": [],
+    "benchmarks/v1/rt-014.json": [],
+    "benchmarks/v1/rt-015.json": [],
+    "benchmarks/v1/rt-017.json": [],
+    "benchmarks/v1/rt-018.json": [],
+    "benchmarks/v1/rt-019.json": [],
+    "benchmarks/v1/rt-020.json": [],
+    "benchmarks/v1/rt-021.json": [],
+    "benchmarks/v1/rt-022.json": [],
+    "benchmarks/v1/rt-023.json": [],
+    "benchmarks/v1/rt-024.json": [],
+    "benchmarks/v1/rt-025.json": [],
+    "benchmarks/v1/rt-026.json": [],
+    "benchmarks/v1/rt-027.json": [],
+    "benchmarks/v1/rt-028.json": [],
+    "benchmarks/v1/rt-030.json": [],
+    "benchmarks/v1/rt-031.json": [],
+    "benchmarks/v1/rt-032.json": [],
+    "benchmarks/v1/rt-034.json": [],
+    "benchmarks/v1/rt-035.json": [],
+    "benchmarks/v1/rt-036.json": [],
+    "benchmarks/v1/rt-039.json": [],
+    "benchmarks/v1/rt-040.json": [],
+    "benchmarks/v1/rt-043.json": [],
+    "benchmarks/v1/rt-044.json": [],
+    "benchmarks/v1/rt-045.json": [],
+    "benchmarks/v1/rt-046.json": [],
+    "benchmarks/v1/rt-047.json": [],
+    "benchmarks/v1/rt-048.json": [],
+    "benchmarks/v1/rt-049.json": [],
+    "benchmarks/v1/rt-051.json": [],
+    "benchmarks/v1/rt-052.json": [],
+    "benchmarks/v1/rt-053.json": [],
+    "benchmarks/v1/rt-054.json": [],
+    "benchmarks/v1/rt-055.json": [],
+    "benchmarks/v1/rt-056.json": [],
+    "benchmarks/v1/rt-057.json": [],
+    "benchmarks/v1/rt-058.json": [],
+    "benchmarks/v1/rt-059.json": [],
+    "benchmarks/v1/rt-060.json": [],
+    "docs/00-index.md": [],
+    "docs/00-project-context.md": [],
+    "docs/01-vision-and-scope.md": [],
+    "docs/02-domain-model.md": [],
+    "docs/03-contracts.md": [],
+    "docs/04-tools-and-actions.md": [],
+    "docs/05-policies-and-authorization.md": [],
+    "docs/06-environment-runtime.md": [],
+    "docs/07-tasks-and-benchmark-v0.md": [],
+    "docs/08-graders-and-metrics.md": [],
+    "docs/09-failure-taxonomy.md": [],
+    "docs/10-testing-strategy.md": [],
+    "docs/11-roadmap.md": [],
+    "docs/12-decisions.md": [],
+    "docs/appendix-plan-review.md": [],
+    "docs/milestones/M0-scaffold.md": [],
+    "docs/milestones/M1-baseline-agents.md": [],
+    "docs/milestones/M2-failure-analysis.md": [],
+    "docs/milestones/M3-synthetic.md": [],
+    "docs/milestones/M4-rewards.md": [],
+    "docs/milestones/M5-optimization.md": [],
+    "docs/milestones/M6-report.md": [],
+    "prompts/v1.md": [],
+    "prompts/v2.md": [],
+    "pyproject.toml": [],
+    "reports/reproducibility.md": [],
+    "reports/technical-report.md": [],
+    "reports/v0/claude-haiku-4-5-v1.md": [],
+    "reports/v0/examples/README.md": [],
+    "reports/v0/gpt-4o-mini-v1.md": [],
+    "reports/v0/grader-agreement.md": [],
+    "reports/v0/oracle.md": [],
+    "reports/v0/taxonomy-v1.md": [],
+    "reports/v0/v0.1-decision.md": [],
+    "reports/v1/difficulty.md": [],
+    "reports/v1/interventions.md": [],
+    "reports/v1/prompt-v2.md": [],
+    "reports/v1/reward-spec.md": [],
+    "src/agentic_payments_env/__init__.py": [
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/environment.py",
+      "src/agentic_payments_env/graders/__init__.py"
+    ],
+    "src/agentic_payments_env/adapters/__init__.py": [
+      "src/agentic_payments_env/adapters/base.py"
+    ],
+    "src/agentic_payments_env/adapters/anthropic.py": [
+      "src/agentic_payments_env/adapters/base.py"
+    ],
+    "src/agentic_payments_env/adapters/base.py": [
+      "src/agentic_payments_env/contracts/common.py"
+    ],
+    "src/agentic_payments_env/adapters/openai_compat.py": [
+      "src/agentic_payments_env/adapters/base.py"
+    ],
+    "src/agentic_payments_env/agents/__init__.py": [
+      "src/agentic_payments_env/agents/base.py",
+      "src/agentic_payments_env/agents/llm.py",
+      "src/agentic_payments_env/agents/oracle.py",
+      "src/agentic_payments_env/agents/scripted.py"
+    ],
+    "src/agentic_payments_env/agents/base.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py"
+    ],
+    "src/agentic_payments_env/agents/llm.py": [
+      "src/agentic_payments_env/adapters/base.py",
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/tools/specs.py"
+    ],
+    "src/agentic_payments_env/agents/oracle.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/errors.py"
+    ],
+    "src/agentic_payments_env/agents/presets.py": [
+      "src/agentic_payments_env/agents/oracle.py",
+      "src/agentic_payments_env/agents/scripted.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/agents/scripted.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/annotations/__init__.py": [
+      "src/agentic_payments_env/annotations/schema.py"
+    ],
+    "src/agentic_payments_env/annotations/agreement.py": [
+      "src/agentic_payments_env/adapters/base.py",
+      "src/agentic_payments_env/agents/presets.py",
+      "src/agentic_payments_env/annotations/corpus.py",
+      "src/agentic_payments_env/benchmark/runner.py",
+      "src/agentic_payments_env/benchmark/v0/__init__.py",
+      "src/agentic_payments_env/graders/__init__.py",
+      "src/agentic_payments_env/graders/llm_judge.py"
+    ],
+    "src/agentic_payments_env/annotations/corpus.py": [
+      "src/agentic_payments_env/agents/presets.py",
+      "src/agentic_payments_env/annotations/from_grade.py",
+      "src/agentic_payments_env/annotations/schema.py",
+      "src/agentic_payments_env/benchmark/runner.py",
+      "src/agentic_payments_env/benchmark/v0/__init__.py",
+      "src/agentic_payments_env/graders/__init__.py"
+    ],
+    "src/agentic_payments_env/annotations/from_grade.py": [
+      "src/agentic_payments_env/annotations/schema.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py"
+    ],
+    "src/agentic_payments_env/annotations/schema.py": [
+      "src/agentic_payments_env/contracts/common.py"
+    ],
+    "src/agentic_payments_env/benchmark/__init__.py": [],
+    "src/agentic_payments_env/benchmark/loader.py": [
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/benchmark/report.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/graders/taxonomy.py"
+    ],
+    "src/agentic_payments_env/benchmark/runner.py": [
+      "src/agentic_payments_env/agents/base.py",
+      "src/agentic_payments_env/benchmark/report.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/environment.py",
+      "src/agentic_payments_env/graders/__init__.py",
+      "src/agentic_payments_env/graders/base.py"
+    ],
+    "src/agentic_payments_env/benchmark/v0/__init__.py": [
+      "src/agentic_payments_env/benchmark/v0/tasks_adversarial.py",
+      "src/agentic_payments_env/benchmark/v0/tasks_policy.py",
+      "src/agentic_payments_env/benchmark/v0/tasks_recovery.py",
+      "src/agentic_payments_env/benchmark/v0/tasks_routine.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/benchmark/v0/tasks_adversarial.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/benchmark/v0/tasks_policy.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/benchmark/v0/tasks_recovery.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/benchmark/v0/tasks_routine.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/benchmark/v0/worlds.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/world.py"
+    ],
+    "src/agentic_payments_env/benchmark/v1/__init__.py": [
+      "src/agentic_payments_env/benchmark/loader.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/cli.py": [
+      "src/agentic_payments_env/adapters/base.py",
+      "src/agentic_payments_env/agents/base.py",
+      "src/agentic_payments_env/agents/llm.py",
+      "src/agentic_payments_env/agents/presets.py",
+      "src/agentic_payments_env/annotations/from_grade.py",
+      "src/agentic_payments_env/annotations/schema.py",
+      "src/agentic_payments_env/benchmark/loader.py",
+      "src/agentic_payments_env/benchmark/runner.py",
+      "src/agentic_payments_env/benchmark/v0/__init__.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/export_sft.py",
+      "src/agentic_payments_env/graders/__init__.py",
+      "src/agentic_payments_env/prompts.py",
+      "src/agentic_payments_env/replay.py"
+    ],
+    "src/agentic_payments_env/contracts/__init__.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py"
+    ],
+    "src/agentic_payments_env/contracts/actions.py": [
+      "src/agentic_payments_env/contracts/common.py"
+    ],
+    "src/agentic_payments_env/contracts/common.py": [],
+    "src/agentic_payments_env/contracts/domain.py": [
+      "src/agentic_payments_env/contracts/common.py"
+    ],
+    "src/agentic_payments_env/contracts/grading.py": [
+      "src/agentic_payments_env/contracts/common.py"
+    ],
+    "src/agentic_payments_env/contracts/tasks.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/world.py"
+    ],
+    "src/agentic_payments_env/contracts/trace.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py"
+    ],
+    "src/agentic_payments_env/contracts/world.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py"
+    ],
+    "src/agentic_payments_env/core/hashing.py": [],
+    "src/agentic_payments_env/core/money.py": [],
+    "src/agentic_payments_env/environment.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/errors.py",
+      "src/agentic_payments_env/faults.py",
+      "src/agentic_payments_env/simulated_user.py",
+      "src/agentic_payments_env/tools/dispatch.py",
+      "src/agentic_payments_env/tools/specs.py",
+      "src/agentic_payments_env/world.py"
+    ],
+    "src/agentic_payments_env/errors.py": [],
+    "src/agentic_payments_env/export_sft.py": [
+      "src/agentic_payments_env/agents/presets.py",
+      "src/agentic_payments_env/benchmark/loader.py",
+      "src/agentic_payments_env/benchmark/runner.py"
+    ],
+    "src/agentic_payments_env/faults.py": [
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/errors.py"
+    ],
+    "src/agentic_payments_env/generators/__init__.py": [
+      "src/agentic_payments_env/generators/base.py"
+    ],
+    "src/agentic_payments_env/generators/adversarial.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/core/money.py",
+      "src/agentic_payments_env/generators/base.py"
+    ],
+    "src/agentic_payments_env/generators/base.py": [
+      "src/agentic_payments_env/contracts/common.py"
+    ],
+    "src/agentic_payments_env/generators/difficulty.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/generators/policy.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/core/money.py",
+      "src/agentic_payments_env/generators/base.py"
+    ],
+    "src/agentic_payments_env/generators/pool.py": [
+      "src/agentic_payments_env/benchmark/loader.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/core/hashing.py",
+      "src/agentic_payments_env/generators/adversarial.py",
+      "src/agentic_payments_env/generators/base.py",
+      "src/agentic_payments_env/generators/policy.py",
+      "src/agentic_payments_env/generators/recovery.py",
+      "src/agentic_payments_env/generators/routine.py",
+      "src/agentic_payments_env/generators/validate.py"
+    ],
+    "src/agentic_payments_env/generators/recovery.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/core/money.py",
+      "src/agentic_payments_env/generators/base.py"
+    ],
+    "src/agentic_payments_env/generators/routine.py": [
+      "src/agentic_payments_env/benchmark/v0/worlds.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/core/money.py",
+      "src/agentic_payments_env/generators/base.py"
+    ],
+    "src/agentic_payments_env/generators/validate.py": [
+      "src/agentic_payments_env/agents/presets.py",
+      "src/agentic_payments_env/benchmark/runner.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/graders/__init__.py"
+    ],
+    "src/agentic_payments_env/graders/__init__.py": [
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/auditability.py",
+      "src/agentic_payments_env/graders/authorization.py",
+      "src/agentic_payments_env/graders/base.py",
+      "src/agentic_payments_env/graders/efficiency.py",
+      "src/agentic_payments_env/graders/financial.py",
+      "src/agentic_payments_env/graders/policy.py",
+      "src/agentic_payments_env/graders/recovery.py",
+      "src/agentic_payments_env/graders/safety.py",
+      "src/agentic_payments_env/graders/task_success.py"
+    ],
+    "src/agentic_payments_env/graders/_helpers.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py"
+    ],
+    "src/agentic_payments_env/graders/auditability.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/errors.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py",
+      "src/agentic_payments_env/world.py"
+    ],
+    "src/agentic_payments_env/graders/authorization.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py"
+    ],
+    "src/agentic_payments_env/graders/base.py": [
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py"
+    ],
+    "src/agentic_payments_env/graders/efficiency.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py"
+    ],
+    "src/agentic_payments_env/graders/financial.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/errors.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py",
+      "src/agentic_payments_env/world.py"
+    ],
+    "src/agentic_payments_env/graders/llm_judge.py": [
+      "src/agentic_payments_env/adapters/base.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py"
+    ],
+    "src/agentic_payments_env/graders/policy.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py",
+      "src/agentic_payments_env/policies.py"
+    ],
+    "src/agentic_payments_env/graders/recovery.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py"
+    ],
+    "src/agentic_payments_env/graders/safety.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py"
+    ],
+    "src/agentic_payments_env/graders/task_success.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/graders/_helpers.py",
+      "src/agentic_payments_env/graders/taxonomy.py"
+    ],
+    "src/agentic_payments_env/graders/taxonomy.py": [
+      "src/agentic_payments_env/contracts/grading.py"
+    ],
+    "src/agentic_payments_env/policies.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/world.py"
+    ],
+    "src/agentic_payments_env/prompts.py": [
+      "src/agentic_payments_env/core/hashing.py"
+    ],
+    "src/agentic_payments_env/replay.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/contracts/trace.py",
+      "src/agentic_payments_env/environment.py"
+    ],
+    "src/agentic_payments_env/rewards/__init__.py": [
+      "src/agentic_payments_env/rewards/episode.py"
+    ],
+    "src/agentic_payments_env/rewards/episode.py": [
+      "src/agentic_payments_env/contracts/grading.py"
+    ],
+    "src/agentic_payments_env/rewards/pairs.py": [
+      "src/agentic_payments_env/agents/presets.py",
+      "src/agentic_payments_env/benchmark/loader.py",
+      "src/agentic_payments_env/benchmark/runner.py",
+      "src/agentic_payments_env/contracts/grading.py",
+      "src/agentic_payments_env/graders/__init__.py",
+      "src/agentic_payments_env/rewards/episode.py"
+    ],
+    "src/agentic_payments_env/rewards/step.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/trace.py"
+    ],
+    "src/agentic_payments_env/simulated_user.py": [
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py"
+    ],
+    "src/agentic_payments_env/tools/authorize.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/tools/dispatch.py",
+      "src/agentic_payments_env/tools/schemas.py"
+    ],
+    "src/agentic_payments_env/tools/dispatch.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/simulated_user.py",
+      "src/agentic_payments_env/tools/schemas.py",
+      "src/agentic_payments_env/world.py"
+    ],
+    "src/agentic_payments_env/tools/misc.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/tools/dispatch.py",
+      "src/agentic_payments_env/tools/schemas.py"
+    ],
+    "src/agentic_payments_env/tools/read.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/policies.py",
+      "src/agentic_payments_env/tools/dispatch.py",
+      "src/agentic_payments_env/tools/schemas.py",
+      "src/agentic_payments_env/world.py"
+    ],
+    "src/agentic_payments_env/tools/schemas.py": [
+      "src/agentic_payments_env/contracts/common.py"
+    ],
+    "src/agentic_payments_env/tools/specs.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/tools/schemas.py"
+    ],
+    "src/agentic_payments_env/tools/transfer.py": [
+      "src/agentic_payments_env/contracts/actions.py",
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/tasks.py",
+      "src/agentic_payments_env/policies.py",
+      "src/agentic_payments_env/tools/dispatch.py",
+      "src/agentic_payments_env/tools/schemas.py"
+    ],
+    "src/agentic_payments_env/world.py": [
+      "src/agentic_payments_env/contracts/common.py",
+      "src/agentic_payments_env/contracts/domain.py",
+      "src/agentic_payments_env/contracts/world.py",
+      "src/agentic_payments_env/core/hashing.py",
+      "src/agentic_payments_env/errors.py"
+    ],
+    "tests/conftest.py": [
+      "tests/test_world.py"
+    ],
+    "tests/test_adapters_base.py": [],
+    "tests/test_adapters_isolation.py": [],
+    "tests/test_adapters_providers.py": [],
+    "tests/test_agents_llm.py": [],
+    "tests/test_annotations.py": [],
+    "tests/test_annotations_agreement.py": [],
+    "tests/test_annotations_corpus.py": [],
+    "tests/test_annotations_from_grade.py": [],
+    "tests/test_benchmark_v0.py": [],
+    "tests/test_benchmark_v1.py": [],
+    "tests/test_cli.py": [],
+    "tests/test_contracts.py": [],
+    "tests/test_determinism.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_environment.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_export_sft.py": [],
+    "tests/test_faults.py": [],
+    "tests/test_generators_adversarial.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_generators_base.py": [],
+    "tests/test_generators_difficulty.py": [],
+    "tests/test_generators_policy.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_generators_recovery.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_generators_routine.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_generators_validate.py": [],
+    "tests/test_grader_matrix.py": [],
+    "tests/test_graders_helpers.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_graders_llm_judge.py": [],
+    "tests/test_hidden_leak.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_interventions_report.py": [],
+    "tests/test_invariants.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_llm_protocol_integration.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_m1_reports.py": [],
+    "tests/test_money.py": [],
+    "tests/test_oracle.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_policies.py": [
+      "tests/test_world.py"
+    ],
+    "tests/test_prompts.py": [],
+    "tests/test_replay.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_report.py": [],
+    "tests/test_reproducibility.py": [],
+    "tests/test_req_coverage.py": [],
+    "tests/test_reward_spec.py": [],
+    "tests/test_rewards_episode.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_rewards_pairs.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_rewards_step.py": [
+      "tests/conftest.py"
+    ],
+    "tests/test_simulated_user.py": [],
+    "tests/test_smoke.py": [],
+    "tests/test_taxonomy_v1.py": [],
+    "tests/test_technical_report.py": [],
+    "tests/test_tools_authorize.py": [
+      "tests/test_world.py"
+    ],
+    "tests/test_tools_read.py": [
+      "tests/test_world.py"
+    ],
+    "tests/test_tools_transfer.py": [
+      "tests/test_world.py"
+    ],
+    "tests/test_v01_decision.py": [],
+    "tests/test_world.py": []
+  }
+}
