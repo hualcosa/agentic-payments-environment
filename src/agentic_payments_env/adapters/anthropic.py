@@ -64,6 +64,7 @@ class AnthropicChatModel:
                 kwargs["system"] = system
             if payload_tools:
                 kwargs["tools"] = payload_tools
+                kwargs["tool_choice"] = {"type": "auto", "disable_parallel_tool_use": True}
             return self._client.messages.create(**kwargs)
 
         response = _retry_transport(_call, sleep=self._sleep)

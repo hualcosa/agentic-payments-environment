@@ -69,6 +69,7 @@ class OpenAICompatChatModel:
             }
             if payload_tools:
                 kwargs["tools"] = payload_tools
+                kwargs["parallel_tool_calls"] = False
             return self._client.chat.completions.create(**kwargs)
 
         response = _retry_transport(_call, sleep=self._sleep)
