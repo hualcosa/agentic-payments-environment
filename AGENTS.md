@@ -5,6 +5,58 @@ Code, Codex, etc.) executing work here. The human owner acts as planner and
 reviewer; the coding agent is the executor. Read this file completely before
 touching any code.
 
+<!-- shared-agent-workspace:coordination:start -->
+## Cross-harness coordination
+
+The repository-wide source of truth for collaboration is
+`.coordination/README.md`. Read and follow it before changing project files.
+
+At the start of a work session:
+
+1. Read `.coordination/context/project.md`.
+2. Review `.coordination/tasks/in-progress/` and recent handoffs.
+3. Claim a backlog task, or create and claim a task, before editing project
+   files.
+
+Keep durable context in the repository coordination files. Harness-local
+memory is supplementary and must not be treated as shared state.
+<!-- shared-agent-workspace:coordination:end -->
+
+## 0. Shared strategic context — read at session start
+
+Read `docs/00-project-context.md` before proposing architecture, features,
+experiments, refactors or roadmap changes. It is the shared strategic context
+for Codex, Claude Code and Cursor, not a replacement for the technical spec.
+
+This project exists to turn production/agentic engineering experience into
+verifiable ability to measure, explain and modify agent behavior. The
+environment is a research instrument and potential flagship, not a generic
+framework or banking product. Prefer small, complete experimental loops and
+reproducible evidence over feature count. RL is a possible intervention, not
+a checkbox or a prerequisite for the first useful experiment.
+
+At the start of related work:
+
+1. Read the shared context, then `docs/00-index.md` and the relevant spec/ticket.
+2. Inspect Git branch, revision, status and available artifacts. Do not infer
+   implementation or milestone completion from old memories or ignored files.
+3. If Engram is available, call `mem_current_project`, then `mem_context` or
+   `mem_search`. Use Engram for durable decisions, discoveries and handoffs;
+   keep shared strategic guidance in the repository as well. If unavailable,
+   continue from the repository context and disclose the memory limitation.
+4. For proposed work, state the experimental question, metric, evidence
+   artifact and smallest useful next step. Do not invent an active experiment.
+
+Save significant decisions/discoveries with `mem_save`, reusing a stable
+`topic_key` for an evolving topic; save a session summary before finishing.
+Do not start a memory session or invent a session ID; runtime registration
+belongs to the harness. Do not use retired memory stores as substitutes.
+
+The strategic direction does not authorize autonomous roadmap execution,
+paid runs, provisioning, publication, commits or pushes. Obtain explicit user
+authorization for those actions. The commit instructions below specify format
+and grouping, not standing permission to commit.
+
 ## 1. Where the truth lives
 
 1. `docs/` is the specification. It is normative. If code and spec disagree,

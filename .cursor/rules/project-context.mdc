@@ -1,0 +1,19 @@
+---
+description: Shared project contract and Frontier Engineering direction
+alwaysApply: true
+---
+
+# Shared project context
+
+Before working in this repository, read and follow `AGENTS.md` and
+`docs/00-project-context.md` (paths relative to the repository root).
+
+This environment is a research instrument for measuring, explaining and
+modifying agent behavior, not a generic framework or banking product. Prefer
+small closed experimental loops and reproducible evidence. RL is a possible
+intervention, not a prerequisite or checkbox.
+
+Use the shared documents for the complete startup, Engram, evidence and
+authorization rules. Keep this adapter thin; update the canonical context
+rather than maintaining a separate Cursor-only strategy. The conceptual
+roadmap is not authorization to execute it.

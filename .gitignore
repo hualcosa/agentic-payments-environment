@@ -29,3 +29,14 @@ runs/
 # Secrets (never commit)
 .env
 .env.*
+
+# CodeGraph local index
+.codegraph/
+
+# Serena local cache (project.yml stays versioned)
+.serena/cache/
+
+# shared-agent-workspace:coordination:start
+# Local coordination scratch space is never shared.
+.coordination/.scratch/
+# shared-agent-workspace:coordination:end

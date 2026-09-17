@@ -8,6 +8,7 @@ ticket, so it is deliberately explicit and repetitive in places.
 
 | # | Document | Owns | Read when |
 |---|----------|------|-----------|
+| Context | `00-project-context.md` | shared strategic purpose, experimental priorities and evidence expectations (not implementation status) | at session start, before proposing work |
 | 01 | `01-vision-and-scope.md` | research question, positioning, non-goals, design principles, glossary | first |
 | 02 | `02-domain-model.md` | entities, money, ids, clock, transfer state machine, invariants | before any code |
 | 03 | `03-contracts.md` | the typed contracts (normative pydantic models) | before contracts tickets |

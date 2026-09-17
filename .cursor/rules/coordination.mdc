@@ -1,0 +1,19 @@
+---
+description: Shared project coordination protocol for every task
+alwaysApply: true
+---
+
+# Cursor project coordination
+
+The repository-wide source of truth for collaboration is
+`.coordination/README.md`. Read and follow it before changing project files.
+
+At the start of a work session:
+
+1. Read `.coordination/context/project.md`.
+2. Review `.coordination/tasks/in-progress/` and recent handoffs.
+3. Claim a backlog task, or create and claim a task, before editing project
+   files.
+
+Keep durable context in the repository coordination files. Cursor-local rules
+and memories are supplementary and must not be treated as shared state.
