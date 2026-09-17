@@ -4,6 +4,11 @@ Goal: run real LLM agents on benchmark v0 through a provider-agnostic adapter
 and publish the first measured results, with catastrophic failures counted
 per code. Core package stays free of provider SDKs.
 
+Status note: checked tickets below record implementation closure. Per
+`docs/11-roadmap.md`, fake-model validation is **offline validated** and a
+**not yet measured** report is an honest placeholder, not completion of the
+live-model research gate.
+
 Execute tickets **in order**. Commit after each ticket (AGENTS.md §6).
 Network calls are allowed only inside `adapters/` when an extra is installed.
 Do not put HTTP clients in `environment.py` or `agents/llm.py` except via

@@ -1,5 +1,10 @@
 # Milestone 4 — Reward signals
 
+Status note: checked tickets below record implementation closure. Per
+`docs/11-roadmap.md`, scripted reward and anti-gaming checks are **offline
+validated**; they do not establish that a reward improves live agent behavior
+or resists gaming outside those scripted cases.
+
 Goal: episode- and step-level rewards from graders, preference pairs from
 traces, and a documented anti-gaming check. Catastrophic failures stay
 outside any average (lexicographic −1).

@@ -5,6 +5,44 @@ criterion that is a test, an artifact, or a measurement — never "feels
 done". Later milestones are sketched at lower resolution on purpose; their
 ticket files are written when the previous milestone exits.
 
+## Status model: delivery is not evidence
+
+The milestone sequence describes capabilities the project needs. Progress on
+those capabilities and evidence about agent behavior are tracked separately.
+Use the following cumulative evidence levels; never infer a higher level from a
+checked ticket or the existence of a report file:
+
+1. **Implemented** — the required code, schema, dataset, report structure, or
+   command exists. This proves delivery only.
+2. **Offline validated** — deterministic tests, scripted agents, fake models,
+   oracle runs, replay, or invariant checks validate mechanics without making a
+   claim about live model behavior.
+3. **Live measured** — a reviewed run used named real model versions under a
+   predeclared protocol and preserved its traces, configuration, usage, metrics,
+   and limitations.
+4. **Scientifically supported** — matched comparisons, held-out evaluation,
+   uncertainty, controls or ablations, and regression analysis support the
+   stated conclusion. A null or negative result may satisfy this level.
+
+Milestone ticket checklists record implementation closure at the evidence level
+their text explicitly names. A placeholder saying **not yet measured** is an
+honest artifact, but it does not satisfy a live-measurement exit criterion.
+
+### Current evidence snapshot (2026-09-17)
+
+| Milestone | Highest demonstrated evidence | Missing evidence before the research claim |
+|---|---|---|
+| M0 Scaffold | **Offline validated** | No live-model claim belongs to M0; oracle, replay, invariants, grader matrix, and frozen v0 validate the instrument mechanics. |
+| M1 Baseline agents | **Offline validated** | Adapters and the single-tool-turn protocol are tested offline; the required real-model baseline is not yet measured. |
+| M2 Failure analysis | **Offline validated** | Annotation and judge machinery plus a scripted corpus exist; real-model failure annotations and live judge agreement are not yet measured. |
+| M3 Synthetic data and curriculum | **Offline validated** | Generators, validity filtering, and frozen v1 exist; difficulty correlation against real-model failure remains unmeasured. |
+| M4 Reward signals | **Offline validated** | Reward, preference, and scripted anti-gaming mechanics exist; usefulness and misspecification against live behavior are unmeasured. |
+| M5 Optimization | **Implemented** | Prompt v2 and SFT export exist; no reviewed live pre/post comparison, fine-tuned checkpoint evaluation, or preference optimization has run. |
+| M6 Report | **Implemented** | The report and reproducibility instructions summarize committed artifacts, but headline live-model findings remain unavailable. |
+
+This snapshot is point-in-time state, not a permanent weakening of the milestone
+exit criteria below. Update it only from reviewed evidence artifacts.
+
 | Milestone | Loop link | Headline deliverable | Exit criterion |
 |---|---|---|---|
 | M0 Scaffold | environment, tasks, graders (rule-based) | working package, benchmark v0 (31 tasks), 8 graders, scripted agents, CI green | grader matrix passes; oracle passes every task; replay is byte-identical; `reports/v0/oracle.md` committed |
@@ -14,6 +52,59 @@ ticket files are written when the previous milestone exits.
 | M4 Reward signals | reward & feedback | episode- and step-level reward from graders, preference pairs from traces, reward-hacking audit | reward spec document; preference dataset; demonstrated reward-hacking case caught by a hard constraint |
 | M5 Optimization | optimization / post-training | at least two interventions (prompt/tool design; SFT or preference fine-tuning of a small open model) with pre/post evaluation on held-out tasks | statistically reported improvement or null result on v1 held-out, with catastrophic rates shown separately |
 | M6 Report | re-evaluation → technical report | technical report, reproducibility package | report committed; a fresh clone reproduces headline numbers from committed configs |
+
+## Next research gate — R1 reviewed live baseline
+
+**Question:** On frozen benchmark v0, where do selected real LLM agents fail,
+and which failures are agent behavior rather than environment, task, adapter, or
+grader defects?
+
+**Authorization boundary:** live provider calls may incur cost and MUST NOT run
+until the owner approves the named models, model versions, maximum spend, and
+execution command. Defining this gate is not authorization to execute it.
+
+**Protocol:**
+
+1. Lock the environment revision, benchmark v0 hash, prompt v1 hash, adapter
+   configuration, model versions, seeds, retry policy, and spend ceiling before
+   interpreting results.
+2. Run a small cost-capped smoke sample across all four task families. Its only
+   purpose is to detect protocol, artifact, task, and grader defects; it does not
+   produce a behavioral conclusion.
+3. If the smoke sample is valid, run at least two model families over all 31 v0
+   tasks with three declared seeds per model, as required by M1. If the approved
+   cost ceiling cannot support that design, record the shortfall and keep R1
+   open rather than weakening the claim.
+4. Review catastrophic episodes and a stratified sample of non-catastrophic
+   successes and failures before publishing aggregate interpretations.
+
+**Metrics:** task success, safe success, catastrophic count and rate by code,
+over-refusal/decline rate, efficiency, recovery performance, token usage, and
+failure distribution by task family. Report variation across seeds and never
+fold catastrophic failures into one averaged score.
+
+**Evidence artifacts:** immutable run configuration and metadata, complete
+traces, raw and aggregated grader outputs, usage/cost record, reviewed failure
+annotations, generated report, and a short experiment record containing the
+hypothesis, setup, result, surprise, limitations, and next hypothesis.
+
+**Exit criterion:** R1 exits only when the full declared comparison is complete,
+artifacts are reviewable and reproducible, sampled traces have been manually
+checked for validity, and the report distinguishes measured facts from
+interpretation. Passing offline tests or completing the smoke sample alone does
+not exit R1.
+
+**Result-dependent next step:**
+
+- If task, environment, adapter, or grader defects materially affect results,
+  repair measurement validity and rerun R1 before optimizing the agent.
+- If real failures form repeated, reviewable clusters, use those traces to scope
+  M2 taxonomy/annotation work and select the smallest targeted intervention.
+- If v0 shows a ceiling effect, use M3 difficulty evidence to define a harder
+  held-out slice before drawing conclusions.
+- Choose prompt/tool changes, targeted data, SFT, or preference optimization
+  only after the observed failure mechanism justifies them. Do not schedule RL
+  merely to complete a roadmap label.
 
 ## M0 — Scaffold (ticket file: `milestones/M0-scaffold.md`)
 

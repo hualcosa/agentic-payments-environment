@@ -23,6 +23,9 @@ Do not duplicate evolving strategy here or infer measured results from feature c
   `tasks/done/`. The latest slice implemented and verified the offline LLM
   single-tool-turn protocol in the agent, both provider adapters and integration.
 - No active research experiment is assumed. Live-model behavior remains unmeasured.
+- `docs/11-roadmap.md` now separates implemented, offline-validated,
+  live-measured and scientifically-supported evidence. The next defined gate is
+  R1, a reviewed live-model baseline; defining it does not authorize paid calls.
 
 ## Shared workflow and constraints
 

@@ -1,5 +1,10 @@
 # Milestone 2 — Failure analysis
 
+Status note: checked tickets below record implementation closure. Per
+`docs/11-roadmap.md`, a scripted annotation corpus and fake-judge sanity check
+are **offline validated**; they do not establish a live-model failure taxonomy
+or live judge agreement.
+
 Goal: a step-level annotated trace corpus, an LLM-as-judge grader for
 report text, a recorded rule-vs-LLM agreement study, and a taxonomy v1
 evidence log. New taxonomy codes require ≥ 3 real occurrences.

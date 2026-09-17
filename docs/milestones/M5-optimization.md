@@ -1,5 +1,10 @@
 # Milestone 5 — Optimization
 
+Status note: checked tickets below record implementation closure. Per
+`docs/11-roadmap.md`, a prompt artifact or data export is **implemented**; it
+does not establish an intervention effect until a reviewed held-out comparison
+is live measured and scientifically supported.
+
 Goal: at least two interventions with pre/post evaluation on v1 held-out.
 Live LLM numbers remain **not yet measured** unless credentials exist.
 This repo owns data export and evaluation, not an external trainer.

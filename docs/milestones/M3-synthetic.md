@@ -1,5 +1,10 @@
 # Milestone 3 — Synthetic data and curriculum
 
+Status note: checked tickets below record implementation closure. Per
+`docs/11-roadmap.md`, deterministic generator and oracle/adversary checks are
+**offline validated**; they do not establish difficulty correlation against
+real-model behavior.
+
 Goal: parametric task generators per family, a validity filter (oracle
 passes; at least one scripted adversary fails), a difficulty ordering, and
 frozen benchmark v1 (200 held-out JSON files plus a training pool).

@@ -1,5 +1,10 @@
 # Milestone 6 — Technical report
 
+Status note: checked tickets below record implementation closure. Per
+`docs/11-roadmap.md`, a report structure and reproducibility command are
+**implemented**; they do not create headline behavioral findings while the
+underlying live experiments remain not yet measured.
+
 Goal: a technical report plus a reproducibility note so a fresh clone can
 rebuild tables that this repo actually owns (oracle sanity, grader matrix,
 v1 freeze, rewards). Live LLM tables stay **not yet measured**.
