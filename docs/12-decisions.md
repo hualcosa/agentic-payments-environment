@@ -83,6 +83,18 @@ and terminate through the existing `AGENT_ERROR` path. This clarifies the
 previously unspecified M1 behavior without changing public contracts. See
 `.coordination/decisions/ADR-0001-single-tool-turn.md`.
 
+### D-16 Preserve LLM protocol diagnostics in episode metadata
+Acceptance review of tasks 004–006 found that `Environment.trace(error=...)`
+discards its argument: `EpisodeTrace` has no error field. For this bounded fix,
+`LLMAgent.protocol_error` exposes only the safe reason produced by its protocol
+validator and resets between episodes. When metadata is requested, both runner
+and CLI include a non-null reason as `episodes[].protocol_error` in the existing
+extensible `meta.json`; successful episodes omit it. Reported usage is retained.
+No raw model output is persisted by this change. Trace/result schemas, taxonomy,
+termination values and replay stay unchanged. Metadata-free `run_episode` retains
+its existing trace-only interface. This fulfills diagnostic readback without a
+new artifact model or schema migration. Review task: `20260917-007-review-llm-protocol`.
+
 ## Open questions
 
 (The executor appends here. Format: `Q-nn — <question> — <interim choice> — <ticket>`.)

@@ -15,7 +15,7 @@ from agentic_payments_env.agents.presets import NAMES, build
 from agentic_payments_env.annotations.from_grade import from_episode
 from agentic_payments_env.annotations.schema import dumps_jsonl
 from agentic_payments_env.benchmark.loader import export_tasks
-from agentic_payments_env.benchmark.runner import _drive, _usage_steps, run_benchmark
+from agentic_payments_env.benchmark.runner import _drive, _episode_meta, run_benchmark
 from agentic_payments_env.benchmark.v0 import all_tasks, load_task
 from agentic_payments_env.contracts.grading import EpisodeResult
 from agentic_payments_env.contracts.tasks import TaskSpec
@@ -150,13 +150,7 @@ def _cmd_run(args: argparse.Namespace) -> int:
         _write_episode(out, task.task_id, args.seed, trace, result)
         if meta is not None:
             payload = dict(meta)
-            payload["episodes"] = [
-                {
-                    "task_id": task.task_id,
-                    "seed": args.seed,
-                    "steps": _usage_steps(agent, len(trace.steps)),
-                }
-            ]
+            payload["episodes"] = [_episode_meta(task.task_id, args.seed, agent, len(trace.steps))]
             _write_json(out / "meta.json", payload)
     print(
         json.dumps(

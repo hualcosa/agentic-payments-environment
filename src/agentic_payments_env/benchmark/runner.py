@@ -74,6 +74,19 @@ def _usage_steps(agent: Agent, n_steps: int) -> list[dict[str, object]]:
     return rows
 
 
+def _episode_meta(task_id: str, seed: int, agent: Agent, n_steps: int) -> dict[str, object]:
+    """Keep reported usage and safe LLM diagnostics outside traces. REQ-ENV-17."""
+    row: dict[str, object] = {
+        "task_id": task_id,
+        "seed": seed,
+        "steps": _usage_steps(agent, n_steps),
+    }
+    protocol_error = getattr(agent, "protocol_error", None)
+    if isinstance(protocol_error, str):
+        row["protocol_error"] = protocol_error
+    return row
+
+
 def run_benchmark(
     tasks: Sequence[TaskSpec],
     agent_factory: Callable[[TaskSpec], Agent],
@@ -95,13 +108,7 @@ def run_benchmark(
             env, trace = _drive(task, agent, seed, strict=True)
             result = grade_episode(task, trace, env.state, graders)
             episodes.append(result)
-            episode_meta.append(
-                {
-                    "task_id": task.task_id,
-                    "seed": seed,
-                    "steps": _usage_steps(agent, len(trace.steps)),
-                }
-            )
+            episode_meta.append(_episode_meta(task.task_id, seed, agent, len(trace.steps)))
             if out_dir is not None:
                 slug = task.task_id.replace("/", "_")
                 folder = out_dir / slug
