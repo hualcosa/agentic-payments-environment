@@ -73,6 +73,16 @@ agent is not penalized relative to the oracle.
 reviewed reports that the README may cite. Every number in a document links
 to a file under `reports/`.
 
+### D-15 LLM turns contain at most one correlated tool call
+`Environment.step` consumes one `Action`, so `LLMAgent` rejects an entire model
+turn containing multiple tool calls before any action executes. A single call
+must have a non-whitespace string correlation ID, which is preserved exactly for
+the following tool result. Provider adapters request serial tool use, but the
+agent boundary remains authoritative. Rejected turns retain reported token usage
+and terminate through the existing `AGENT_ERROR` path. This clarifies the
+previously unspecified M1 behavior without changing public contracts. See
+`.coordination/decisions/ADR-0001-single-tool-turn.md`.
+
 ## Open questions
 
 (The executor appends here. Format: `Q-nn — <question> — <interim choice> — <ticket>`.)
