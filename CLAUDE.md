@@ -9,6 +9,12 @@ Load and follow the shared repository contract and strategic context:
 Keep strategic updates in the shared context, not in a separate Claude-only
 copy. The imports do not authorize execution of the conceptual roadmap.
 
+## Communication standard
+
+Follow the canonical **concise completeness** policy in `AGENTS.md`: lead with
+the result and compress aggressively without dropping material evidence,
+uncertainty, risks, authorization state or verification.
+
 <!-- shared-agent-workspace:coordination:start -->
 ## Cross-harness coordination
 

@@ -57,6 +57,24 @@ paid runs, provisioning, publication, commits or pushes. Obtain explicit user
 authorization for those actions. The commit instructions below specify format
 and grouping, not standing permission to commit.
 
+## Communication standard — concise completeness
+
+Default to the shortest response that preserves the information needed for a
+correct decision or handoff. Lead with the result or verdict, then include only
+material evidence, risks, authorization state, blockers and verification.
+
+- Compress rather than omit: retain decisive facts, necessary qualifiers,
+  failure states and uncertainty while removing repetition and routine process
+  narration.
+- Prefer a small number of high-signal bullets, tables or diagrams over a long
+  chronological account. Do not restate the prompt or explain obvious steps.
+- Cite the minimum sufficient `file:line` evidence. Summarize verification with
+  the command or gate and outcome; include raw output only when requested or
+  when diagnosing a failure.
+- Distinguish freshly verified facts from historical results in one concise
+  phrase. Expand only when the user asks or when safety and correctness require
+  the additional detail.
+
 ## 1. Where the truth lives
 
 1. `docs/` is the specification. It is normative. If code and spec disagree,

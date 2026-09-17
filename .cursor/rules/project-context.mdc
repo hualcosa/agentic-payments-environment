@@ -17,3 +17,7 @@ Use the shared documents for the complete startup, Engram, evidence and
 authorization rules. Keep this adapter thin; update the canonical context
 rather than maintaining a separate Cursor-only strategy. The conceptual
 roadmap is not authorization to execute it.
+
+Apply the canonical **concise completeness** policy in `AGENTS.md`: lead with
+the result and compress aggressively without dropping material evidence,
+uncertainty, risks, authorization state or verification.
