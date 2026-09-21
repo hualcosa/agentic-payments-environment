@@ -1,12 +1,28 @@
-"""Tests for preference pairs. T4.03."""
+"""Tests for preference pairs and export. T4.03."""
 
 from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
 
 from agentic_payments_env.agents.presets import build
 from agentic_payments_env.benchmark.runner import _drive
 from agentic_payments_env.benchmark.v0 import load_task
+from agentic_payments_env.benchmark.v1 import all_tasks as all_v1
+from agentic_payments_env.benchmark.v1_1 import all_tasks as all_v11
+from agentic_payments_env.contracts.training import PreferenceRecord
 from agentic_payments_env.graders import grade_episode
-from agentic_payments_env.rewards.pairs import oracle_vs_scripted_pairs, prefer, rank_key
+from agentic_payments_env.rewards.pairs import (
+    assert_training_task_id,
+    build_preference_records,
+    dumps_preferences,
+    export_preferences,
+    oracle_vs_scripted_pairs,
+    prefer,
+    rank_key,
+    training_task_ids,
+)
 from tests.conftest import run_oracle
 
 
@@ -24,3 +40,47 @@ def test_liar_not_preferred_to_oracle() -> None:
     pairs = oracle_vs_scripted_pairs(["v0/pc-001"], ["liar"])
     assert ("oracle", "liar") in pairs
     assert ("liar", "oracle") not in pairs
+
+
+def test_preference_record_validates() -> None:
+    record = PreferenceRecord(
+        task_id="v0/rt-001",
+        chosen_agent="oracle",
+        rejected_agent="quitter",
+        rank_key_chosen=(True, 0, 500),
+        rank_key_rejected=(False, 0, 0),
+        provenance="oracle_vs_scripted",
+    )
+    assert record.chosen_agent == "oracle"
+
+
+def test_held_out_task_rejected_for_training_export() -> None:
+    with pytest.raises(ValueError, match="held-out"):
+        assert_training_task_id(all_v1()[0].task_id)
+    with pytest.raises(ValueError, match="held-out"):
+        assert_training_task_id(all_v11()[0].task_id)
+
+
+def test_training_task_ids_exclude_held_out() -> None:
+    ids = training_task_ids()
+    assert "v0/rt-001" in ids
+    assert all_v1()[0].task_id not in ids
+    assert all_v11()[0].task_id not in ids
+    assert any(task_id.startswith("v1.1/") for task_id in ids)
+
+
+def test_committed_preferences_v11_rebuilds() -> None:
+    path = Path("datasets/preferences-v1.1.jsonl")
+    assert path.is_file()
+    committed = path.read_text(encoding="utf-8")
+    rebuilt = dumps_preferences(build_preference_records())
+    assert rebuilt == committed
+
+
+def test_preferences_rebuild_is_deterministic(tmp_path: Path) -> None:
+    records = build_preference_records(["v0/rt-001", "v0/pc-001"])
+    text = dumps_preferences(records)
+    export_preferences(tmp_path / "prefs.jsonl", ["v0/rt-001", "v0/pc-001"])
+    assert (tmp_path / "prefs.jsonl").read_text(encoding="utf-8") == text
+    again = build_preference_records(["v0/rt-001", "v0/pc-001"])
+    assert dumps_preferences(again) == text
