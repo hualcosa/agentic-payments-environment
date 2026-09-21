@@ -3,11 +3,12 @@
 A reproducible research environment for measuring and improving the behavior of
 AI agents that operate financial workflows.
 
-> **Status: M7 conformance in progress.** M0–M6 delivered the environment,
-> v0/v1/v1.1 benchmarks, graders, synthetic data, rewards, optimization exports,
-> and technical report. Optional LLM adapters and `LLMAgent` exist behind
-> extras; default evaluation uses rule graders. Live model numbers remain
-> **not yet measured**. Spec documents under `docs/` remain normative.
+> **Status: M7 spec conformance complete (offline evidence).** M0–M7
+> delivered the environment, v0/v1/v1.1 benchmarks, graders, synthetic data,
+> rewards, optimization exports and technical report. Optional LLM adapters
+> and `LLMAgent` exist behind extras; default evaluation uses rule graders.
+> Live model numbers remain **not yet measured**. Spec documents under `docs/`
+> remain normative.
 
 ## What this is
 
@@ -49,10 +50,10 @@ the fraction of episodes that achieved the task *and* had zero catastrophic
 failures.
 
 Oracle sanity (not a model benchmark): [reports/v0/oracle.md](reports/v0/oracle.md).
-Per D-14, that table is a **committed, reviewed report** reproducible from the
-command documented in [reports/reproducibility.md](reports/reproducibility.md)
-(`apenv bench --benchmark v0 --agent oracle --seeds 0`). Raw output stays in
-gitignored `runs/`.
+Per D-14, that table is a **committed, reviewed report** reproducible via
+[reports/reproducibility.md](reports/reproducibility.md)
+(`apenv reproduce --out /tmp/apenv-repro --check` or the oracle-only bench command).
+Raw output stays in gitignored `runs/`.
 
 LLM baseline on v0 with prompt v1 (no fabricated rates):
 

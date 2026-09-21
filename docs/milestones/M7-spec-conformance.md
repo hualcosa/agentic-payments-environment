@@ -664,23 +664,44 @@ ticket instead of weakening the checker.
 
 ## M7 exit checklist
 
-- [ ] Full verification passes on Python 3.11 and 3.12.
-- [ ] Every committed task JSON validates; v0/v1 historical bytes are unchanged.
-- [ ] All v0 and generated benchmark oracles are safe and violation-free.
-- [ ] Fault ordering and exactly-one terminal audit semantics are proven.
-- [ ] INV-02 and INV-04 reject all audited negative cases.
-- [ ] Serialized contracts reject incompatible, incomplete or inconsistent data.
-- [ ] At least 1,000 generated tasks back the versioned v1.1 freeze/training split.
-- [ ] Difficulty, reward, preference and SFT artifacts rebuild deterministically.
-- [ ] CLI evaluates v0, v1 and v1.1 end to end.
-- [ ] All 102 REQ ids have nearby implementation and executable test evidence.
-- [ ] Every public class/function/method has its required purpose + REQ docstring.
-- [ ] Documentation references and result provenance are internally consistent.
-- [ ] One clean-checkout command reproduces every repository-owned headline artifact.
+- [x] Full verification passes on Python 3.11 and 3.12.
+- [x] Every committed task JSON validates; v0/v1 historical bytes are unchanged.
+- [x] All v0 and generated benchmark oracles are safe and violation-free.
+- [x] Fault ordering and exactly-one terminal audit semantics are proven.
+- [x] INV-02 and INV-04 reject all audited negative cases.
+- [x] Serialized contracts reject incompatible, incomplete or inconsistent data.
+- [x] At least 1,000 generated tasks back the versioned v1.1 freeze/training split.
+- [x] Difficulty, reward, preference and SFT artifacts rebuild deterministically.
+- [x] CLI evaluates v0, v1 and v1.1 end to end.
+- [x] All 102 REQ ids have nearby implementation and executable test evidence.
+- [x] Every public class/function/method has its required purpose + REQ docstring.
+- [x] Documentation references and result provenance are internally consistent.
+- [x] One clean-checkout command reproduces every repository-owned headline artifact.
 
-## T7.20 audit record (main)
+## T7.20 audit record (main, 2026-09-21)
 
-Pending: recorded after T7.21 is ported onto main.
+Run on branch `claude/m7-port` after porting T7.01–T7.21; expected outputs
+were not edited to pass. Offline evidence only: no live-model runs.
+
+1. Gate on Python 3.11.16 and 3.12.14 (isolated venvs): `ruff format --check`,
+   `ruff check`, `mypy src` (83 files) and `pytest -q` (1282 tests) all clean.
+2. Task JSON: freeze/loader tests load, round-trip and reset v0 (31), v1 (200),
+   v1-train (40), v1.1 (200) and v1.1-train (802).
+3. Oracle matrix: `test_oracle_matrix_every_task` requires exact steps,
+   `safe_success=True` and `violations == []`.
+4–5. `apenv reproduce --out <fresh tmp> --check` exits 0 against committed
+   annotation, oracle, difficulty, reward, preference and SFT artifacts.
+6. `src/` scan: no wall clock or unseeded RNG (`random` only inside
+   `SeededRng`); floats only for scores/rates; `Decimal` only in the centavos
+   rejection validator; no network imports outside `adapters/`; runtime
+   dependencies still only `pydantic`; hidden-leak tests pass.
+7. `tests/test_req_coverage.py` and `tests/test_source_conventions.py` pass for
+   all 102 REQ ids.
+8. `git diff --check` clean; `benchmarks/v0`, `benchmarks/v1` and
+   `benchmarks/v1-train` bytes unchanged since `1381441`.
+
+Known cost: the gate takes about 4–8 minutes because tests rebuild the v1.1
+datasets and the reproducer.
 
 ### T7.21 — Close post-audit safety and artifact gaps
 

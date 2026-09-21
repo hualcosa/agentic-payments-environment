@@ -24,6 +24,7 @@ ticket, so it is deliberately explicit and repetitive in places.
 | A | `appendix-plan-review.md` | review of the original project brief and what this spec changed | optional |
 | M0 | `milestones/M0-scaffold.md` | ticket-by-ticket plan for the first executable milestone | when executing M0 |
 | M1 | `milestones/M1-baseline-agents.md` | ticket-level sketch for M1 | after M0 exit criteria are met |
+| M7 | `milestones/M7-spec-conformance.md` | post-M6 spec-conformance tickets and exit audit | when auditing or changing contracts, invariants or artifacts |
 
 ## Conventions used in the spec
 

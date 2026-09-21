@@ -40,6 +40,18 @@ Do not duplicate evolving strategy here or infer measured results from feature c
 - New task scopes govern implementation files; the LLM protocol slice does not
   change environment contracts, dependencies or experiments.
 
+## M7 spec conformance (2026-09-21)
+Task `20260918-001-port-m7-conformance` ported M7 (T7.01–T7.21) from
+`composer25` onto main, one commit per ticket, with derived artifacts
+regenerated from main's code. Adds strict contracts (schema versions, strict
+centavos, UTC-only datetimes, fixture structure, grading consistency), exact
+INV-02/INV-04, fault ordering, v1.1 freeze (200 held-out / 802 train from 1002
+validated tasks), CLI for v0/v1/v1.1, LLM turn sidecars, preference/SFT
+datasets, REQ traceability and `apenv reproduce --check`. Audit: gate clean on
+Python 3.11/3.12 (1282 tests); reproducer exit 0. Offline evidence only; live
+models remain not yet measured. Next gate is still R1 (live baseline), which
+needs explicit authorization.
+
 ## Latest validation (2026-09-17)
 Acceptance review 007 verified tasks 004–006 and fixed two gaps: safe protocol
 reasons now persist in existing episode metadata, and a rejected agent requires
