@@ -2,10 +2,16 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Sequence
 
+from agentic_payments_env.agents.presets import build
+from agentic_payments_env.benchmark.runner import _drive
 from agentic_payments_env.contracts.common import TaskFamily
 from agentic_payments_env.contracts.tasks import TaskSpec
+from agentic_payments_env.graders import grade_episode
+
+_SCRIPTED_PRESETS = ("quitter", "liar", "naive_retry", "obedient", "splitter")
 
 _FAMILY_ORDER = (
     TaskFamily.ROUTINE_TRANSFER,
@@ -71,3 +77,87 @@ def _primary_amount(task: TaskSpec) -> int:
 def _looks_portuguese(instruction: str) -> bool:
     lowered = instruction.lower()
     return lowered.startswith("envie ") or " pela minha conta" in lowered
+
+
+def scripted_adversary_failure_rate(task: TaskSpec) -> float:
+    """Fraction of five scripted presets that fail safe_success on ``task``."""
+    failures = 0
+    for preset in _SCRIPTED_PRESETS:
+        env, trace = _drive(task, build(preset, task), 0)
+        if not grade_episode(task, trace, env.state).safe_success:
+            failures += 1
+    return failures / len(_SCRIPTED_PRESETS)
+
+
+def spearman_rank_correlation(xs: Sequence[float], ys: Sequence[float]) -> float:
+    """Spearman rho without external dependencies."""
+    if len(xs) != len(ys) or len(xs) < 2:
+        return 0.0
+    n = len(xs)
+
+    def _ranks(values: Sequence[float]) -> list[float]:
+        order = sorted(range(n), key=lambda index: values[index])
+        ranks = [0.0] * n
+        index = 0
+        while index < n:
+            start = index
+            value = values[order[index]]
+            while index < n and values[order[index]] == value:
+                index += 1
+            avg_rank = (start + 1 + index) / 2.0
+            for position in range(start, index):
+                ranks[order[position]] = avg_rank
+        return ranks
+
+    rx = _ranks(xs)
+    ry = _ranks(ys)
+    mean_x = sum(rx) / n
+    mean_y = sum(ry) / n
+    numerator = sum((rx[i] - mean_x) * (ry[i] - mean_y) for i in range(n))
+    denom_x = sum((value - mean_x) ** 2 for value in rx) ** 0.5
+    denom_y = sum((value - mean_y) ** 2 for value in ry) ** 0.5
+    if denom_x == 0.0 or denom_y == 0.0:
+        return 0.0
+    return float(numerator / (denom_x * denom_y))
+
+
+def render_v11_difficulty_report(tasks: Sequence[TaskSpec]) -> str:
+    """Markdown report for v1.1 difficulty vs scripted failure rate."""
+    scores = [float(difficulty_score(task)) for task in tasks]
+    rates = [scripted_adversary_failure_rate(task) for task in tasks]
+    rho = spearman_rank_correlation(scores, rates)
+    families = Counter(task.family.value for task in tasks)
+    family_lines = "\n".join(
+        f"| {family} | {count} |" for family, count in sorted(families.items())
+    )
+    interpretation = (
+        "positive association: harder tasks tend to break more scripted presets"
+        if rho > 0.1
+        else "weak or flat association at this sample size"
+    )
+    return "\n".join(
+        [
+            "# Benchmark v1.1 difficulty vs scripted failure rate",
+            "",
+            f"Sample size: **{len(tasks)}** validated generated tasks "
+            f"(before the 200-task held-out split).",
+            "",
+            "## Family distribution",
+            "",
+            "| family | count |",
+            "|---|---|",
+            family_lines,
+            "",
+            "## Scripted-adversary correlation",
+            "",
+            f"Spearman rho (`difficulty_score` vs mean failure rate across "
+            f"{', '.join(_SCRIPTED_PRESETS)}): **{rho:.3f}**.",
+            "",
+            interpretation + ".",
+            "",
+            "## Live LLM baseline",
+            "",
+            "**not yet measured**. Do not infer model correlation from this table.",
+            "",
+        ]
+    )

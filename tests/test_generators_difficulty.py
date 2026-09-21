@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from agentic_payments_env.contracts.common import TaskFamily
 from agentic_payments_env.generators.base import GenParams, SeededRng
-from agentic_payments_env.generators.difficulty import curriculum_order, difficulty_score
+from agentic_payments_env.generators.difficulty import (
+    curriculum_order,
+    difficulty_score,
+    spearman_rank_correlation,
+)
 from agentic_payments_env.generators.routine import generate_routine
 
 
@@ -36,3 +40,9 @@ def test_curriculum_order_stable_by_score_then_id() -> None:
     assert [task.task_id for task in ordered] == ["v1/a", "v1/z", "v1/m"]
     again = curriculum_order([third, first, second])
     assert [task.task_id for task in again] == [task.task_id for task in ordered]
+
+
+def test_spearman_perfect_monotone() -> None:
+    xs = [1.0, 2.0, 3.0, 4.0]
+    ys = [0.0, 0.25, 0.5, 1.0]
+    assert spearman_rank_correlation(xs, ys) >= 0.999
