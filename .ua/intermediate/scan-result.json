@@ -26,7 +26,7 @@
     {
       "path": ".coordination/context/project.md",
       "language": "markdown",
-      "sizeLines": 57,
+      "sizeLines": 60,
       "fileCategory": "docs"
     },
     {
@@ -156,6 +156,12 @@
       "fileCategory": "docs"
     },
     {
+      "path": ".coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md",
+      "language": "markdown",
+      "sizeLines": 61,
+      "fileCategory": "docs"
+    },
+    {
       "path": ".coordination/tasks/done/README.md",
       "language": "markdown",
       "sizeLines": 5,
@@ -206,19 +212,7 @@
     {
       "path": ".serena/project.yml",
       "language": "yaml",
-      "sizeLines": 170,
-      "fileCategory": "config"
-    },
-    {
-      "path": ".ua/.understandignore",
-      "language": "unknown",
-      "sizeLines": 85,
-      "fileCategory": "code"
-    },
-    {
-      "path": ".ua/config.json",
-      "language": "json",
-      "sizeLines": 1,
+      "sizeLines": 184,
       "fileCategory": "config"
     },
     {
@@ -1946,7 +1940,7 @@
     {
       "path": "docs/11-roadmap.md",
       "language": "markdown",
-      "sizeLines": 103,
+      "sizeLines": 194,
       "fileCategory": "docs"
     },
     {
@@ -1970,37 +1964,37 @@
     {
       "path": "docs/milestones/M1-baseline-agents.md",
       "language": "markdown",
-      "sizeLines": 177,
+      "sizeLines": 182,
       "fileCategory": "docs"
     },
     {
       "path": "docs/milestones/M2-failure-analysis.md",
       "language": "markdown",
-      "sizeLines": 142,
+      "sizeLines": 147,
       "fileCategory": "docs"
     },
     {
       "path": "docs/milestones/M3-synthetic.md",
       "language": "markdown",
-      "sizeLines": 139,
+      "sizeLines": 144,
       "fileCategory": "docs"
     },
     {
       "path": "docs/milestones/M4-rewards.md",
       "language": "markdown",
-      "sizeLines": 84,
+      "sizeLines": 89,
       "fileCategory": "docs"
     },
     {
       "path": "docs/milestones/M5-optimization.md",
       "language": "markdown",
-      "sizeLines": 67,
+      "sizeLines": 72,
       "fileCategory": "docs"
     },
     {
       "path": "docs/milestones/M6-report.md",
       "language": "markdown",
-      "sizeLines": 44,
+      "sizeLines": 49,
       "fileCategory": "docs"
     },
     {
@@ -2898,7 +2892,7 @@
       "fileCategory": "code"
     }
   ],
-  "totalFiles": 480,
+  "totalFiles": 479,
   "filteredByIgnore": 0,
   "estimatedComplexity": "large",
   "importMap": {
@@ -2934,8 +2928,6 @@
     ".cursor/rules/project-context.mdc": [],
     ".github/workflows/ci.yml": [],
     ".serena/project.yml": [],
-    ".ua/.understandignore": [],
-    ".ua/config.json": [],
     "AGENTS.md": [],
     "CLAUDE.md": [],
     "README.md": [],
@@ -3830,6 +3822,7 @@
       "tests/test_world.py"
     ],
     "tests/test_v01_decision.py": [],
-    "tests/test_world.py": []
+    "tests/test_world.py": [],
+    ".coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md": []
   }
 }

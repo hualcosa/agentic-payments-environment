@@ -1,26 +1,4 @@
 {
-  "version": "1.0.0",
-  "project": {
-    "name": "agentic-payments-env",
-    "languages": [
-      "json",
-      "jsonl",
-      "markdown",
-      "mdc",
-      "python",
-      "toml",
-      "unknown",
-      "yaml"
-    ],
-    "frameworks": [
-      "pydantic",
-      "pytest",
-      "GitHub Actions"
-    ],
-    "description": "Deterministic research environment for agentic payment workflows.",
-    "analyzedAt": "2026-09-17T17:32:49.211Z",
-    "gitCommitHash": "24e6f36a3741713d966eb9cfe4b4da48655bbb24"
-  },
   "nodes": [
     {
       "id": "file:src/agentic_payments_env/agents/__init__.py",
@@ -3627,7 +3605,7 @@
       "type": "file",
       "name": "test_environment.py",
       "filePath": "tests/test_environment.py",
-      "summary": "Covers PaymentsEnvironment reset idempotency, step guards, simulated clock ticks, and max-step termination (REQ-ENV-01–10).",
+      "summary": "Covers PaymentsEnvironment reset idempotency, step guards, simulated clock ticks, and max-step termination (REQ-ENV-01\u201310).",
       "tags": [
         "test",
         "environment",
@@ -8548,7 +8526,7 @@
       "type": "document",
       "name": "20260917-1119-20260917-003-prepare-llm-tool-tasks-codex-to-cursor.md",
       "filePath": ".coordination/handoffs/20260917-1119-20260917-003-prepare-llm-tool-tasks-codex-to-cursor.md",
-      "summary": "Codex-to-Cursor handoff for task 003 transferring approved LLM single-tool-turn plan, ADR, and backlog tasks 004–006 to Cursor for serial implementation without real API calls.",
+      "summary": "Codex-to-Cursor handoff for task 003 transferring approved LLM single-tool-turn plan, ADR, and backlog tasks 004\u2013006 to Cursor for serial implementation without real API calls.",
       "tags": [
         "documentation",
         "handoff",
@@ -8563,7 +8541,7 @@
       "type": "document",
       "name": "20260917-1132-20260917-006-llm-protocol-integration-codex-to-owner.md",
       "filePath": ".coordination/handoffs/20260917-1132-20260917-006-llm-protocol-integration-codex-to-owner.md",
-      "summary": "Codex-to-owner handoff reporting completion of LLM protocol tasks 004–006 with agent, adapter, and integration test changes verified offline at 464 pytest passes and oracle safe success.",
+      "summary": "Codex-to-owner handoff reporting completion of LLM protocol tasks 004\u2013006 with agent, adapter, and integration test changes verified offline at 464 pytest passes and oracle safe success.",
       "tags": [
         "documentation",
         "handoff",
@@ -8593,7 +8571,7 @@
       "type": "document",
       "name": "2026-09-17-llm-tool-protocol.md",
       "filePath": ".coordination/plans/2026-09-17-llm-tool-protocol.md",
-      "summary": "Approved coordination plan defining frozen single-tool-call LLM turn behavior, LLMAgentProtocolError handling, provider adapter constraints, and a serial task graph (003–006) for harness validity regressions.",
+      "summary": "Approved coordination plan defining frozen single-tool-call LLM turn behavior, LLMAgentProtocolError handling, provider adapter constraints, and a serial task graph (003\u2013006) for harness validity regressions.",
       "tags": [
         "documentation",
         "coordination",
@@ -8743,7 +8721,7 @@
       "type": "document",
       "name": "20260917-007-review-llm-protocol.md",
       "filePath": ".coordination/tasks/done/20260917-007-review-llm-protocol.md",
-      "summary": "Acceptance review of tasks 004–006 that mapped every criterion, repaired persisted protocol-error diagnostics, strengthened integration assertions, and committed verified work in five coherent commits.",
+      "summary": "Acceptance review of tasks 004\u2013006 that mapped every criterion, repaired persisted protocol-error diagnostics, strengthened integration assertions, and committed verified work in five coherent commits.",
       "tags": [
         "documentation",
         "coordination",
@@ -8752,20 +8730,6 @@
         "verification"
       ],
       "complexity": "moderate"
-    },
-    {
-      "id": "document:.coordination/tasks/done/20260917-008-concise-communication.md",
-      "type": "document",
-      "name": "20260917-008-concise-communication.md",
-      "filePath": ".coordination/tasks/done/20260917-008-concise-communication.md",
-      "summary": "Completed policy task adding a canonical concise-completeness communication standard to AGENTS.md with thin inheritance adapters for Claude Code and Cursor.",
-      "tags": [
-        "documentation",
-        "coordination",
-        "communication-policy",
-        "agent-guidance"
-      ],
-      "complexity": "simple"
     },
     {
       "id": "document:.coordination/tasks/done/README.md",
@@ -8828,36 +8792,6 @@
       ],
       "complexity": "simple",
       "languageNotes": "Rich YAML front matter defines task lifecycle fields (status, harness, owner, scope, expected_files, depends_on)."
-    },
-    {
-      "id": "document:AGENTS.md",
-      "type": "document",
-      "name": "AGENTS.md",
-      "filePath": "AGENTS.md",
-      "summary": "Canonical operating contract for AI coding agents in this repository, covering coordination workflow, strategic context, hard rules (centavos, determinism, no network), code conventions, verification commands, and commit format.",
-      "tags": [
-        "documentation",
-        "agent-rules",
-        "development",
-        "coordination",
-        "entry-point"
-      ],
-      "complexity": "complex",
-      "languageNotes": "Normative agent harness contract referenced by CLAUDE.md and README; defers strategic context to docs/00-project-context.md."
-    },
-    {
-      "id": "document:CLAUDE.md",
-      "type": "document",
-      "name": "CLAUDE.md",
-      "filePath": "CLAUDE.md",
-      "summary": "Claude Code harness entry point that imports AGENTS.md, project context, and coordination docs, reiterating concise-communication and cross-harness coordination rules.",
-      "tags": [
-        "documentation",
-        "entry-point",
-        "claude-code",
-        "coordination"
-      ],
-      "complexity": "simple"
     },
     {
       "id": "document:README.md",
@@ -13400,20 +13334,6 @@
       "complexity": "moderate"
     },
     {
-      "id": "document:docs/11-roadmap.md",
-      "type": "document",
-      "name": "11-roadmap.md",
-      "filePath": "docs/11-roadmap.md",
-      "summary": "Milestone roadmap M0 through M6 with exit criteria for scaffold, baseline agents, failure analysis, synthetic data, reward signals, optimization, and technical report phases.",
-      "tags": [
-        "documentation",
-        "roadmap",
-        "milestones",
-        "planning"
-      ],
-      "complexity": "moderate"
-    },
-    {
       "id": "document:docs/12-decisions.md",
       "type": "document",
       "name": "12-decisions.md",
@@ -13455,97 +13375,7 @@
         "specification"
       ],
       "complexity": "complex",
-      "languageNotes": "Normative execution plan referencing AGENTS.md ticket order and spec sections docs 02–10."
-    },
-    {
-      "id": "document:docs/milestones/M1-baseline-agents.md",
-      "type": "document",
-      "name": "M1-baseline-agents.md",
-      "filePath": "docs/milestones/M1-baseline-agents.md",
-      "summary": "Milestone 1 plan for provider-agnostic LLM agents via ChatModel adapters, prompt v1, measured benchmark runs, and failure review examples while keeping the core package SDK-free.",
-      "tags": [
-        "documentation",
-        "milestone",
-        "baseline-agents",
-        "llm-adapters",
-        "benchmark"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "document:docs/milestones/M2-failure-analysis.md",
-      "type": "document",
-      "name": "M2-failure-analysis.md",
-      "filePath": "docs/milestones/M2-failure-analysis.md",
-      "summary": "Milestone 2 plan for step-level trace annotation, a 100+ episode corpus, LLM-as-judge grading, rule-vs-judge agreement study, and taxonomy v1 evidence logging.",
-      "tags": [
-        "documentation",
-        "milestone",
-        "failure-analysis",
-        "annotations",
-        "taxonomy"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "document:docs/milestones/M3-synthetic.md",
-      "type": "document",
-      "name": "M3-synthetic.md",
-      "filePath": "docs/milestones/M3-synthetic.md",
-      "summary": "Milestone 3 plan for seeded parametric task generators per family, validity filtering, difficulty ordering, curriculum design, and frozen benchmark v1 with 200 held-out tasks.",
-      "tags": [
-        "documentation",
-        "milestone",
-        "synthetic-data",
-        "generators",
-        "curriculum"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "document:docs/milestones/M4-rewards.md",
-      "type": "document",
-      "name": "M4-rewards.md",
-      "filePath": "docs/milestones/M4-rewards.md",
-      "summary": "Milestone 4 plan defining episode- and step-level reward signals from graders, preference pair ranking, anti-gaming checks, and a reward specification document using int millipoints.",
-      "tags": [
-        "documentation",
-        "milestone",
-        "rewards",
-        "grading",
-        "anti-gaming"
-      ],
-      "complexity": "moderate"
-    },
-    {
-      "id": "document:docs/milestones/M5-optimization.md",
-      "type": "document",
-      "name": "M5-optimization.md",
-      "filePath": "docs/milestones/M5-optimization.md",
-      "summary": "Milestone 5 plan for two optimization interventions—prompt v2 and SFT export—with held-out v1 evaluation placeholders and an explicit skip of stretch DPO/GRPO training.",
-      "tags": [
-        "documentation",
-        "milestone",
-        "optimization",
-        "prompt-engineering",
-        "sft-export"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "document:docs/milestones/M6-report.md",
-      "type": "document",
-      "name": "M6-report.md",
-      "filePath": "docs/milestones/M6-report.md",
-      "summary": "Milestone 6 plan for the final technical report and reproducibility package documenting oracle sanity, grader validation, v1 freeze, and reward artifacts without inventing live LLM scores.",
-      "tags": [
-        "documentation",
-        "milestone",
-        "technical-report",
-        "reproducibility",
-        "publication"
-      ],
-      "complexity": "simple"
+      "languageNotes": "Normative execution plan referencing AGENTS.md ticket order and spec sections docs 02\u201310."
     },
     {
       "id": "document:reports/v0/claude-haiku-4-5-v1.md",
@@ -13702,20 +13532,6 @@
       "complexity": "moderate"
     },
     {
-      "id": "document:.coordination/context/project.md",
-      "type": "document",
-      "name": "project.md",
-      "filePath": ".coordination/context/project.md",
-      "summary": "Living project context snapshot describing purpose, current milestone state, shared workflow constraints, and latest validation status.",
-      "tags": [
-        "documentation",
-        "project-context",
-        "coordination",
-        "status"
-      ],
-      "complexity": "moderate"
-    },
-    {
       "id": "document:.coordination/decisions/ADR-0001-single-tool-turn.md",
       "type": "document",
       "name": "ADR-0001-single-tool-turn.md",
@@ -13781,34 +13597,6 @@
         "always-apply"
       ],
       "complexity": "simple"
-    },
-    {
-      "id": "file:.cursor/rules/project-context.mdc",
-      "type": "file",
-      "name": "project-context.mdc",
-      "filePath": ".cursor/rules/project-context.mdc",
-      "summary": "Always-applied Cursor rule pointing agents to AGENTS.md and docs/00-project-context.md for strategic context and concise communication policy.",
-      "tags": [
-        "configuration",
-        "cursor-rule",
-        "project-context",
-        "always-apply"
-      ],
-      "complexity": "simple"
-    },
-    {
-      "id": "config:.serena/project.yml",
-      "type": "config",
-      "name": "project.yml",
-      "filePath": ".serena/project.yml",
-      "summary": "Serena code-navigation configuration defining language servers, ignored paths, tool exclusions, and workspace settings for this Python project.",
-      "tags": [
-        "configuration",
-        "serena",
-        "language-server",
-        "code-navigation"
-      ],
-      "complexity": "complex"
     },
     {
       "id": "file:.ua/.understandignore",
@@ -15770,6 +15558,209 @@
         "oracle"
       ],
       "complexity": "simple"
+    },
+    {
+      "id": "document:.coordination/tasks/done/20260917-008-concise-communication.md",
+      "type": "document",
+      "name": "20260917-008-concise-communication.md",
+      "filePath": ".coordination/tasks/done/20260917-008-concise-communication.md",
+      "summary": "Completed coordination task record for adding a canonical concise-completeness communication policy to AGENTS.md, with thin Claude Code and Cursor adapters that inherit it.",
+      "tags": [
+        "documentation",
+        "coordination",
+        "task-record",
+        "communication-policy"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md",
+      "type": "document",
+      "name": "20260917-009-refine-roadmap-evidence-status.md",
+      "filePath": ".coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md",
+      "summary": "Completed coordination task record for separating capability delivery from research evidence in the roadmap, defining four evidence levels and the R1 live-model baseline gate, with verification results.",
+      "tags": [
+        "documentation",
+        "coordination",
+        "task-record",
+        "roadmap",
+        "evidence"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:AGENTS.md",
+      "type": "document",
+      "name": "AGENTS.md",
+      "filePath": "AGENTS.md",
+      "summary": "Operating contract for AI coding agents: defines cross-harness coordination, the concise-completeness communication standard, spec-first ticket execution, hard rules (integer centavos, seeded determinism, no network, audited mutations, hidden ground truth), code conventions, the verification command and commit format.",
+      "tags": [
+        "documentation",
+        "agent-instructions",
+        "conventions",
+        "governance",
+        "entry-point"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Normative rules file shared by Cursor, Claude Code and Codex; requirement IDs (REQ-*) tie code and commits back to the docs/ specification."
+    },
+    {
+      "id": "document:CLAUDE.md",
+      "type": "document",
+      "name": "CLAUDE.md",
+      "filePath": "CLAUDE.md",
+      "summary": "Thin Claude Code entry point that imports AGENTS.md, the shared project context and the coordination README, and restates the communication standard and the start-of-session coordination protocol.",
+      "tags": [
+        "documentation",
+        "agent-instructions",
+        "entry-point",
+        "coordination"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Uses @-import syntax so Claude-specific guidance stays a thin adapter over the canonical shared files."
+    },
+    {
+      "id": "document:docs/11-roadmap.md",
+      "type": "document",
+      "name": "11-roadmap.md",
+      "filePath": "docs/11-roadmap.md",
+      "summary": "Roadmap mapping milestones M0-M6 onto the closed experimental loop, with a four-level evidence status model (implemented, offline validated, live measured, scientifically supported), the next R1 live-baseline research gate, and a risk table.",
+      "tags": [
+        "documentation",
+        "roadmap",
+        "milestones",
+        "evidence-standard",
+        "planning"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "Separates delivery status from scientific evidence; exit criteria are tests, artifacts or measurements."
+    },
+    {
+      "id": "document:docs/milestones/M1-baseline-agents.md",
+      "type": "document",
+      "name": "M1-baseline-agents.md",
+      "filePath": "docs/milestones/M1-baseline-agents.md",
+      "summary": "Milestone 1 ticket plan (T1.01-T1.07) for running real LLM agents on benchmark v0 via a provider-agnostic ChatModel adapter, LLM agent loop, prompt v1, CLI and measured reports with per-code catastrophic counts.",
+      "tags": [
+        "documentation",
+        "milestone",
+        "baseline-agents",
+        "llm-adapters"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/milestones/M2-failure-analysis.md",
+      "type": "document",
+      "name": "M2-failure-analysis.md",
+      "filePath": "docs/milestones/M2-failure-analysis.md",
+      "summary": "Milestone 2 ticket plan (T2.01-T2.07) for failure analysis: annotation schema and corpus of at least 100 episodes, an LLM-as-judge grader, rule-vs-judge agreement, taxonomy evidence log and the benchmark v0.1 decision.",
+      "tags": [
+        "documentation",
+        "milestone",
+        "failure-analysis",
+        "annotation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/milestones/M3-synthetic.md",
+      "type": "document",
+      "name": "M3-synthetic.md",
+      "filePath": "docs/milestones/M3-synthetic.md",
+      "summary": "Milestone 3 ticket plan (T3.01-T3.08) for seeded synthetic task generators across four task families, a validity filter, difficulty/curriculum ordering and the benchmark v1 freeze.",
+      "tags": [
+        "documentation",
+        "milestone",
+        "synthetic-data",
+        "curriculum"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/milestones/M4-rewards.md",
+      "type": "document",
+      "name": "M4-rewards.md",
+      "filePath": "docs/milestones/M4-rewards.md",
+      "summary": "Milestone 4 ticket plan (T4.01-T4.04) defining episode and step reward signals with anti-gaming checks, preference pair construction and a reward specification document.",
+      "tags": [
+        "documentation",
+        "milestone",
+        "rewards",
+        "anti-gaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/milestones/M5-optimization.md",
+      "type": "document",
+      "name": "M5-optimization.md",
+      "filePath": "docs/milestones/M5-optimization.md",
+      "summary": "Milestone 5 ticket plan (T5.01-T5.04) for first interventions: prompt v2, SFT export, a held-out evaluation placeholder, and an explicit skip of stretch DPO/GRPO.",
+      "tags": [
+        "documentation",
+        "milestone",
+        "optimization",
+        "sft"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:docs/milestones/M6-report.md",
+      "type": "document",
+      "name": "M6-report.md",
+      "filePath": "docs/milestones/M6-report.md",
+      "summary": "Milestone 6 ticket plan (T6.01-T6.02) for the technical report and a reproducibility package that closes the experimental loop with reviewable evidence.",
+      "tags": [
+        "documentation",
+        "milestone",
+        "technical-report",
+        "reproducibility"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.coordination/context/project.md",
+      "type": "document",
+      "name": "project.md",
+      "filePath": ".coordination/context/project.md",
+      "summary": "Shared cross-harness project context recording the environment's purpose, current repository state, workflow constraints and latest validation results (469 tests, offline oracle evidence). States that live-model results remain not yet measured.",
+      "tags": [
+        "documentation",
+        "coordination",
+        "project-context",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.cursor/rules/project-context.mdc",
+      "type": "file",
+      "name": "project-context.mdc",
+      "filePath": ".cursor/rules/project-context.mdc",
+      "summary": "Always-applied Cursor rule that is a thin adapter pointing agents to AGENTS.md and docs/00-project-context.md, restating the research-instrument purpose and concise-completeness communication policy.",
+      "tags": [
+        "cursor-rule",
+        "agent-instructions",
+        "adapter",
+        "configuration"
+      ],
+      "complexity": "simple",
+      "languageNotes": "Cursor MDC rule file with YAML frontmatter (alwaysApply: true) followed by markdown."
+    },
+    {
+      "id": "config:.serena/project.yml",
+      "type": "config",
+      "name": "project.yml",
+      "filePath": ".serena/project.yml",
+      "summary": "Serena project configuration setting the project name, UTF-8 encoding, gitignore-respecting file discovery, activation timeout and default tool/mode settings; effectively defaults with no language servers configured.",
+      "tags": [
+        "configuration",
+        "serena",
+        "code-navigation",
+        "tooling"
+      ],
+      "complexity": "moderate"
     }
   ],
   "edges": [
@@ -26162,13 +26153,6 @@
       "weight": 0.5
     },
     {
-      "source": "document:.coordination/tasks/done/20260917-008-concise-communication.md",
-      "target": "file:.cursor/rules/project-context.mdc",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
       "source": "document:.coordination/tasks/done/README.md",
       "target": "document:.coordination/tasks/done/20260917-001-sync-workspace.md",
       "type": "related",
@@ -26218,13 +26202,6 @@
       "weight": 0.5
     },
     {
-      "source": "document:.coordination/tasks/done/README.md",
-      "target": "document:.coordination/tasks/done/20260917-008-concise-communication.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
       "source": "document:.coordination/templates/task.md",
       "target": "document:.coordination/templates/handoff.md",
       "type": "related",
@@ -26242,62 +26219,6 @@
       "source": "document:.coordination/templates/handoff.md",
       "target": "document:.coordination/templates/decision.md",
       "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:CLAUDE.md",
-      "target": "document:AGENTS.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:CLAUDE.md",
-      "target": "document:docs/00-project-context.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:CLAUDE.md",
-      "target": "document:.coordination/README.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:AGENTS.md",
-      "target": "document:docs/00-project-context.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:AGENTS.md",
-      "target": "document:docs/00-index.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:AGENTS.md",
-      "target": "document:.coordination/README.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:AGENTS.md",
-      "target": "document:docs/12-decisions.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:README.md",
-      "target": "document:AGENTS.md",
-      "type": "documents",
       "direction": "forward",
       "weight": 0.5
     },
@@ -26356,13 +26277,6 @@
       "type": "configures",
       "direction": "forward",
       "weight": 0.6
-    },
-    {
-      "source": "document:AGENTS.md",
-      "target": "document:CLAUDE.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
     },
     {
       "source": "document:README.md",
@@ -32351,13 +32265,6 @@
     },
     {
       "source": "document:docs/00-index.md",
-      "target": "document:docs/11-roadmap.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/00-index.md",
       "target": "document:docs/12-decisions.md",
       "type": "documents",
       "direction": "forward",
@@ -32373,13 +32280,6 @@
     {
       "source": "document:docs/00-project-context.md",
       "target": "document:docs/01-vision-and-scope.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/01-vision-and-scope.md",
-      "target": "document:docs/11-roadmap.md",
       "type": "related",
       "direction": "forward",
       "weight": 0.5
@@ -32728,20 +32628,6 @@
       "weight": 0.5
     },
     {
-      "source": "document:docs/11-roadmap.md",
-      "target": "document:docs/milestones/M0-scaffold.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/11-roadmap.md",
-      "target": "document:docs/milestones/M1-baseline-agents.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
       "source": "document:docs/12-decisions.md",
       "target": "document:docs/02-domain-model.md",
       "type": "related",
@@ -32772,48 +32658,6 @@
     {
       "source": "document:docs/appendix-plan-review.md",
       "target": "document:docs/00-index.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/milestones/M0-scaffold.md",
-      "target": "document:docs/milestones/M1-baseline-agents.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/milestones/M1-baseline-agents.md",
-      "target": "document:docs/milestones/M2-failure-analysis.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/milestones/M2-failure-analysis.md",
-      "target": "document:docs/milestones/M3-synthetic.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/milestones/M3-synthetic.md",
-      "target": "document:docs/milestones/M4-rewards.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/milestones/M4-rewards.md",
-      "target": "document:docs/milestones/M5-optimization.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:docs/milestones/M5-optimization.md",
-      "target": "document:docs/milestones/M6-report.md",
       "type": "related",
       "direction": "forward",
       "weight": 0.5
@@ -32981,13 +32825,6 @@
     },
     {
       "source": "document:.coordination/README.md",
-      "target": "document:.coordination/context/project.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/README.md",
       "target": "document:.coordination/tasks/backlog/README.md",
       "type": "related",
       "direction": "forward",
@@ -33003,13 +32840,6 @@
     {
       "source": "file:.cursor/rules/coordination.mdc",
       "target": "document:.coordination/README.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "file:.cursor/rules/coordination.mdc",
-      "target": "document:.coordination/context/project.md",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -33076,13 +32906,6 @@
       "type": "related",
       "direction": "forward",
       "weight": 0.5
-    },
-    {
-      "source": "config:.serena/project.yml",
-      "target": "file:src/agentic_payments_env/benchmark/__init__.py",
-      "type": "configures",
-      "direction": "forward",
-      "weight": 0.6
     },
     {
       "source": "config:.ua/config.json",
@@ -34345,22 +34168,8 @@
       "weight": 0.8
     },
     {
-      "source": "document:docs/00-project-context.md",
-      "target": "document:AGENTS.md",
-      "type": "related",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
       "source": "document:reports/v1/prompt-v2.md",
       "target": "document:prompts/v2.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "file:.cursor/rules/project-context.mdc",
-      "target": "document:AGENTS.md",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -34381,20 +34190,6 @@
     },
     {
       "source": "document:.coordination/handoffs/20260917-0942-20260917-001-sync-workspace-codex-to-owner.md",
-      "target": "document:AGENTS.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/handoffs/20260917-0942-20260917-001-sync-workspace-codex-to-owner.md",
-      "target": "document:CLAUDE.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/handoffs/20260917-0942-20260917-001-sync-workspace-codex-to-owner.md",
       "target": "document:docs/00-index.md",
       "type": "documents",
       "direction": "forward",
@@ -34403,13 +34198,6 @@
     {
       "source": "document:.coordination/handoffs/20260917-0942-20260917-001-sync-workspace-codex-to-owner.md",
       "target": "document:docs/00-project-context.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/handoffs/20260917-0942-20260917-001-sync-workspace-codex-to-owner.md",
-      "target": "document:.coordination/context/project.md",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -34424,20 +34212,6 @@
     {
       "source": "document:.coordination/handoffs/20260917-0956-20260917-001-sync-workspace-codex-to-owner.md",
       "target": "document:.coordination/tasks/done/20260917-002-pytest-import-path.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/handoffs/20260917-0956-20260917-001-sync-workspace-codex-to-owner.md",
-      "target": "document:.coordination/context/project.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/handoffs/20260917-1119-20260917-003-prepare-llm-tool-tasks-codex-to-cursor.md",
-      "target": "document:AGENTS.md",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -34499,13 +34273,6 @@
       "weight": 0.5
     },
     {
-      "source": "document:.coordination/handoffs/20260917-1132-20260917-006-llm-protocol-integration-codex-to-owner.md",
-      "target": "document:.coordination/context/project.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
       "source": "document:.coordination/handoffs/20260917-1143-20260917-007-review-llm-protocol-codex-to-owner.md",
       "target": "document:docs/12-decisions.md",
       "type": "documents",
@@ -34514,21 +34281,7 @@
     },
     {
       "source": "document:.coordination/handoffs/20260917-1143-20260917-007-review-llm-protocol-codex-to-owner.md",
-      "target": "document:.coordination/context/project.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/handoffs/20260917-1143-20260917-007-review-llm-protocol-codex-to-owner.md",
       "target": "document:.coordination/tasks/done/20260917-007-review-llm-protocol.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/plans/2026-09-17-llm-tool-protocol.md",
-      "target": "document:docs/milestones/M1-baseline-agents.md",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -34577,28 +34330,7 @@
     },
     {
       "source": "document:.coordination/plans/2026-09-17-pytest-import-path.md",
-      "target": "document:AGENTS.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/plans/2026-09-17-pytest-import-path.md",
       "target": "document:reports/v0/oracle.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/plans/2026-09-17-sync-workspace.md",
-      "target": "document:AGENTS.md",
-      "type": "documents",
-      "direction": "forward",
-      "weight": 0.5
-    },
-    {
-      "source": "document:.coordination/plans/2026-09-17-sync-workspace.md",
-      "target": "document:CLAUDE.md",
       "type": "documents",
       "direction": "forward",
       "weight": 0.5
@@ -34639,9 +34371,499 @@
       "weight": 0.5
     },
     {
-      "source": "document:.coordination/tasks/done/20260917-008-concise-communication.md",
-      "target": "document:CLAUDE.md",
+      "source": "document:.coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md",
+      "target": "document:docs/11-roadmap.md",
       "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:.coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md",
+      "target": "document:.coordination/context/project.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:.coordination/tasks/done/20260917-008-concise-communication.md",
+      "target": "document:.coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:AGENTS.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:docs/00-project-context.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:CLAUDE.md",
+      "target": "document:.coordination/README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "document:docs/00-project-context.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "document:.coordination/README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "document:docs/00-index.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/00-project-context.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/milestones/M0-scaffold.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/milestones/M1-baseline-agents.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/milestones/M2-failure-analysis.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/milestones/M3-synthetic.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/milestones/M4-rewards.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/milestones/M5-optimization.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/milestones/M6-report.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/11-roadmap.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/adapters/__init__.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/adapters/anthropic.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/adapters/base.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/adapters/openai_compat.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/agents/__init__.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/agents/llm.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/benchmark/runner.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/cli.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "file:src/agentic_payments_env/prompts.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "document:docs/11-roadmap.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M1-baseline-agents.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "file:src/agentic_payments_env/annotations/__init__.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "file:src/agentic_payments_env/annotations/agreement.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "file:src/agentic_payments_env/annotations/corpus.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "file:src/agentic_payments_env/annotations/from_grade.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "file:src/agentic_payments_env/annotations/schema.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "file:src/agentic_payments_env/cli.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "file:src/agentic_payments_env/graders/llm_judge.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "document:docs/11-roadmap.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/benchmark/loader.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/benchmark/v1/__init__.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/__init__.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/adversarial.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/base.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/difficulty.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/policy.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/recovery.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/routine.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "file:src/agentic_payments_env/generators/validate.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "document:docs/11-roadmap.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M4-rewards.md",
+      "target": "file:src/agentic_payments_env/rewards/__init__.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M4-rewards.md",
+      "target": "file:src/agentic_payments_env/rewards/episode.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M4-rewards.md",
+      "target": "file:src/agentic_payments_env/rewards/pairs.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M4-rewards.md",
+      "target": "file:src/agentic_payments_env/rewards/step.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M4-rewards.md",
+      "target": "document:docs/11-roadmap.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M4-rewards.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M5-optimization.md",
+      "target": "file:src/agentic_payments_env/cli.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M5-optimization.md",
+      "target": "file:src/agentic_payments_env/export_sft.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M5-optimization.md",
+      "target": "document:docs/11-roadmap.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M5-optimization.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M6-report.md",
+      "target": "document:docs/11-roadmap.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M6-report.md",
+      "target": "document:docs/12-decisions.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/milestones/M2-failure-analysis.md",
+      "target": "document:docs/milestones/M1-baseline-agents.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/milestones/M3-synthetic.md",
+      "target": "document:docs/milestones/M2-failure-analysis.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/milestones/M4-rewards.md",
+      "target": "document:docs/milestones/M3-synthetic.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/milestones/M5-optimization.md",
+      "target": "document:docs/milestones/M4-rewards.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:docs/milestones/M6-report.md",
+      "target": "document:docs/milestones/M5-optimization.md",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:.coordination/context/project.md",
+      "target": "document:docs/00-project-context.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:.cursor/rules/project-context.mdc",
+      "target": "document:AGENTS.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:.cursor/rules/project-context.mdc",
+      "target": "document:docs/00-project-context.md",
+      "type": "related",
       "direction": "forward",
       "weight": 0.5
     }
@@ -35091,7 +35313,8 @@
         "file:.cursor/rules/project-context.mdc",
         "file:.ua/.understandignore",
         "file:src/agentic_payments_env/__init__.py",
-        "pipeline:.github/workflows/ci.yml"
+        "pipeline:.github/workflows/ci.yml",
+        "document:.coordination/tasks/done/20260917-009-refine-roadmap-evidence-status.md"
       ]
     },
     {
@@ -35202,7 +35425,7 @@
     {
       "order": 1,
       "title": "Project Overview",
-      "description": "Start with README.md to understand what the Agentic Payments Environment is: a deterministic research sandbox for measuring and improving AI agent behavior on financial workflows. The document introduces the closed experimental loop (environment → tasks → agents → evals → failure taxonomy → rewards → optimization → report) and the headline metric—safe success rate—giving you the roadmap for everything that follows.",
+      "description": "Start with README.md to understand what the Agentic Payments Environment is: a deterministic research sandbox for measuring and improving AI agent behavior on financial workflows. The document introduces the closed experimental loop (environment \u2192 tasks \u2192 agents \u2192 evals \u2192 failure taxonomy \u2192 rewards \u2192 optimization \u2192 report) and the headline metric\u2014safe success rate\u2014giving you the roadmap for everything that follows.",
       "nodeIds": [
         "document:README.md"
       ]
@@ -35210,7 +35433,7 @@
     {
       "order": 2,
       "title": "CLI Entry Point",
-      "description": "The `apenv` CLI in cli.py is the runtime front door, exposing subcommands like list, show, run, bench, replay, export, and annotate. Building on the README quick-start, this file shows how every experiment path—single episodes, full benchmarks, trace replay—enters the system through one command surface. The pyproject.toml manifest wires this module as the installed console script and declares runtime dependencies.",
+      "description": "The `apenv` CLI in cli.py is the runtime front door, exposing subcommands like list, show, run, bench, replay, export, and annotate. Building on the README quick-start, this file shows how every experiment path\u2014single episodes, full benchmarks, trace replay\u2014enters the system through one command surface. The pyproject.toml manifest wires this module as the installed console script and declares runtime dependencies.",
       "nodeIds": [
         "file:src/agentic_payments_env/cli.py",
         "config:pyproject.toml"
@@ -35220,7 +35443,7 @@
     {
       "order": 3,
       "title": "Domain Specification",
-      "description": "Before reading code, study docs/02-domain-model.md—the normative spec for money (int centavos, never floats), seeded identifiers, the simulated clock, transfer state machines, audit events, and world invariants. Every contract and tool implementation you encounter later must conform to these rules; violations here become catastrophic grading failures in the eval loop.",
+      "description": "Before reading code, study docs/02-domain-model.md\u2014the normative spec for money (int centavos, never floats), seeded identifiers, the simulated clock, transfer state machines, audit events, and world invariants. Every contract and tool implementation you encounter later must conform to these rules; violations here become catastrophic grading failures in the eval loop.",
       "nodeIds": [
         "document:docs/02-domain-model.md"
       ]
@@ -35228,19 +35451,19 @@
     {
       "order": 4,
       "title": "Pydantic Contracts",
-      "description": "The contracts package defines the shared vocabulary as frozen Pydantic v2 models. common.py holds enums and validators; domain.py models accounts, transfers, and consents; actions.py defines tool calls and observations; tasks.py wraps TaskSpec with oracle plans and hidden ground truth. These types are the boundary between every layer—agents emit Actions, the environment returns Observations, graders consume EpisodeResults.",
+      "description": "The contracts package defines the shared vocabulary as frozen Pydantic v2 models. common.py holds enums and validators; domain.py models accounts, transfers, and consents; actions.py defines tool calls and observations; tasks.py wraps TaskSpec with oracle plans and hidden ground truth. These types are the boundary between every layer\u2014agents emit Actions, the environment returns Observations, graders consume EpisodeResults.",
       "nodeIds": [
         "file:src/agentic_payments_env/contracts/common.py",
         "file:src/agentic_payments_env/contracts/domain.py",
         "file:src/agentic_payments_env/contracts/actions.py",
         "file:src/agentic_payments_env/contracts/tasks.py"
       ],
-      "languageLesson": "Pydantic v2 `BaseModel` with `ConfigDict(frozen=True, extra='forbid')` makes contracts immutable and rejects unknown fields—critical for deterministic replay and strict agent-environment handshakes."
+      "languageLesson": "Pydantic v2 `BaseModel` with `ConfigDict(frozen=True, extra='forbid')` makes contracts immutable and rejects unknown fields\u2014critical for deterministic replay and strict agent-environment handshakes."
     },
     {
       "order": 5,
       "title": "Environment Runtime",
-      "description": "PaymentsEnvironment in environment.py orchestrates the episode step loop: it holds WorldState, advances the simulated clock, injects faults from TaskSpec, and delegates each agent Action to the tool layer. This is the heart of the research instrument—everything an agent experiences flows through reset() and step(), making the environment the single authority on what is observable and what mutates state.",
+      "description": "PaymentsEnvironment in environment.py orchestrates the episode step loop: it holds WorldState, advances the simulated clock, injects faults from TaskSpec, and delegates each agent Action to the tool layer. This is the heart of the research instrument\u2014everything an agent experiences flows through reset() and step(), making the environment the single authority on what is observable and what mutates state.",
       "nodeIds": [
         "file:src/agentic_payments_env/environment.py"
       ]
@@ -35248,7 +35471,7 @@
     {
       "order": 6,
       "title": "Tool Dispatch Layer",
-      "description": "Building on the environment from Step 5, tools/dispatch.py routes each Action to its registered handler, wrapping failures as ToolError observations so bad agent calls never crash the run. tools/specs.py exposes ToolSpec definitions—names, descriptions, and JSON schemas—that agents (especially LLM agents) use to discover available operations. Together they form the agent's only interface to the banking world.",
+      "description": "Building on the environment from Step 5, tools/dispatch.py routes each Action to its registered handler, wrapping failures as ToolError observations so bad agent calls never crash the run. tools/specs.py exposes ToolSpec definitions\u2014names, descriptions, and JSON schemas\u2014that agents (especially LLM agents) use to discover available operations. Together they form the agent's only interface to the banking world.",
       "nodeIds": [
         "file:src/agentic_payments_env/tools/dispatch.py",
         "file:src/agentic_payments_env/tools/specs.py"
@@ -35266,7 +35489,7 @@
     {
       "order": 8,
       "title": "Agent Framework",
-      "description": "agents/base.py defines the Agent protocol—a single act() method that maps an Observation to an Action—shared by oracle, scripted, and LLM implementations. agents/llm.py is the production path: it converts observations to chat messages, calls a ChatModel adapter, and parses tool-call responses back into Action objects. The CLI's run and bench commands instantiate agents through presets, connecting this layer to the environment loop.",
+      "description": "agents/base.py defines the Agent protocol\u2014a single act() method that maps an Observation to an Action\u2014shared by oracle, scripted, and LLM implementations. agents/llm.py is the production path: it converts observations to chat messages, calls a ChatModel adapter, and parses tool-call responses back into Action objects. The CLI's run and bench commands instantiate agents through presets, connecting this layer to the environment loop.",
       "nodeIds": [
         "file:src/agentic_payments_env/agents/base.py",
         "file:src/agentic_payments_env/agents/llm.py"
@@ -35276,7 +35499,7 @@
     {
       "order": 9,
       "title": "Graders and Taxonomy",
-      "description": "After an episode completes, graders score it across dimensions—safety, authorization, financial correctness, recovery, and more. graders/base.py defines the Grader interface; contracts/grading.py models Violation, DimensionResult, and EpisodeResult; graders/taxonomy.py maps violation codes to severity and dimension. The failure taxonomy is what turns raw traces into actionable research signals for optimization and reporting.",
+      "description": "After an episode completes, graders score it across dimensions\u2014safety, authorization, financial correctness, recovery, and more. graders/base.py defines the Grader interface; contracts/grading.py models Violation, DimensionResult, and EpisodeResult; graders/taxonomy.py maps violation codes to severity and dimension. The failure taxonomy is what turns raw traces into actionable research signals for optimization and reporting.",
       "nodeIds": [
         "file:src/agentic_payments_env/graders/base.py",
         "file:src/agentic_payments_env/contracts/grading.py",
@@ -35286,7 +35509,7 @@
     {
       "order": 10,
       "title": "Benchmark Runner",
-      "description": "benchmark/runner.py drives the full eval loop: load a TaskSpec, reset the environment, run the agent for up to max steps, grade the episode, and write trace and result artifacts. benchmark/loader.py routes task IDs to version-specific loaders (v0/v1) and serializes TaskSpec to JSON—the most depended-upon module in the graph. The CLI bench subcommand delegates here, making this the capstone integration of agents, environment, tools, policies, and graders.",
+      "description": "benchmark/runner.py drives the full eval loop: load a TaskSpec, reset the environment, run the agent for up to max steps, grade the episode, and write trace and result artifacts. benchmark/loader.py routes task IDs to version-specific loaders (v0/v1) and serializes TaskSpec to JSON\u2014the most depended-upon module in the graph. The CLI bench subcommand delegates here, making this the capstone integration of agents, environment, tools, policies, and graders.",
       "nodeIds": [
         "file:src/agentic_payments_env/benchmark/runner.py",
         "file:src/agentic_payments_env/benchmark/loader.py"
@@ -35295,12 +35518,34 @@
     {
       "order": 11,
       "title": "Reports and CI",
-      "description": "benchmark/report.py aggregates episode grading results into family summaries and renders Markdown benchmark reports—the final artifact in the experimental loop. The GitHub Actions CI workflow runs the full verification suite (ruff, mypy, pytest) on every push and pull request, ensuring the deterministic guarantees that make cross-run comparisons trustworthy. Together, reports produce evidence and CI guards reproducibility.",
+      "description": "benchmark/report.py aggregates episode grading results into family summaries and renders Markdown benchmark reports\u2014the final artifact in the experimental loop. The GitHub Actions CI workflow runs the full verification suite (ruff, mypy, pytest) on every push and pull request, ensuring the deterministic guarantees that make cross-run comparisons trustworthy. Together, reports produce evidence and CI guards reproducibility.",
       "nodeIds": [
         "file:src/agentic_payments_env/benchmark/report.py",
         "pipeline:.github/workflows/ci.yml"
       ],
       "languageLesson": "GitHub Actions workflows use `on` triggers for events, `jobs` for parallel work, and `steps` for sequential commands. Matrix builds across Python 3.11 and 3.12 catch version-specific regressions in a deterministic codebase."
     }
-  ]
+  ],
+  "version": "1.0.0",
+  "project": {
+    "name": "agentic-payments-env",
+    "languages": [
+      "json",
+      "jsonl",
+      "markdown",
+      "mdc",
+      "python",
+      "toml",
+      "unknown",
+      "yaml"
+    ],
+    "frameworks": [
+      "pydantic",
+      "pytest",
+      "GitHub Actions"
+    ],
+    "description": "Deterministic research environment for agentic payment workflows.",
+    "analyzedAt": "2026-09-21T20:03:33.000Z",
+    "gitCommitHash": "13814410b4d805d41ccc3f64236c6be9e16821d3"
+  }
 }
