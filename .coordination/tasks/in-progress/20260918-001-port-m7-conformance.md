@@ -2,10 +2,10 @@
 id: 20260918-001-port-m7-conformance
 title: Port M7 spec-conformance tickets onto main
 status: in-progress
-harness: cursor
-owner: cursor/m7-conformance
+harness: claude-code
+owner: claude/m7-port
 created_at: 2026-09-17T22:58:00Z
-updated_at: 2026-09-17T22:58:00Z
+updated_at: 2026-09-21T00:00:00Z
 claimed_at: 2026-09-17T22:58:00Z
 scope: Port docs/milestones/M7-spec-conformance.md T7.01-T7.21 onto current main without inventing live-model results; land already-complete 008/009 docs; merge verified work into main
 expected_files:
@@ -39,6 +39,16 @@ already in the main working tree. M7 exists only on `composer25` /
 `claude/agentic-payments-spec-cknl3v`. Tickets T7.01-T7.09 are sequential and
 share contracts/runtime files; later tickets may be parallelized after those
 land if file scopes do not overlap.
+
+## Ownership transfer (2026-09-21)
+
+Cursor's claim was abandoned: worktree `cursor/m7-conformance` stayed at
+`b7e0708` with no commits, and the claim file was deleted uncommitted 19 s
+after it was committed, without a handoff. The owner asked Claude Code to
+implement M7; work continues on branch `claude/m7-port` (worktree `../ape-m7`).
+Approach: cherry-pick `composer25` T7 commits one ticket at a time, resolving
+against main's code, and regenerate derived artifacts (v1.1, datasets,
+reports) from main's code rather than copying composer25 bytes.
 
 ## Conflicts and blockers
 
