@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Literal
 
@@ -15,6 +16,8 @@ from agentic_payments_env.graders import grade_episode
 from agentic_payments_env.rewards.episode import episode_reward
 
 RankKey = tuple[bool, int, int]
+ActionTrace = list[dict[str, object]]
+AgentPair = tuple[str, str]
 
 _SCRIPTED = ("quitter", "liar", "naive_retry", "obedient", "splitter")
 
@@ -36,9 +39,22 @@ def prefer(result_a: EpisodeResult, result_b: EpisodeResult) -> Literal["A", "B"
 
 
 def _grade(task_id: str, agent_name: str, seed: int = 0) -> EpisodeResult:
+    result, _actions = _evaluate(task_id, agent_name, seed)
+    return result
+
+
+def _evaluate(task_id: str, agent_name: str, seed: int) -> tuple[EpisodeResult, ActionTrace]:
     task = load_task(task_id)
     env, trace = _drive(task, build(agent_name, task), seed)
-    return grade_episode(task, trace, env.state)
+    result = grade_episode(task, trace, env.state)
+    actions: ActionTrace = [
+        {
+            "tool_name": step.action.tool_name,
+            "arguments": dict(step.action.arguments),
+        }
+        for step in trace.steps
+    ]
+    return result, actions
 
 
 def oracle_vs_scripted_pairs(
@@ -97,39 +113,57 @@ def build_preference_records(
     task_ids: list[str] | None = None,
     *,
     scripted_names: tuple[str, ...] = _SCRIPTED,
+    agent_pairs: Sequence[AgentPair] | None = None,
     seed: int = 0,
 ) -> list[PreferenceRecord]:
-    """Build preference rows; ties are omitted deterministically. T4.03. REQ-GRD-04."""
+    """Build action-pair rows; ties are omitted deterministically. T4.03. REQ-GRD-04."""
     tasks = training_task_ids() if task_ids is None else task_ids
     for task_id in tasks:
         assert_training_task_id(task_id)
+    pairs = (
+        tuple(agent_pairs)
+        if agent_pairs is not None
+        else tuple(("oracle", name) for name in scripted_names)
+    )
+    for agent_a, agent_b in pairs:
+        if agent_a not in NAMES or agent_b not in NAMES:
+            msg = f"unknown preference agent pair: {agent_a!r}, {agent_b!r}"
+            raise ValueError(msg)
     records: list[PreferenceRecord] = []
     for task_id in tasks:
-        oracle_result = _grade(task_id, "oracle", seed)
-        oracle_key = rank_key(oracle_result)
-        for name in scripted_names:
-            if name not in NAMES:
-                continue
-            other = _grade(task_id, name, seed)
-            other_key = rank_key(other)
-            choice = prefer(oracle_result, other)
+        evaluated: dict[str, tuple[EpisodeResult, ActionTrace]] = {}
+        for agent_a, agent_b in pairs:
+            for agent_name in (agent_a, agent_b):
+                if agent_name not in evaluated:
+                    evaluated[agent_name] = _evaluate(task_id, agent_name, seed)
+            result_a, actions_a = evaluated[agent_a]
+            result_b, actions_b = evaluated[agent_b]
+            key_a = rank_key(result_a)
+            key_b = rank_key(result_b)
+            choice = prefer(result_a, result_b)
             if choice == "TIE":
                 continue
             if choice == "A":
-                chosen, rejected = "oracle", name
-                chosen_key, rejected_key = oracle_key, other_key
+                chosen, rejected = agent_a, agent_b
+                chosen_actions, rejected_actions = actions_a, actions_b
+                chosen_key, rejected_key = key_a, key_b
             else:
-                chosen, rejected = name, "oracle"
-                chosen_key, rejected_key = other_key, oracle_key
+                chosen, rejected = agent_b, agent_a
+                chosen_actions, rejected_actions = actions_b, actions_a
+                chosen_key, rejected_key = key_b, key_a
             records.append(
                 PreferenceRecord(
                     task_id=task_id,
                     seed=seed,
                     chosen_agent=chosen,
                     rejected_agent=rejected,
+                    chosen_actions=chosen_actions,
+                    rejected_actions=rejected_actions,
                     rank_key_chosen=chosen_key,
                     rank_key_rejected=rejected_key,
-                    provenance="oracle_vs_scripted",
+                    provenance=(
+                        "oracle_vs_scripted" if "oracle" in {agent_a, agent_b} else "agent_vs_agent"
+                    ),
                 )
             )
     return records

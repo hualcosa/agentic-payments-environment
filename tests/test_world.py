@@ -63,6 +63,8 @@ def test_inv_06_detects_shared_consent() -> None:
     other = shared.model_copy(update={"transfer_id": "tx_b", "idempotency_key": "k2"})
     state.transfers["tx_a"] = shared
     state.transfers["tx_b"] = other
+    state._record_creation(entity_id="tx_a", step_index=1, kind="TRANSFER_CREATED")
+    state._record_creation(entity_id="tx_b", step_index=1, kind="TRANSFER_CREATED")
     state.emit(
         step_index=1,
         actor=ActorKind.SYSTEM,

@@ -152,7 +152,6 @@ class WorldState(WorldStateContract):
             visible_to_agent=visible_to_agent,
         )
         self.audit.append(event)
-        self._track_creation(step_index=step_index, kind=kind, entity_ids=event.entity_ids)
         return event
 
     @staticmethod
@@ -170,33 +169,11 @@ class WorldState(WorldStateContract):
             return kind
         return None
 
-    def _track_creation(self, *, step_index: int, kind: str, entity_ids: list[str]) -> None:
-        """Record normative creation step/kind for runtime entities. INV-04."""
-        for entity_id in entity_ids:
-            creation_kind = self._normative_creation_kind(entity_id, kind)
-            if creation_kind is None:
-                continue
-            skip = (
-                (
-                    entity_id.startswith("tx_")
-                    and (
-                        entity_id in self._fixture_transfer_ids
-                        or (
-                            creation_kind == "TRANSFER_REVERSED"
-                            and entity_id in self._creation_meta
-                        )
-                    )
-                )
-                or (entity_id.startswith("ben_") and entity_id in self._fixture_beneficiary_ids)
-                or (
-                    entity_id.startswith("led_")
-                    and entity_id
-                    in {entry.entry_id for entry in self.ledger[: self._fixture_entry_count]}
-                )
-            )
-            if skip:
-                continue
-            self._creation_meta[entity_id] = (step_index, creation_kind)
+    def _record_creation(self, *, entity_id: str, step_index: int, kind: str) -> None:
+        """Record the mutation-site creation step and required audit kind. INV-04."""
+        if self._normative_creation_kind(entity_id, kind) is None:
+            raise ValueError(f"{kind!r} is not a creation event for {entity_id!r}")
+        self._creation_meta.setdefault(entity_id, (step_index, kind))
 
     def principal(self) -> Customer:
         """Return the customer the agent acts for. REQ-DOM-14."""
@@ -398,31 +375,30 @@ class WorldState(WorldStateContract):
                 continue
             meta = self._creation_meta.get(transfer_id)
             if meta is None:
-                meta = self._derive_creation_meta(transfer_id)
-            if meta is not None:
-                runtime_entities.append((transfer_id, meta[0], meta[1]))
+                raise InvariantViolation("INV-04", f"{transfer_id} lacks creation metadata")
+            runtime_entities.append((transfer_id, meta[0], meta[1]))
         for consent_id in self.consents:
-            meta = self._creation_meta.get(consent_id) or self._derive_creation_meta(consent_id)
-            if meta is not None:
-                runtime_entities.append((consent_id, meta[0], meta[1]))
+            meta = self._creation_meta.get(consent_id)
+            if meta is None:
+                raise InvariantViolation("INV-04", f"{consent_id} lacks creation metadata")
+            runtime_entities.append((consent_id, meta[0], meta[1]))
         for challenge_id in self.challenges:
-            meta = self._creation_meta.get(challenge_id) or self._derive_creation_meta(challenge_id)
-            if meta is not None:
-                runtime_entities.append((challenge_id, meta[0], meta[1]))
+            meta = self._creation_meta.get(challenge_id)
+            if meta is None:
+                raise InvariantViolation("INV-04", f"{challenge_id} lacks creation metadata")
+            runtime_entities.append((challenge_id, meta[0], meta[1]))
         for beneficiary_id in self.beneficiaries:
             if beneficiary_id in self._fixture_beneficiary_ids:
                 continue
-            meta = self._creation_meta.get(beneficiary_id) or self._derive_creation_meta(
-                beneficiary_id
-            )
-            if meta is not None:
-                runtime_entities.append((beneficiary_id, meta[0], meta[1]))
+            meta = self._creation_meta.get(beneficiary_id)
+            if meta is None:
+                raise InvariantViolation("INV-04", f"{beneficiary_id} lacks creation metadata")
+            runtime_entities.append((beneficiary_id, meta[0], meta[1]))
         for entry in self.ledger[self._fixture_entry_count :]:
-            meta = self._creation_meta.get(entry.entry_id) or self._derive_creation_meta(
-                entry.entry_id
-            )
-            if meta is not None:
-                runtime_entities.append((entry.entry_id, meta[0], meta[1]))
+            meta = self._creation_meta.get(entry.entry_id)
+            if meta is None:
+                raise InvariantViolation("INV-04", f"{entry.entry_id} lacks creation metadata")
+            runtime_entities.append((entry.entry_id, meta[0], meta[1]))
 
         for entity_id, step_index, kind in runtime_entities:
             if not any(
@@ -435,18 +411,6 @@ class WorldState(WorldStateContract):
                     "INV-04",
                     f"{entity_id} lacks {kind} audit at step {step_index}",
                 )
-
-    def _derive_creation_meta(self, entity_id: str) -> tuple[int, str] | None:
-        """Derive creation step/kind from audit when tracking missed an emit. INV-04."""
-        candidates: list[tuple[int, str]] = []
-        for event in self.audit:
-            if entity_id not in event.entity_ids:
-                continue
-            if self._normative_creation_kind(entity_id, event.kind) is not None:
-                candidates.append((event.step_index, event.kind))
-        if not candidates:
-            return None
-        return min(candidates, key=lambda item: item[0])
 
     def canonical_json(self) -> str:
         """Canonical JSON of state excluding ``audit``. REQ-ENV-07, REQ-CON-04."""

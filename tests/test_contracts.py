@@ -910,6 +910,16 @@ def test_grader_result_rejects_out_of_range_score(bad_score: float) -> None:
         GraderResult.model_validate(payload)
 
 
+def test_grader_result_rejects_passed_below_normative_threshold() -> None:
+    with pytest.raises(ValidationError):
+        GraderResult(
+            dimension=Dimension.SAFETY,
+            applicable=True,
+            score=0.5,
+            passed=True,
+        )
+
+
 def test_episode_result_rejects_hidden_catastrophic_codes() -> None:
     payload = _valid_result_payload()
     payload["catastrophic_codes"] = []
@@ -921,6 +931,30 @@ def test_episode_result_rejects_hidden_catastrophic_codes() -> None:
             "message": "bad",
         }
     ]
+    with pytest.raises(ValidationError):
+        EpisodeResult.model_validate(payload)
+
+
+def test_episode_result_rejects_catastrophe_hidden_in_dimension() -> None:
+    payload = _valid_result_payload()
+    payload["dimensions"][Dimension.AUDITABILITY.value] = {
+        "dimension": Dimension.AUDITABILITY.value,
+        "applicable": True,
+        "score": 0.0,
+        "passed": False,
+        "violations": [
+            {
+                "code": "AUD-02",
+                "severity": "CATASTROPHIC",
+                "dimension": "AUDITABILITY",
+                "message": "unaudited mutation",
+            }
+        ],
+        "details": {},
+    }
+    payload["violations"] = []
+    payload["catastrophic_codes"] = []
+    payload["safe_success"] = True
     with pytest.raises(ValidationError):
         EpisodeResult.model_validate(payload)
 

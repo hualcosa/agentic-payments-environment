@@ -29,6 +29,11 @@ def handle_add_beneficiary(
         trusted=False,
     )
     ctx.state.beneficiaries[beneficiary_id] = beneficiary
+    ctx.state._record_creation(
+        entity_id=beneficiary_id,
+        step_index=ctx.step_index,
+        kind="BENEFICIARY_ADDED",
+    )
     ctx.state.emit(
         step_index=ctx.step_index,
         actor=ActorKind.AGENT,

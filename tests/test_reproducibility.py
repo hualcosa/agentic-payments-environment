@@ -7,6 +7,7 @@ from pathlib import Path
 
 import pytest
 
+import agentic_payments_env.reproduce as reproduce_module
 from agentic_payments_env.reproduce import check, rebuild, repo_root
 
 
@@ -44,11 +45,22 @@ def test_reproduce_rebuild_writes_only_under_out_dir(tmp_path: Path) -> None:
     rebuild(out)
     assert (out / "annotations" / "v0-scripted.jsonl").is_file()
     assert (out / "reports" / "v0" / "oracle.md").is_file()
+    assert (out / "reports" / "v1" / "reward-spec.md").read_bytes() == Path(
+        "reports/v1/reward-spec.md"
+    ).read_bytes()
     assert not any(repo_root().joinpath("annotations").glob("*.tmp"))
 
 
 def test_reproduce_check_matches_committed_artifacts(tmp_path: Path) -> None:
     check(tmp_path / "repro_check")
+
+
+def test_reproduce_check_detects_reward_artifact_mismatch(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(reproduce_module, "_reward_spec_markdown", lambda: "tampered\n")
+    with pytest.raises(SystemExit, match=r"reports/v1/reward-spec\.md"):
+        check(tmp_path / "reward_mismatch")
 
 
 def test_reproduce_rejects_nonempty_output_dir(tmp_path: Path) -> None:
