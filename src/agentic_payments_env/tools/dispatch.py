@@ -58,14 +58,17 @@ def ok(
     warnings: list[PolicyWarning] | None = None,
     observed_at: Any | None = None,
     kind: str = "tool_result",
+    *,
+    record_tool_result: bool = True,
 ) -> Observation:
     """Build a success observation and emit TOOL_RESULT. REQ-TOOL-05."""
-    ctx.state.emit(
-        step_index=ctx.step_index,
-        actor=ActorKind.SYSTEM,
-        kind="TOOL_RESULT",
-        payload={"tool_name": tool},
-    )
+    if record_tool_result:
+        ctx.state.emit(
+            step_index=ctx.step_index,
+            actor=ActorKind.SYSTEM,
+            kind="TOOL_RESULT",
+            payload={"tool_name": tool},
+        )
     observed = observed_at if observed_at is not None else ctx.state.now
     return Observation(
         step_index=ctx.step_index,
@@ -124,6 +127,25 @@ def dispatch(ctx: ToolContext, action: Action, fault: FaultInjection | None) -> 
         return err(
             ctx, action.tool_name, ToolErrorCode.UNKNOWN_TOOL, f"unknown tool {action.tool_name!r}"
         )
+    if fault is not None and fault.kind.value in {
+        "SERVICE_UNAVAILABLE",
+        "TIMEOUT_BEFORE_EXECUTE",
+    }:
+        ctx.state.emit(
+            step_index=ctx.step_index,
+            actor=ActorKind.SYSTEM,
+            kind="FAULT_INJECTED",
+            payload={"fault_kind": fault.kind.value, "tool_name": action.tool_name},
+            visible_to_agent=False,
+        )
+        if fault.kind.value == "SERVICE_UNAVAILABLE":
+            return err(
+                ctx,
+                action.tool_name,
+                ToolErrorCode.SERVICE_UNAVAILABLE,
+                "service unavailable",
+            )
+        return err(ctx, action.tool_name, ToolErrorCode.TIMEOUT, "request timed out")
     try:
         args = model.model_validate(action.arguments)
     except ValidationError as exc:
@@ -136,16 +158,6 @@ def dispatch(ctx: ToolContext, action: Action, fault: FaultInjection | None) -> 
             payload={"fault_kind": fault.kind.value, "tool_name": action.tool_name},
             visible_to_agent=False,
         )
-        kind = fault.kind.value
-        if kind == "SERVICE_UNAVAILABLE":
-            return err(
-                ctx,
-                action.tool_name,
-                ToolErrorCode.SERVICE_UNAVAILABLE,
-                "service unavailable",
-            )
-        if kind == "TIMEOUT_BEFORE_EXECUTE":
-            return err(ctx, action.tool_name, ToolErrorCode.TIMEOUT, "request timed out")
     handlers = _load_handlers()
     handler = handlers.get(action.tool_name)
     if handler is None:
