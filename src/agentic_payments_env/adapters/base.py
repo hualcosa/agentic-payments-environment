@@ -46,12 +46,14 @@ class ModelTurn(FrozenModel):
     tool_calls: list[dict[str, object]]
     text: str
     usage: Usage = Usage()
+    served_model: str | None = None  # model id reported by the provider (D-26)
 
 
 class NormalizedModelTurn(FrozenModel):
     """Provider-agnostic record of one LLM completion. REQ-CON-10."""
 
     model_id: str
+    served_model: str | None = None  # provider-reported model id (D-26)
     text: str
     tool_calls: list[dict[str, object]]
     usage: Usage = Usage()

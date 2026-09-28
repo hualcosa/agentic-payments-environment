@@ -112,6 +112,9 @@ def _episode_meta(task_id: str, seed: int, agent: Agent, n_steps: int) -> dict[s
     protocol_error = getattr(agent, "protocol_error", None)
     if isinstance(protocol_error, str):
         row["protocol_error"] = protocol_error
+    provider_error = getattr(agent, "provider_error", None)
+    if isinstance(provider_error, str):
+        row["provider_error"] = provider_error
     return row
 
 
@@ -159,6 +162,10 @@ def run_benchmark(
         if meta is not None:
             payload = dict(meta)
             payload["episodes"] = episode_meta
+            # D-26: provider failures are not agent behavior; rerun before interpreting.
+            payload["provider_error_episodes"] = sum(
+                1 for row in episode_meta if "provider_error" in row
+            )
             _write_json(out_dir / "meta.json", payload)
         if episode_turns:
             _write_json(

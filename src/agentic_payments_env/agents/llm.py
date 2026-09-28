@@ -42,6 +42,7 @@ class LLMAgent:
         self._messages: list[ChatMessage] = []
         self._pending_tool_call_id: str | None = None
         self._protocol_error: str | None = None
+        self._provider_error: str | None = None
         self.usage_log: list[Usage] = []
         self.turn_log: list[NormalizedModelTurn] = []
 
@@ -50,11 +51,17 @@ class LLMAgent:
         """Expose a safe rejection reason for episode metadata. REQ-ENV-17."""
         return self._protocol_error
 
+    @property
+    def provider_error(self) -> str | None:
+        """Safe reason when the model call itself failed (not agent behavior). D-26."""
+        return self._provider_error
+
     def reset(self, public: TaskPublic, reset_observation: Observation) -> None:
         del reset_observation
         self._public = public
         self._pending_tool_call_id = None
         self._protocol_error = None
+        self._provider_error = None
         self.usage_log = []
         self.turn_log = []
         self._messages = [
@@ -84,7 +91,12 @@ class LLMAgent:
                 forced,
             )
             return forced
-        turn = self.model.complete(self._messages, _chat_tools())
+        try:
+            turn = self.model.complete(self._messages, _chat_tools())
+        except Exception as exc:
+            # Exception type only: messages may echo request content or endpoints.
+            self._provider_error = f"PROVIDER_ERROR type={type(exc).__name__}"
+            raise
         self.usage_log.append(turn.usage)
         try:
             tool_call_id = _validate_turn(turn)
@@ -116,6 +128,7 @@ class LLMAgent:
         self.turn_log.append(
             NormalizedModelTurn(
                 model_id=self.model.model_id,
+                served_model=turn.served_model,
                 text=turn.text,
                 tool_calls=list(turn.tool_calls),
                 usage=turn.usage,

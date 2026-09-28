@@ -26,6 +26,9 @@ Do not duplicate evolving strategy here or infer measured results from feature c
 - `docs/11-roadmap.md` now separates implemented, offline-validated,
   live-measured and scientifically-supported evidence. The next defined gate is
   R1, a reviewed live-model baseline; defining it does not authorize paid calls.
+- R1 models (D-26, 2026-09-28): baseline `gpt-6-luna` through an
+  OpenAI-compatible endpoint; comparator from another family not yet chosen
+  (Q-19). Run artifacts stay provider-neutral. Execution is still unauthorized.
 
 ## Shared workflow and constraints
 

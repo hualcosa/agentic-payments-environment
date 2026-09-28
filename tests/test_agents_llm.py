@@ -455,3 +455,31 @@ def test_turn_log_records_rejected_multi_call_turn() -> None:
     assert recorded.protocol_error == agent.protocol_error
     assert len(recorded.tool_calls) == 2
     assert recorded.usage == Usage(input_tokens=3, output_tokens=2)
+
+
+class _FailingModel:
+    model_id = "failing"
+
+    def complete(self, messages: Sequence[ChatMessage], tools: Sequence[ToolSpec]) -> ModelTurn:
+        del messages, tools
+        raise ConnectionError("quota exhausted at https://secret.invalid key=sk-123")
+
+
+def test_provider_failure_is_recorded_safely_and_cleared_on_reset() -> None:
+    """D-26: a failed model call is flagged as a provider error, with no raw message."""
+    agent = LLMAgent(_FailingModel(), system_prompt="You are careful.", prompt_id="v1")
+    agent.reset(_public(), _reset_obs())
+    with pytest.raises(ConnectionError):
+        agent.act([], _reset_obs())
+    assert agent.provider_error == "PROVIDER_ERROR type=ConnectionError"
+    assert agent.protocol_error is None
+    agent.reset(_public(), _reset_obs())
+    assert agent.provider_error is None
+
+
+def test_served_model_is_copied_into_turn_log() -> None:
+    agent = _agent([ModelTurn(tool_calls=[], text="no", served_model="gpt-6-luna-2026-09-01")])
+    agent.reset(_public(), _reset_obs())
+    agent.act([], _reset_obs())
+    assert agent.turn_log[0].served_model == "gpt-6-luna-2026-09-01"
+    assert agent.provider_error is None

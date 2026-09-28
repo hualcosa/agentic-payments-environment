@@ -477,3 +477,30 @@ def test_anthropic_import_error_names_extra(monkeypatch: pytest.MonkeyPatch) -> 
     _purge("agentic_payments_env.adapters.anthropic")
     with pytest.raises(ImportError, match=r"\[anthropic\]"):
         importlib.import_module("agentic_payments_env.adapters.anthropic")
+
+
+def test_openai_pins_client_policy_and_captures_served_model(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """D-26: explicit SDK retry/timeout policy; provider-reported model id is kept."""
+
+    def create(**_kwargs: object) -> Any:
+        response = _openai_ok_response()
+        response.model = "gpt-6-luna-2026-09-01"
+        return response
+
+    _install_fake_openai(monkeypatch, create)
+    mod = importlib.import_module("agentic_payments_env.adapters.openai_compat")
+    model = mod.OpenAICompatChatModel("gpt-6-luna", None, "sk-test")
+    assert model._client.kwargs["max_retries"] == mod.SDK_MAX_RETRIES
+    assert model._client.kwargs["timeout"] == float(mod.REQUEST_TIMEOUT_S)
+    messages, tools = _sample_inputs()
+    assert model.complete(messages, tools).served_model == "gpt-6-luna-2026-09-01"
+
+
+def test_openai_served_model_absent_is_none(monkeypatch: pytest.MonkeyPatch) -> None:
+    _install_fake_openai(monkeypatch, lambda **_kwargs: _openai_ok_response())
+    mod = importlib.import_module("agentic_payments_env.adapters.openai_compat")
+    model = mod.OpenAICompatChatModel("gpt-test", None, "sk-test")
+    messages, tools = _sample_inputs()
+    assert model.complete(messages, tools).served_model is None

@@ -59,8 +59,8 @@ LLM baseline on v0 with prompt v1 (no fabricated rates):
 
 | model | prompt | status | report |
 |---|---|---|---|
-| gpt-4o-mini | v1 | not yet measured | [reports/v0/gpt-4o-mini-v1.md](reports/v0/gpt-4o-mini-v1.md) |
-| claude-haiku-4-5 | v1 | not yet measured | [reports/v0/claude-haiku-4-5-v1.md](reports/v0/claude-haiku-4-5-v1.md) |
+| gpt-6-luna (R1 baseline) | v1 | not yet measured | [reports/v0/gpt-6-luna-v1.md](reports/v0/gpt-6-luna-v1.md) |
+| comparator from another family (not yet chosen, Q-19) | v1 | not yet measured | [reports/v0/comparator-v1.md](reports/v0/comparator-v1.md) |
 
 These rows may gain `safe_success_rate` and per-code catastrophic counts only
 from the linked files after a reviewed run.

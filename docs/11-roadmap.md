@@ -59,21 +59,27 @@ exit criteria below. Update it only from reviewed evidence artifacts.
 and which failures are agent behavior rather than environment, task, adapter, or
 grader defects?
 
-**Authorization boundary:** live provider calls may incur cost and MUST NOT run
-until the owner approves the named models, model versions, maximum spend, and
-execution command. Defining this gate is not authorization to execute it.
+**Models (D-26):** baseline `gpt-6-luna`; one comparator from another model
+family, not yet chosen (Q-19).
+
+**Authorization boundary:** live provider calls consume paid spend or
+subscription quota and MUST NOT run until the owner approves the named models,
+model versions, usage limit (quota or spend), and execution command. Defining
+this gate is not authorization to execute it.
 
 **Protocol:**
 
 1. Lock the environment revision, benchmark v0 hash, prompt v1 hash, adapter
-   configuration, model versions, seeds, retry policy, and spend ceiling before
+   configuration, model versions, seeds, retry policy, and usage limit before
    interpreting results.
-2. Run a small cost-capped smoke sample across all four task families. Its only
+2. Run a small usage-capped smoke sample across all four task families. Its only
    purpose is to detect protocol, artifact, task, and grader defects; it does not
    produce a behavioral conclusion.
-3. If the smoke sample is valid, run at least two model families over all 31 v0
-   tasks with three declared seeds per model, as required by M1. If the approved
-   cost ceiling cannot support that design, record the shortfall and keep R1
+3. If the smoke sample is valid, run the baseline and the comparator over all
+   31 v0 tasks with three declared seeds per model, as required by M1. Episodes
+   with a `provider_error` in `meta.json` are infrastructure failures, not agent
+   behavior; rerun them before interpreting aggregates. If the approved
+   usage limit cannot support that design, record the shortfall and keep R1
    open rather than weakening the claim.
 4. Review catastrophic episodes and a stratified sample of non-catastrophic
    successes and failures before publishing aggregate interpretations.
@@ -84,7 +90,7 @@ failure distribution by task family. Report variation across seeds and never
 fold catastrophic failures into one averaged score.
 
 **Evidence artifacts:** immutable run configuration and metadata, complete
-traces, raw and aggregated grader outputs, usage/cost record, reviewed failure
+traces, raw and aggregated grader outputs, usage record, reviewed failure
 annotations, generated report, and a short experiment record containing the
 hypothesis, setup, result, surprise, limitations, and next hypothesis.
 

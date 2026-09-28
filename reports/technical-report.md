@@ -47,9 +47,10 @@ live judge agreement is **not yet measured**. Taxonomy v1 added no new codes:
 ## Baseline failures
 
 LLM baseline reports
-[reports/v0/gpt-4o-mini-v1.md](v0/gpt-4o-mini-v1.md) and
-[reports/v0/claude-haiku-4-5-v1.md](v0/claude-haiku-4-5-v1.md) are
-**not yet measured** (no API credentials in the producing run). Example
+[reports/v0/gpt-6-luna-v1.md](v0/gpt-6-luna-v1.md) (R1 baseline) and
+[reports/v0/comparator-v1.md](v0/comparator-v1.md) (comparator from another
+model family, not yet chosen) are **not yet measured**: R1 has not been
+executed. Example
 traces for catastrophic codes wait on a reviewed model run:
 [reports/v0/examples/README.md](v0/examples/README.md).
 

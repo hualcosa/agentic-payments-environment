@@ -7,7 +7,10 @@ from pathlib import Path
 
 import pytest
 
+from agentic_payments_env.adapters.base import ChatMessage, ModelTurn, ToolSpec
+from agentic_payments_env.agents.llm import LLMAgent
 from agentic_payments_env.benchmark.loader import BENCHMARK_IDS, all_tasks_for
+from agentic_payments_env.benchmark.runner import run_benchmark
 from agentic_payments_env.cli import main
 
 
@@ -182,3 +185,45 @@ def test_bench_llm_fake_one_task_v11(tmp_path: Path, capsys: pytest.CaptureFixtu
     turns = json.loads((out / "turns.json").read_text(encoding="utf-8"))
     assert turns["episodes"][0]["task_id"] == task_id
     assert turns["episodes"][0]["turns"]
+
+
+def test_bench_llm_meta_records_provenance_without_endpoint(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """D-26: revision, task hash and error count are pinned; no endpoint leaks."""
+    out = tmp_path / "bench"
+    args = ["bench", "--agent", "llm", "--provider", "fake", "--model", "fake"]
+    args += ["--task", "v0/rt-001", "--base-url", "http://127.0.0.1:1/v1", "--out", str(out)]
+    assert main(args) == 0
+    capsys.readouterr()
+    text = (out / "meta.json").read_text(encoding="utf-8")
+    meta = json.loads(text)
+    assert meta["benchmark_id"] == "v0"
+    assert len(meta["tasks_sha256"]) == 64
+    assert meta["environment_revision"]
+    assert meta["provider_error_episodes"] == 0
+    assert "127.0.0.1" not in text
+    assert "base_url" not in text
+
+
+class _DownModel:
+    model_id = "down"
+
+    def complete(self, messages: list[ChatMessage], tools: list[ToolSpec]) -> ModelTurn:
+        del messages, tools
+        raise TimeoutError("upstream timeout")
+
+
+def test_run_benchmark_flags_provider_errors_in_meta(tmp_path: Path) -> None:
+    """D-26: provider failures are counted separately from agent behavior."""
+    task = [item for item in all_tasks_for("v0") if item.task_id == "v0/rt-001"]
+    run_benchmark(
+        task,
+        lambda _t: LLMAgent(_DownModel(), system_prompt="s", prompt_id="v1"),
+        [0, 1],
+        out_dir=tmp_path,
+        meta={"provider": "fake"},
+    )
+    meta = json.loads((tmp_path / "meta.json").read_text(encoding="utf-8"))
+    assert meta["provider_error_episodes"] == 2
+    assert meta["episodes"][0]["provider_error"] == "PROVIDER_ERROR type=TimeoutError"

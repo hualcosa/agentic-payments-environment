@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import subprocess
 from collections.abc import Callable, Sequence
 from pathlib import Path
 
@@ -29,6 +30,7 @@ from agentic_payments_env.benchmark.runner import (
 from agentic_payments_env.contracts.grading import EpisodeResult
 from agentic_payments_env.contracts.tasks import TaskSpec
 from agentic_payments_env.contracts.trace import EpisodeTrace
+from agentic_payments_env.core.hashing import canonical_json, sha256_hex
 from agentic_payments_env.export_sft import export_sft, export_sft_benchmark
 from agentic_payments_env.graders import grade_episode
 from agentic_payments_env.prompts import load_prompt
@@ -100,6 +102,50 @@ def _write_json(path: Path, payload: object) -> None:
     )
 
 
+def _git_revision() -> str:
+    """Environment revision for run provenance; ``+dirty`` marks local edits. D-26."""
+    root = Path(__file__).resolve().parent
+    try:
+        rev = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, check=True
+        ).stdout.strip()
+        status = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=no", "--", "src"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return "unknown"
+    return f"{rev}+dirty" if status else rev
+
+
+def _request_policy(provider: str) -> dict[str, object] | None:
+    """Declared request/retry settings; never the endpoint (D-26)."""
+    if provider != "openai":
+        return None
+    from importlib.metadata import version
+
+    from agentic_payments_env.adapters import openai_compat
+
+    return {
+        "sdk": "openai",
+        "sdk_version": version("openai"),
+        "parallel_tool_calls": False,
+        "sampling": "provider_default",
+        "sdk_max_retries": openai_compat.SDK_MAX_RETRIES,
+        "transport_attempts": openai_compat._MAX_ATTEMPTS,
+        "timeout_s": openai_compat.REQUEST_TIMEOUT_S,
+    }
+
+
+def _run_provenance(meta: dict[str, object], tasks: Sequence[TaskSpec]) -> None:
+    """Pin environment revision and task-set hash into ``meta.json``. D-26."""
+    meta["environment_revision"] = _git_revision()
+    meta["tasks_sha256"] = sha256_hex(canonical_json([t.model_dump(mode="json") for t in tasks]))
+
+
 def _make_chat_model(args: argparse.Namespace) -> ChatModel:
     provider = str(args.provider)
     model_id = str(args.model)
@@ -143,6 +189,9 @@ def _agent_factory(
         "model_id": str(args.model),
         "provider": str(args.provider),
     }
+    policy = _request_policy(str(args.provider))
+    if policy is not None:
+        meta["request_policy"] = policy
 
     def factory(_task: TaskSpec) -> Agent:
         model = _make_chat_model(args)
@@ -162,7 +211,10 @@ def _cmd_run(args: argparse.Namespace) -> int:
         _write_episode(out, task.task_id, args.seed, trace, result)
         if meta is not None:
             payload = dict(meta)
-            payload["episodes"] = [_episode_meta(task.task_id, args.seed, agent, len(trace.steps))]
+            _run_provenance(payload, [task])
+            row = _episode_meta(task.task_id, args.seed, agent, len(trace.steps))
+            payload["episodes"] = [row]
+            payload["provider_error_episodes"] = int("provider_error" in row)
             _write_json(out / "meta.json", payload)
         turn_log = _episode_turn_log(agent, task.task_id, args.seed)
         if turn_log is not None:
@@ -197,6 +249,9 @@ def _cmd_bench(args: argparse.Namespace) -> int:
         if not tasks:
             raise SystemExit(f"unknown task {args.task!r}")
     factory, meta = _agent_factory(args)
+    if meta is not None:
+        meta["benchmark_id"] = str(args.benchmark)
+        _run_provenance(meta, tasks)
     report = run_benchmark(
         tasks,
         factory,

@@ -140,6 +140,25 @@ M7, not undocumented scope reductions.
 `uv run pytest -q` is the canonical gate and is proven by local and CI
 runs. The `--` separator is not required with current uv.
 
+### D-26 R1 models and provider-neutral run artifacts
+Owner decision, 2026-09-28. The R1 baseline model is `gpt-6-luna`, called
+through an OpenAI-compatible Chat Completions endpoint (`--provider openai`).
+R1 keeps its two-family design: one comparator model from another family runs
+the same protocol; the comparator is not chosen yet (Q-19). Run artifacts
+(`meta.json`, `turns.json`, reports) stay provider-neutral: they record the
+requested and served model, prompt, request and retry policy, environment
+revision and benchmark hash, never the local endpoint or route. The execution
+setup adds a fixed prompt overhead to every call; the owner accepts it as
+constant across baseline and intervention, so it is recorded once as a
+limitation in the R1 experiment record, not in artifacts. Absolute token counts
+are not comparable with other setups. A failed model call is not agent
+behavior: `LLMAgent.provider_error` exposes a safe reason (exception type only)
+and runner/CLI write it as `episodes[].provider_error` in `meta.json`, with the
+count in `provider_error_episodes`, extending D-16. Termination values and
+trace/result schemas are unchanged. Aggregates from a run with any
+provider-error episode are not interpretable until those episodes are rerun.
+Task: `20260928-001-r1-baseline-gpt6-luna`.
+
 ## Open questions
 
 (The executor appends here. Format: `Q-nn — <question> — <interim choice> — <ticket>`.)
@@ -220,3 +239,7 @@ runs. The `--` separator is not required with current uv.
   [reports/v1/reward-spec.md](../reports/v1/reward-spec.md).
 - Q-18 — T6.02 file list omitted README. Interim: update the status blurb
   to point at the technical report (D-14). — T6.02
+- Q-19 — Which model from another family is the R1 comparator? Interim: not
+  chosen; `reports/v0/comparator-v1.md` is a placeholder. Must be decided and
+  recorded before R1 step 3. If it needs the Anthropic adapter through a custom
+  endpoint, that adapter must first accept `base_url`. — 20260928-001

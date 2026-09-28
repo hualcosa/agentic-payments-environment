@@ -20,6 +20,10 @@ from agentic_payments_env.adapters.base import ChatMessage, ModelTurn, ToolSpec,
 
 _TRANSPORT = (APIConnectionError, APITimeoutError, TimeoutError, OSError)
 _MAX_ATTEMPTS = 3
+# Explicit SDK policy (D-26): the SDK retries 408/409/429/5xx with backoff; the
+# outer loop above retries transport errors. Recorded in run metadata by the CLI.
+SDK_MAX_RETRIES = 2
+REQUEST_TIMEOUT_S = 120
 
 
 def _noop_sleep(_seconds: float) -> None:
@@ -38,7 +42,11 @@ class OpenAICompatChatModel:
         sleep: Callable[[float], None] | None = None,
     ) -> None:
         self.model_id = model_id
-        kwargs: dict[str, Any] = {"api_key": api_key}
+        kwargs: dict[str, Any] = {
+            "api_key": api_key,
+            "max_retries": SDK_MAX_RETRIES,
+            "timeout": float(REQUEST_TIMEOUT_S),
+        }
         if base_url is not None:
             kwargs["base_url"] = base_url
         self._client = OpenAI(**kwargs)
@@ -146,8 +154,10 @@ def _parse_openai_turn(response: Any) -> ModelTurn:
     usage_obj = getattr(response, "usage", None)
     input_tokens = int(getattr(usage_obj, "prompt_tokens", 0) or 0)
     output_tokens = int(getattr(usage_obj, "completion_tokens", 0) or 0)
+    served = getattr(response, "model", None)
     return ModelTurn(
         tool_calls=tool_calls,
         text=text,
         usage=Usage(input_tokens=input_tokens, output_tokens=output_tokens),
+        served_model=served if isinstance(served, str) and served else None,
     )
