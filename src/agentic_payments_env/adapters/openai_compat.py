@@ -77,8 +77,7 @@ class OpenAICompatChatModel:
                 "messages": payload_messages,
             }
             if payload_tools:
-                kwargs["tools"] = payload_tools
-                kwargs["parallel_tool_calls"] = False
+                kwargs["tools"] = payload_tools  # provider-default parallelism (D-27)
             return self._client.chat.completions.create(**kwargs)
 
         response = _retry_transport(_call, sleep=self._sleep)

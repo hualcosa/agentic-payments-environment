@@ -64,8 +64,7 @@ class AnthropicChatModel:
             if system:
                 kwargs["system"] = system
             if payload_tools:
-                kwargs["tools"] = payload_tools
-                kwargs["tool_choice"] = {"type": "auto", "disable_parallel_tool_use": True}
+                kwargs["tools"] = payload_tools  # provider-default parallelism (D-27)
             return self._client.messages.create(**kwargs)
 
         response = _retry_transport(_call, sleep=self._sleep)
@@ -97,18 +96,22 @@ def _to_anthropic_messages(
                 system_parts.append(message.content)
             continue
         if message.role == "tool":
-            out.append(
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "tool_result",
-                            "tool_use_id": message.tool_call_id or "",
-                            "content": message.content or "",
-                        }
-                    ],
-                }
-            )
+            block = {
+                "type": "tool_result",
+                "tool_use_id": message.tool_call_id or "",
+                "content": message.content or "",
+            }
+            previous = out[-1] if out else None
+            if (
+                previous is not None
+                and previous["role"] == "user"
+                and isinstance(previous["content"], list)
+                and all(item.get("type") == "tool_result" for item in previous["content"])
+            ):
+                # D-27: results of one batched turn share a single user message.
+                previous["content"].append(block)
+            else:
+                out.append({"role": "user", "content": [block]})
             continue
         if message.role == "assistant" and message.tool_calls:
             blocks: list[dict[str, Any]] = []

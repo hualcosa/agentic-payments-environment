@@ -1,11 +1,11 @@
 ---
 id: ADR-0001
 title: At most one tool call per LLM turn
-status: accepted
+status: superseded
 decided_at: 2026-09-17T11:19:17Z
 task_id: 20260917-003-prepare-llm-tool-tasks
 supersedes:
-superseded_by:
+superseded_by: ADR-0002
 ---
 
 # Context

@@ -24,6 +24,20 @@ _RATIONALE_MAX = 4000
 _REPORT_MAX = 2000
 _FORCED_FINISH = "forced finish: max_steps"
 
+# D-27: tools that never change world state. Only these may share a model turn.
+READ_ONLY_TOOLS: frozenset[str] = frozenset(
+    {
+        "get_customer_profile",
+        "get_account_balance",
+        "list_beneficiaries",
+        "lookup_pix_key",
+        "check_transfer_policy",
+        "get_transfer",
+        "get_transfer_by_idempotency_key",
+        "list_transfers",
+    }
+)
+
 
 class LLMAgentProtocolError(RuntimeError):
     """Reject model turns that cannot map to one correlated Action. REQ-CON-10."""
@@ -41,6 +55,7 @@ class LLMAgent:
         self._public: TaskPublic | None = None
         self._messages: list[ChatMessage] = []
         self._pending_tool_call_id: str | None = None
+        self._queue: list[tuple[str, Action]] = []
         self._protocol_error: str | None = None
         self._provider_error: str | None = None
         self.usage_log: list[Usage] = []
@@ -60,6 +75,7 @@ class LLMAgent:
         del reset_observation
         self._public = public
         self._pending_tool_call_id = None
+        self._queue = []
         self._protocol_error = None
         self._provider_error = None
         self.usage_log = []
@@ -77,6 +93,7 @@ class LLMAgent:
         self._messages.append(self._observation_message(last_observation))
         if len(history) == self._public.max_steps - 1:
             self._pending_tool_call_id = None
+            self._queue = []
             self.usage_log.append(Usage())
             forced = Action(
                 tool_name="finish",
@@ -91,6 +108,12 @@ class LLMAgent:
                 forced,
             )
             return forced
+        if self._queue:
+            # D-27: drain an accepted read-only batch before the next model request.
+            tool_call_id, queued = self._queue.pop(0)
+            self._pending_tool_call_id = tool_call_id
+            self.usage_log.append(Usage())
+            return queued
         try:
             turn = self.model.complete(self._messages, _chat_tools())
         except Exception as exc:
@@ -99,13 +122,15 @@ class LLMAgent:
             raise
         self.usage_log.append(turn.usage)
         try:
-            tool_call_id = _validate_turn(turn)
+            tool_call_ids = _validate_turn(turn)
         except LLMAgentProtocolError as exc:
             self._protocol_error = str(exc)
             self._record_turn(turn, None)
             raise
         self._messages.append(_assistant_message(turn))
-        action = self._action_from_turn(turn, tool_call_id)
+        action = self._action_from_turn(turn, tool_call_ids[0] if tool_call_ids else None)
+        for tool_call_id, call in zip(tool_call_ids[1:], turn.tool_calls[1:], strict=True):
+            self._queue.append((tool_call_id, _call_action(call, rationale=None)))
         self._record_turn(turn, action)
         return action
 
@@ -150,15 +175,18 @@ class LLMAgent:
                 },
                 rationale=rationale,
             )
-        call = turn.tool_calls[0]
-        name_obj = call.get("name")
-        name = name_obj if isinstance(name_obj, str) and name_obj else "unknown"
         self._pending_tool_call_id = tool_call_id
-        return Action(
-            tool_name=name,
-            arguments=_parse_arguments(call.get("arguments")),
-            rationale=rationale,
-        )
+        return _call_action(turn.tool_calls[0], rationale=rationale)
+
+
+def _call_action(call: dict[str, object], *, rationale: str | None) -> Action:
+    name_obj = call.get("name")
+    name = name_obj if isinstance(name_obj, str) and name_obj else "unknown"
+    return Action(
+        tool_name=name,
+        arguments=_parse_arguments(call.get("arguments")),
+        rationale=rationale,
+    )
 
 
 def _chat_tools() -> list[ChatToolSpec]:
@@ -177,19 +205,21 @@ def _assistant_message(turn: ModelTurn) -> ChatMessage:
     )
 
 
-def _validate_turn(turn: ModelTurn) -> str | None:
-    """Validate the one-Action-per-turn correlation contract. REQ-CON-10."""
-    if len(turn.tool_calls) > 1:
-        raise LLMAgentProtocolError(
-            f"LLM_PROTOCOL_MULTIPLE_TOOL_CALLS count={len(turn.tool_calls)}"
-        )
-    if not turn.tool_calls:
-        return None
-    raw_id = turn.tool_calls[0].get("id")
-    if not isinstance(raw_id, str) or not raw_id.strip():
-        type_name = type(raw_id).__name__
-        raise LLMAgentProtocolError(f"LLM_PROTOCOL_INVALID_TOOL_CALL_ID type={type_name}")
-    return raw_id
+def _validate_turn(turn: ModelTurn) -> list[str]:
+    """Validate the correlation contract; batches must be read-only. REQ-CON-10, D-27."""
+    calls = turn.tool_calls
+    if len(calls) > 1 and any(call.get("name") not in READ_ONLY_TOOLS for call in calls):
+        raise LLMAgentProtocolError(f"LLM_PROTOCOL_MULTIPLE_TOOL_CALLS count={len(calls)}")
+    ids: list[str] = []
+    for call in calls:
+        raw_id = call.get("id")
+        if not isinstance(raw_id, str) or not raw_id.strip():
+            type_name = type(raw_id).__name__
+            raise LLMAgentProtocolError(f"LLM_PROTOCOL_INVALID_TOOL_CALL_ID type={type_name}")
+        if raw_id in ids:
+            raise LLMAgentProtocolError(f"LLM_PROTOCOL_DUPLICATE_TOOL_CALL_ID count={len(calls)}")
+        ids.append(raw_id)
+    return ids
 
 
 def _drop_none(payload: dict[str, Any]) -> dict[str, Any]:

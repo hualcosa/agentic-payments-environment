@@ -132,7 +132,7 @@ def _request_policy(provider: str) -> dict[str, object] | None:
     return {
         "sdk": "openai",
         "sdk_version": version("openai"),
-        "parallel_tool_calls": False,
+        "parallel_tool_calls": "provider_default",
         "sampling": "provider_default",
         "sdk_max_retries": openai_compat.SDK_MAX_RETRIES,
         "transport_attempts": openai_compat._MAX_ATTEMPTS,

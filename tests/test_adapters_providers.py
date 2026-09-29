@@ -183,7 +183,7 @@ def test_openai_complete_maps_tool_calls(monkeypatch: pytest.MonkeyPatch) -> Non
     assert turn.usage == Usage(input_tokens=11, output_tokens=7)
 
 
-def test_openai_requests_serial_tools_and_preserves_multiturn_payload(
+def test_openai_uses_provider_parallelism_and_preserves_multiturn_payload(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     requests: list[dict[str, object]] = []
@@ -199,7 +199,7 @@ def test_openai_requests_serial_tools_and_preserves_multiturn_payload(
     model.complete(_conversation(), tools)
 
     request = requests[0]
-    assert request["parallel_tool_calls"] is False
+    assert "parallel_tool_calls" not in request  # D-27: provider default
     assert request["tools"] == [
         {
             "type": "function",
@@ -341,7 +341,7 @@ def test_anthropic_complete_maps_tool_use(monkeypatch: pytest.MonkeyPatch) -> No
     assert turn.usage == Usage(input_tokens=9, output_tokens=4)
 
 
-def test_anthropic_requests_serial_tools_and_preserves_multiturn_payload(
+def test_anthropic_uses_provider_parallelism_and_preserves_multiturn_payload(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     requests: list[dict[str, object]] = []
@@ -358,7 +358,7 @@ def test_anthropic_requests_serial_tools_and_preserves_multiturn_payload(
 
     request = requests[0]
     assert request["system"] == "system"
-    assert request["tool_choice"] == {"type": "auto", "disable_parallel_tool_use": True}
+    assert "tool_choice" not in request  # D-27: provider default
     assert request["tools"] == [
         {
             "name": "lookup_pix_key",
@@ -504,3 +504,34 @@ def test_openai_served_model_absent_is_none(monkeypatch: pytest.MonkeyPatch) -> 
     model = mod.OpenAICompatChatModel("gpt-test", None, "sk-test")
     messages, tools = _sample_inputs()
     assert model.complete(messages, tools).served_model is None
+
+
+def test_anthropic_groups_batched_tool_results_in_one_user_message(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """D-27: results of one batched turn follow the assistant turn as one user message."""
+    requests: list[dict[str, object]] = []
+
+    def create(**kwargs: object) -> Any:
+        requests.append(deepcopy(kwargs))
+        return _anthropic_text_response()
+
+    _install_fake_anthropic(monkeypatch, create)
+    mod = importlib.import_module("agentic_payments_env.adapters.anthropic")
+    model = mod.AnthropicChatModel("claude-test", "sk-ant-test")
+    calls: list[dict[str, object]] = [
+        {"id": "a", "name": "get_customer_profile", "arguments": {}},
+        {"id": "b", "name": "list_beneficiaries", "arguments": {}},
+    ]
+    messages = [
+        ChatMessage(role="user", content="pay"),
+        ChatMessage(role="assistant", tool_calls=calls),
+        ChatMessage(role="tool", tool_call_id="a", name="get_customer_profile", content="{}"),
+        ChatMessage(role="tool", tool_call_id="b", name="list_beneficiaries", content="{}"),
+    ]
+    _, tools = _sample_inputs()
+    model.complete(messages, tools)
+    payload = requests[0]["messages"]
+    assert isinstance(payload, list)
+    assert [item["role"] for item in payload] == ["user", "assistant", "user"]
+    assert [block["tool_use_id"] for block in payload[2]["content"]] == ["a", "b"]

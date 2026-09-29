@@ -74,6 +74,7 @@ reviewed reports that the README may cite. Every number in a document links
 to a file under `reports/`.
 
 ### D-15 LLM turns contain at most one correlated tool call
+*Amended by D-27: read-only batches are accepted.*
 `Environment.step` consumes one `Action`, so `LLMAgent` rejects an entire model
 turn containing multiple tool calls before any action executes. A single call
 must have a non-whitespace string correlation ID, which is preserved exactly for
@@ -158,6 +159,21 @@ count in `provider_error_episodes`, extending D-16. Termination values and
 trace/result schemas are unchanged. Aggregates from a run with any
 provider-error episode are not interpretable until those episodes are rerun.
 Task: `20260928-001-r1-baseline-gpt6-luna`.
+
+### D-27 Read-only tool calls may be batched (supersedes D-15 in part)
+Owner decision, 2026-09-29, after the R1 smoke. A model turn with more than one
+tool call is accepted only if every call names a read-only tool
+(`get_customer_profile`, `get_account_balance`, `list_beneficiaries`,
+`lookup_pix_key`, `check_transfer_policy`, `get_transfer`,
+`get_transfer_by_idempotency_key`, `list_transfers`) and every correlation ID
+is a unique non-whitespace string. `LLMAgent` executes the batch as consecutive
+environment steps in model order, answering each call with its own tool result
+before the next model request. Any batch containing another tool
+(state-changing, `ask_user`, `finish` or unknown) is still rejected atomically
+with `LLM_PROTOCOL_MULTIPLE_TOOL_CALLS`. Adapters no longer request serial tool
+use. Queued steps consume `max_steps` and record zero usage. D-15's
+single-call and correlation rules otherwise stand. See
+`.coordination/decisions/ADR-0002-read-only-tool-batches.md`.
 
 ## Open questions
 

@@ -438,7 +438,8 @@ def test_turn_log_records_rejected_multi_call_turn() -> None:
     turn = ModelTurn(
         tool_calls=[
             {"id": "c1", "name": "lookup_pix_key", "arguments": {"pix_key": "a@b.com"}},
-            {"id": "c2", "name": "lookup_pix_key", "arguments": {"pix_key": "c@d.com"}},
+            # D-27: a batch is rejected only when it includes a non-read-only tool.
+            {"id": "c2", "name": "create_transfer", "arguments": {"pix_key": "c@d.com"}},
         ],
         text="two at once",
         usage=Usage(input_tokens=3, output_tokens=2),
@@ -483,3 +484,75 @@ def test_served_model_is_copied_into_turn_log() -> None:
     agent.act([], _reset_obs())
     assert agent.turn_log[0].served_model == "gpt-6-luna-2026-09-01"
     assert agent.provider_error is None
+
+
+def test_read_only_batch_runs_as_sequential_steps_before_next_request() -> None:
+    """D-27: read-only calls in one turn become consecutive correlated steps."""
+    model = RecordingChatModel(
+        [
+            ModelTurn(
+                tool_calls=[
+                    {"id": "a", "name": "get_customer_profile", "arguments": {}},
+                    {"id": "b", "name": "lookup_pix_key", "arguments": {"pix_key": "x"}},
+                ],
+                text="look",
+                usage=Usage(input_tokens=11, output_tokens=7),
+            ),
+            ModelTurn(tool_calls=[], text="done"),
+        ]
+    )
+    agent = LLMAgent(model, system_prompt="system", prompt_id="v1")
+    reset = _reset_obs()
+    agent.reset(_public(), reset)
+
+    first = agent.act([], reset)
+    obs1 = _tool_obs(step_index=1, tool_name="get_customer_profile")
+    second = agent.act(_history(first, obs1), obs1)
+    assert (first.tool_name, second.tool_name) == ("get_customer_profile", "lookup_pix_key")
+    assert second.arguments == {"pix_key": "x"}
+    assert len(model.requests) == 1
+
+    obs2 = _tool_obs(step_index=2)
+    history = [*_history(first, obs1), *_history(second, obs2)]
+    third = agent.act(history, obs2)
+    assert third.tool_name == "finish"
+    assert len(model.requests) == 2
+    tool_messages = [m for m in model.requests[1] if m.role == "tool"]
+    assert [m.tool_call_id for m in tool_messages] == ["a", "b"]
+    assert agent.usage_log[:2] == [Usage(input_tokens=11, output_tokens=7), Usage()]
+    assert agent.protocol_error is None
+
+
+@pytest.mark.parametrize("mutating", ["create_transfer", "add_beneficiary", "ask_user", "nope"])
+def test_batch_with_non_read_only_tool_is_rejected(mutating: str) -> None:
+    agent = _agent(
+        [
+            ModelTurn(
+                tool_calls=[
+                    {"id": "a", "name": "get_customer_profile", "arguments": {}},
+                    {"id": "b", "name": mutating, "arguments": {}},
+                ],
+                text="",
+            )
+        ]
+    )
+    agent.reset(_public(), _reset_obs())
+    with pytest.raises(LLMAgentProtocolError, match=r"^LLM_PROTOCOL_MULTIPLE_TOOL_CALLS count=2$"):
+        agent.act([], _reset_obs())
+
+
+def test_read_only_batch_rejects_duplicate_ids() -> None:
+    agent = _agent(
+        [
+            ModelTurn(
+                tool_calls=[
+                    {"id": "a", "name": "get_customer_profile", "arguments": {}},
+                    {"id": "a", "name": "list_beneficiaries", "arguments": {}},
+                ],
+                text="",
+            )
+        ]
+    )
+    agent.reset(_public(), _reset_obs())
+    with pytest.raises(LLMAgentProtocolError, match=r"^LLM_PROTOCOL_DUPLICATE_TOOL_CALL_ID"):
+        agent.act([], _reset_obs())

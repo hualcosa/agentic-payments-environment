@@ -565,3 +565,31 @@ def test_cli_writes_protocol_failure_trace_result_and_usage(
         "input_tokens": 19,
         "output_tokens": 10,
     }
+
+
+@pytest.mark.parametrize("provider", ["openai", "anthropic"])
+def test_read_only_batch_executes_in_order_and_replays(provider: Provider) -> None:
+    """D-27: an accepted batch is N environment steps, one provider request."""
+    task = load_task("v0/rt-001")
+    model, transport = _provider_model(
+        provider,
+        [
+            _turn(
+                _call("a", "get_customer_profile", {}),
+                _call("b", "list_beneficiaries", {}),
+                _call("c", "get_account_balance", {"account_id": "acc_ana"}),
+            ),
+            _turn(_call("d", "finish", {"outcome": "DECLINED", "report": "stop"})),
+        ],
+    )
+    agent = LLMAgent(model, system_prompt="system", prompt_id="v1")
+    _env, trace = _drive(task, agent, 0)
+    assert [step.action.tool_name for step in trace.steps] == [
+        "get_customer_profile",
+        "list_beneficiaries",
+        "get_account_balance",
+        "finish",
+    ]
+    assert len(transport.requests) == 2
+    assert agent.protocol_error is None
+    assert replay(task, trace).matches is True
