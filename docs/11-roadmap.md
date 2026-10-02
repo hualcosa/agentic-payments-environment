@@ -69,7 +69,7 @@ this gate is not authorization to execute it.
 
 **Protocol:**
 
-1. Lock the environment revision, benchmark v0 hash, prompt v1 hash, adapter
+1. Lock the environment revision, benchmark v0 hash, prompt v1.1 hash (D-28), adapter
    configuration, model versions, seeds, retry policy, and usage limit before
    interpreting results.
 2. Run a small usage-capped smoke sample across all four task families. Its only

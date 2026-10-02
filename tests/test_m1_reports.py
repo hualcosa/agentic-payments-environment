@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 
 _REPORTS = (
-    Path("reports/v0/gpt-6-luna-v1.md"),
-    Path("reports/v0/comparator-v1.md"),
+    Path("reports/v0/gpt-6-luna-v1.1.md"),
+    Path("reports/v0/comparator-v1.1.md"),
 )
 
 

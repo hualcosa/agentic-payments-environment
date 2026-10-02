@@ -1,4 +1,4 @@
-# Benchmark v0 — gpt-6-luna — prompt v1
+# Benchmark v0 — gpt-6-luna — prompt v1.1
 
 **not yet measured**
 
