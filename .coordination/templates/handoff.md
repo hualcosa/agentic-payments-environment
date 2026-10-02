@@ -1,5 +1,7 @@
 ---
 task_id: YYYYMMDD-NNN-short-name
+mode: direct-or-rigorous
+scope: Agreed scope
 from: harness/owner-label
 to: harness-or-owner
 created_at: YYYY-MM-DDTHH:MM:SSZ
@@ -24,3 +26,4 @@ Write `None` when clear.
 # Exact next action
 
 Give the next owner a concrete first step.
+

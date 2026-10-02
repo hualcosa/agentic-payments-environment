@@ -1,90 +1,103 @@
 # Shared coordination protocol
 
-This directory is the canonical communication layer for Codex, Claude Code,
-and Cursor. Repository files—not harness-local memory or chat history—are the
-shared source of truth.
-
-## Directory map
-
-- `context/project.md`: stable project facts, constraints, and current state.
-- `decisions/`: durable architectural and product decisions.
-- `plans/`: approved implementation plans.
-- `tasks/backlog/`: defined but unclaimed work.
-- `tasks/in-progress/`: claimed work and its current owner.
-- `tasks/done/`: completed work with its outcome and verification.
-- `handoffs/`: point-in-time notes for continuing work in another session or
-  harness.
-- `templates/`: canonical formats for new coordination records.
-- `.scratch/`: optional local-only notes; ignored by Git.
+Repository coordination is the shared source of truth across Codex, Claude Code
+and Cursor; harness-local memory supplements it. Keep `.coordination/` versionable
+except ignored `.scratch/`. Never store secrets, credentials, personal data or
+machine-specific session data here. This is policy, not an enforcement engine.
 
 ## Startup protocol
 
-Before editing project files, every agent must:
+Before editing, read this core, current `context/project.md`, active tasks and
+relevant decisions/handoffs. Check ownership and Git state; do not overwrite others.
+Before each task/agreed block, **briefly recommend direct or rigorous, explain why,
+and ask the user to choose**. Without an applicable choice, do not implement.
+The choice lasts for that agreed scope; do not ask again for microedits or fixes.
+Material changes in scope, risk or concurrency require a new recommendation and
+choice before expansion. Existing requirements, verification mandates,
+authorizations and gates remain mandatory in either mode.
 
-1. Read this file and `context/project.md`.
-2. Inspect all files in `tasks/in-progress/` for scope or file overlap.
-3. Read any handoff for the task it will continue.
-4. Claim an existing backlog task or create a task from `templates/task.md`.
-5. Move the task file to `tasks/in-progress/`, set `status: in-progress`, and
-   record the harness, owner label, UTC claim time, scope, and expected files.
-6. Commit the claim before substantial project edits when multiple harnesses
-   may be working concurrently.
+## Execution modes
 
-Do not use opaque or machine-specific session identifiers as owner labels. A
-short human-readable label such as `codex/api-schema` is sufficient.
+High risk—auth, money/financial limits, data, shared contracts or uncertain
+impact—calls for an explicit warning and a **rigorous recommendation**, not a
+numeric score or mandatory risk agent. The user may still choose direct after
+that warning; honor the choice without silently imposing rigorous ceremony.
 
-## Task identifiers and filenames
+- **Direct:** executor implements, writes/updates pertinent tests, verifies and
+  records actual results/limitations. Independent review is not mandatory. Use
+  native harness resources when requested. Do not load rigorous procedures or
+  create an artificial task/worktree for a simple safe change.
+- **Rigorous:** only after this choice, read [rigorous.md](rigorous.md). Independent
+  protected acceptance authorship and an accepted baseline precede implementation;
+  independent final-version review follows it. Docs-only uses observable checks
+  and review, not artificial application tests.
 
-Use sortable task IDs in the form `YYYYMMDD-NNN-short-name`, for example
-`20260909-001-bootstrap-api`. The task filename is `<task-id>.md` and stays the
-same while it moves between lifecycle directories.
+## Ownership and records
 
-All timestamps use ISO 8601 in UTC, such as `2026-09-09T15:30:00Z`.
+One owner per focused task. Formal tasks are needed for complex, concurrent or
+rigorous work; simple direct work can use a lightweight repo-local record when
+needed for continuity. Use `templates/task.md`, record mode, scope, expected files,
+owner/harness, ISO 8601 UTC timestamps and dependencies; move backlog → in-progress
+→ done. IDs are `YYYYMMDD-NNN-short-name`. Legacy tasks without mode remain readable
+historical records; never retroactively reinterpret or rewrite their approvals.
+Check the ready set, dependencies, gates and ownership before dispatch; parallelize
+only independent ready work with non-overlapping ownership. An acceptance baseline
+is a predecessor of rigorous implementation, never concurrent with it.
 
-## Working protocol
+When a PR exists, concentrate what/why/verification there; link rather than repeat
+it in repo records. Without a PR, keep enough repo-local state/results/limitations
+for continuity. Maintain current context and relevant decisions; record a handoff
+when transferring incomplete work. Do not duplicate narratives. Changelog only
+for relevant changes, not every PR; no new changelog automation.
 
-- Keep each task focused enough for one owner at a time.
-- Update the task record when scope, expected files, blockers, or the next
-  action changes materially.
-- Check active tasks again before expanding scope or touching an undeclared
-  file.
-- Record durable choices in `decisions/`; do not bury them only in chat,
-  commits, or task notes.
-- Put approved multi-step implementation designs in `plans/`.
-- Never place credentials, tokens, personal data, or secrets in coordination
-  records.
+## Worktrees and integration
+
+An existing checkout, including local main, is allowed for a single safe writer.
+Concurrent writers require separate worktrees/environments; read-only review may
+share a checkout. First verify repo root, base revision, branch, current work and
+ownership. Never assume local main is current or stash/reset/discard others' work.
+
+Accepted changes in auxiliary branches must integrate into **local main** before
+completion, preferably fast-forward, then verify the combined result and record
+revision. Inspect both checkouts; stop and ask if main is dirty, diverged, owned by
+another task or conflicts. Do not invent commit permission to enable integration.
+If no Git baseline exists, isolated snapshot/hash review is bootstrap evidence,
+not exact-HEAD approval. Preserve useful work before removing task worktrees.
+No automatic commit, remote, push, PR or other publication; explicit authorization
+is required under the project's rules.
+
+## Verification
+
+Tests are required where pertinent in both modes; green tests alone do not prove
+readiness. During development run focused functionality/regressions, expand by
+actual impact (including transitive consumers, contracts, auth, persistence,
+dependencies/config). At integration run mandatory acceptance/verify commands,
+changed/impacted tests and project safety core. At milestones/pre-demo run the full
+applicable suite plus real system/artifact QA. Existing broader mandates stay.
+Uncertain impact, stale mapping or empty selection needs broader checks, not an
+unsupported omission. Isolate state for parallel tests. Record actual commands,
+results, selection reasons and limitations; never narrow required checks to pass.
+Docs-only checks links, output/rendering and affected tooling, not fake app tests.
 
 ## Conflict policy
 
-Two active tasks must not knowingly own the same scope or files. If overlap is
-found, the later claimant must pause that portion of work, record the conflict
-and exact overlap in its task, and either switch to unrelated work or request
-human coordination. Never resolve an ownership conflict by silently
-overwriting another agent's changes.
-
-If simultaneous Git changes conflict, preserve both agents' information while
-resolving the text conflict, then reconcile task ownership explicitly before
-continuing implementation.
+Active tasks must not overlap ownership. Later claimants pause overlapping work,
+record the conflict, switch to independent work or ask for human coordination.
+Recheck before expanding/touching undeclared files. Never remove locks forcibly or
+overwrite another writer. Cross-ownership conflicts/destructive actions require a
+human decision; preserve both agents' information.
 
 ## Handoff protocol
 
-Create a handoff from `templates/handoff.md` when work stops unfinished, moves
-to another harness, or needs context that is not obvious from the diff. A
-handoff records the task, current state, changed files, verification, blockers,
-and exact next action.
-
-Name handoffs `YYYYMMDD-HHMM-<task-id>-<from>-to-<to>.md`, using UTC. The next
-owner should incorporate the handoff into the task and keep the handoff as a
-historical record.
+For incomplete transfer, use `templates/handoff.md`: state, mode/scope, changed
+files, verification, blockers and exact next action. Use UTC filename
+`YYYYMMDD-HHMM-<task-id>-<from>-to-<to>.md`. Keep history; the next owner incorporates
+new state into the active record.
 
 ## Completion protocol
 
-Before completing a task:
-
-1. Run verification appropriate to the change and record the commands and
-   results.
-2. Summarize the outcome and any follow-up work in the task file.
-3. Set `status: done`, update the UTC timestamp, and move the file to
-   `tasks/done/`.
-4. Update `context/project.md` when the project's stable state changed.
-5. Create separate backlog tasks for deferred work; do not hide it in prose.
+Record outcomes, verification and follow-ups in the appropriate existing record;
+mark formal tasks done and move to `done/`. Update current context for stable
+changes and capture relevant decisions. Explicitly distinguish unverified work,
+bootstrap review and runtime readiness; bookkeeping cannot approve unreviewed
+product changes. Do not leave accepted work stranded in auxiliary branches.

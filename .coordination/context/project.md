@@ -36,6 +36,9 @@ Do not duplicate evolving strategy here or infer measured results from feature c
 
 - Follow `.coordination/README.md`; one owner per scope, UTC task timestamps,
   task-linked plans and explicit handoffs. Recheck claims before writing.
+- Before each task or agreed block, recommend direct or rigorous and wait for
+  the owner's choice (ADR-0003); rigorous procedures live in
+  `.coordination/rigorous.md`. Project gates in `AGENTS.md` apply in both modes.
 - Preserve approved strategic context across Codex, Claude Code and Cursor.
 - Engram is supplementary persistent memory; repository records are shared truth.
 - CodeGraph is a regenerable local index; `.codegraph/` stays ignored.
