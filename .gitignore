@@ -33,6 +33,9 @@ runs/
 # CodeGraph local index
 .codegraph/
 
+# Understand-Anything output (retired; not used by this project)
+.ua/
+
 # Serena local cache (project.yml stays versioned)
 .serena/cache/
 
